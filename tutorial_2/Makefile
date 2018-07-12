@@ -53,7 +53,7 @@ include $(EGS_CONFIG)
 
 # Then define the user code name
 #
-USER_CODE = test002
+USER_CODE = tutorial_2
 
 # User code specific definitions for Make
 #

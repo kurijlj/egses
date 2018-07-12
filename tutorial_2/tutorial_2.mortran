@@ -1,7 +1,7 @@
 %C80
 "#############################################################################"
 "                                                                             "
-"  EGSnrc tutor2 application                                                  "
+"  EGSnrc tutorial_2 application                                              "
 "  Copyright (C) 2015 National Research Council Canada                        "
 "                                                                             "
 "  This file is part of EGSnrc.                                               "
@@ -43,8 +43,8 @@
 !INDENT M 4;    "indent each mortran nesting level by 4"
 !INDENT F 2;    "indent each fortran nesting level by 2"
 $IMPLICIT-NONE;
-$INTEGER I,IQIN,IRIN,NCASE;
-$REAL XIN,YIN,ZIN,EIN,WTIN,UIN,VIN,WIN,ANORM,TOTAL;
+$INTEGER I, IQIN, IRIN, NCASE;
+$REAL XIN, YIN, ZIN, EIN, WTIN, UIN, VIN, WIN, ANORM, TOTAL;
 "---------------------------------------------------------------------"
 "STEP 1:  USER-OVERRIDE-OF-EGSnrc-MACROS                              "
 "---------------------------------------------------------------------"
@@ -55,13 +55,13 @@ REPLACE {$MXSTACK} WITH {15} "less than 15 particles on stack at once"
 "DEFINE A COMMON TO PASS INFORMATION TO THE GEOMETRY ROUTINE HOWFAR"
 REPLACE {;COMIN/GEOM/;} WITH {;COMMON/GEOM/ZBOUND;$REAL ZBOUND;}
 REPLACE {$CALL-HOWNEAR(#);} WITH {
-   ;CALL HOWNEAR({P1},X(NP),Y(NP),Z(NP),IRL);
+   ;CALL HOWNEAR({P1}, X(NP), Y(NP), Z(NP), IRL);
 }
 
 "Define a COMMON for scoring in AUSGAB"
 REPLACE {;COMIN/SCORE/;} WITH {;COMMON/SCORE/ESCORE(3);REAL*8 ESCORE;}
 
-;COMIN/BOUNDS,GEOM,MEDIA,MISC,SCORE,THRESH,USEFUL/;"NOTE  ; BEFORE COMIN"
+;COMIN/BOUNDS,GEOM,MEDIA,MISC,SCORE,THRESH,USEFUL/;"NOTE ; BEFORE COMIN"
 "       The above expands into a series of COMMON statements"
 "       BOUNDS contains ECUT and PCUT"
 "       GEOM passes info to our HOWFAR routine"
@@ -76,21 +76,21 @@ REPLACE {;COMIN/SCORE/;} WITH {;COMMON/SCORE/ESCORE(3);REAL*8 ESCORE;}
 "STEP 2 PRE-HATCH-CALL-INITIALIZATION                                 "
 "---------------------------------------------------------------------"
 CHARACTER*4 MEDARR(24);
-DATA  MEDARR /$S'TA',22*' '/; "place medium name in an array"
+DATA MEDARR /$S'TA',22*' '/; "place medium name in an array"
 "                            $S is a MORTRAN macro to expand strings"
 
 " Initialize the EGSnrc system "
 call egs_init;
 
 
-DO I = 1,24 [MEDIA(I,1)=MEDARR(I);] "this is to avoid a data statement for"
-"                                    a variable in COMMON"
+DO I = 1,24 [MEDIA(I,1) = MEDARR(I);] "this is to avoid a data statement for"
+"                                      a variable in COMMON"
 
 "NMED and DUNIT default to 1, i.e. one medium and we work in cm"
 
 /MED(1),MED(3)/ = 0; MED(2) = 1;"vacuum in regions 1 and 3, TA in region 2"
 
-%E  "tutor2.mortran"
+%E  "tutorial_2.mortran"
 ECUT(2) = 0.7;"   terminate electron histories at 1.5 MeV in the plate"
 PCUT(2) = 0.1;"   terminate   photon histories at 0.1 MeV in the plate"
 "                 only needed for region 2 since no transport elsewhere"
@@ -101,7 +101,7 @@ PCUT(2) = 0.1;"   terminate   photon histories at 0.1 MeV in the plate"
 "STEP 3   HATCH-CALL                                                  "
 "---------------------------------------------------------------------"
 
-;OUTPUT;('\f  Start tutor2'//' CALL HATCH to get cross-section data'/);
+;OUTPUT;('\f  Start tutorial_2'//' CALL HATCH to get cross-section data'/);
 CALL HATCH;"    pick up cross section data for TA"
 "               data file must be assigned to unit 12"
 
@@ -137,16 +137,16 @@ WTIN = 1.0; "                weight = 1 since no variance reduction used"
 "---------------------------------------------------------------------"
 "STEP 7   SHOWER-CALL                                                 "
 "---------------------------------------------------------------------"
-NCASE=10000; "INITIATE THE SHOWER NCASE TIMES"
+NCASE = 10000; "INITIATE THE SHOWER NCASE TIMES"
 
-DO I=1,NCASE [
+DO I = 1,NCASE [
    CALL SHOWER(IQIN,EIN,XIN,YIN,ZIN,UIN,VIN,WIN,IRIN,WTIN);
 ]
 
 "---------------------------------------------------------------------"
 "STEP 8   OUTPUT-OF-RESULTS                                           "
 "---------------------------------------------------------------------"
-ANORM = 100./((EIN + FLOAT(IQIN) * PRM) * FLOAT(NCASE));
+ANORM = 100.0 / ((EIN + FLOAT(IQIN) * PRM) * FLOAT(NCASE));
  "normalize to % of total input energy"
 TOTAL = 0.0;  DO I = 1,3 [TOTAL = TOTAL + ESCORE(I);]
 OUTPUT  NCASE, (ESCORE(I) * ANORM, I=1,3), TOTAL * ANORM;
@@ -162,16 +162,16 @@ T50,F10.3,'%'///);
 "-----------------------------------------------------------------"
 call egs_finish;
 
-STOP; END;"end of tutor2 main routine"
+STOP; END; "end of tutorial_2 main routine"
 
-%E  "tutor2.mortran"
+%E  "tutorial_2.mortran"
 "********************************************************************"
 "                                                                    "
 "  SUBROUTINE AUSGAB                                                 "
 "                                                                    "
-"  In this AUSGAB routine for tutor2, we score the energy deposited  "
-"  in the various regions. This amounts to the total energy          "
-"  reflected,deposited and transmitted by the slab.                  "
+"  In this AUSGAB routine for tutorial_2, we score the energy        "
+"  deposited in the various regions. This amounts to the total       "
+"  energy reflected,deposited and transmitted by the slab.           "
 "                                                                    "
 "  For IARG=0, an electron or photon step is about to occur and we   "
 "  score the energy deposited, if any. Note that only electrons      "
@@ -180,6 +180,7 @@ STOP; END;"end of tutor2 main routine"
 "  For IARG=1,2 and 4, particles have been discarded for falling     "
 "  below various energy cutoffs and all their energy is deposited    "
 "  locally (in fact EDEP = particles kinetic energy).                "
+"                                                                    "
 "  For IARG=3, we are discarding the particle since it is in         "
 "  region 1 or 3, so score its energy.                               "
 "                                                                    "
@@ -194,14 +195,14 @@ IF(IARG <= 4) [
    IRL = IR(NP);" pick up current region number"
    ESCORE(IRL) = ESCORE(IRL) + EDEP;
 ]
-RETURN; END;"end of ausgab"
+RETURN; END; "end of ausgab"
 
-%E  "tutor2.mortran"
+%E  "tutorial_2.mortran"
 "*********************************************************************"
 "                                                                     "
 "  SUBROUTINE HOWFAR                                                  "
 "                                                                     "
-"  HOWFAR for use with TUTOR2 (same as with TUTOR1)                   "
+"  HOWFAR for use with tutorial_2 (same as with tutorial_1            "
 "                                                                     "
 "*********************************************************************"
 SUBROUTINE HOWFAR;
@@ -213,16 +214,16 @@ COMIN/STACK,EPCONT,GEOM/;
 "       COMMON GEOM contains ZBOUND"
 
 IF(IR(NP) = 3) [
-   IDISC=1; RETURN; "terminate this history: it is past the plate"
+   IDISC = 1; RETURN; "terminate this history: it is past the plate"
 ]
-ELSEIF(IR(NP).EQ.2) [ "We are in the Ta plate - check the geometry"
+ELSEIF(IR(NP) = 2) [ "We are in the Ta plate - check the geometry"
 
    IF(W(NP) > 0.0) [
       "going forward - consider first since  most frequent"
       TVAL = (ZBOUND - Z(NP)) / W(NP); "TVAL is dist to boundary"
       "                                 in this direction"
       IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
-      ELSE [USTEP = TVAL; IRNEW=3; RETURN;]
+      ELSE [USTEP = TVAL; IRNEW = 3; RETURN;]
    ] "END OF W(NP)>0 CASE"
 
    ELSEIF(W(NP) < 0.0) [ "going back towards origin"
@@ -239,13 +240,13 @@ ELSEIF(IR(NP) = 1) [ "in region with source"
       USTEP=0.0; IRNEW=2; RETURN;
    ]
    ELSE [ "it must be a reflected particle-discard it"
-      IDISC=1; RETURN;
+      IDISC = 1; RETURN;
    ]
 ] "end region 1 case"
 
 END;"end of subroutine howfar"
 
-%E  "tutor2.mortran"
+%E  "tutorial_2.mortran"
 "*********************************************************************"
 "                                                                     "
 "  SUBROUTINE HOWNEAR                                                 "
@@ -276,4 +277,4 @@ ELSEIF(irl = 2) [ "We are in the Ta plate - check the geometry"
 ELSEIF(irl = 1) [OUTPUT; ('Called HOWNEAR in region 1'); RETURN;]
 
 END; "end of subroutine hownear"
-"============================end of tutor2.mortran================="
+"============================end of tutorial_2.mortran================="
