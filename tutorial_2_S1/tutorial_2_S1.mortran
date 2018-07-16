@@ -1,0 +1,311 @@
+%C80
+"#############################################################################"
+"                                                                             "
+"  EGSnrc tutorial_2_S1 application                                           "
+"  Copyright (C) 2015 National Research Council Canada                        "
+"                                                                             "
+"  This file is part of EGSnrc.                                               "
+"                                                                             "
+"  EGSnrc is free software: you can redistribute it and/or modify it under    "
+"  the terms of the GNU Affero General Public License as published by the     "
+"  Free Software Foundation, either version 3 of the License, or (at your     "
+"  option) any later version.                                                 "
+"                                                                             "
+"  EGSnrc is distributed in the hope that it will be useful, but WITHOUT ANY  "
+"  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS  "
+"  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for   "
+"  more details.                                                              "
+"                                                                             "
+"  You should have received a copy of the GNU Affero General Public License   "
+"  along with EGSnrc. If not, see <http://www.gnu.org/licenses/>.             "
+"                                                                             "
+"#############################################################################"
+"                                                                             "
+"  Author:          Dave Roger, 1985                                          "
+"                                                                             "
+"  Contributors:    Iwan Kawrakow                                             "
+"                   Reid Townson                                              "
+"                                                                             "
+"#############################################################################"
+"                                                                             "
+"  An EGSnrc user code which calculates the total amount of energy reflected, "
+"  deposited and transmitted when a 20 MeV beam of electrons is incident on   "
+"  a  1 mm slab of tantalum.                                                  "
+"                                                                             "
+"  Iwan Kawrakow, 2003: Adapted to new EGSnrc MP system by adding call        "
+"  egs_init at the beginning and call egs_finish at the end.                  "
+"                                                                             "
+"#############################################################################"
+
+
+%L
+%E
+!INDENT M 4;    "indent each mortran nesting level by 4"
+!INDENT F 2;    "indent each fortran nesting level by 2"
+$IMPLICIT-NONE;
+$INTEGER I, IQIN, IRIN, NCASE;
+$REAL XIN, YIN, ZIN, EIN, WTIN, UIN, VIN, WIN, ANORM, TOTAL;
+"---------------------------------------------------------------------"
+"STEP 1:  USER-OVERRIDE-OF-EGSnrc-MACROS                              "
+"---------------------------------------------------------------------"
+REPLACE {$MXMED} WITH {1}    "only 1 medium in the problem(default 10)"
+REPLACE {$MXREG} WITH {4}    "only 4 geometric regions (default 2000)"
+REPLACE {$MXSTACK} WITH {15} "less than 15 particles on stack at once"
+
+"DEFINE A COMMON TO PASS INFORMATION TO THE GEOMETRY ROUTINE HOWFAR"
+REPLACE {;COMIN/GEOM/;} WITH {;COMMON/GEOM/ZBOUNDS(3); $REAL ZBOUNDS;}
+REPLACE {$CALL-HOWNEAR(#);} WITH {
+   ;CALL HOWNEAR({P1}, X(NP), Y(NP), Z(NP), IRL);
+}
+
+"Define a COMMON for scoring in AUSGAB"
+REPLACE {;COMIN/SCORE/;} WITH {;COMMON/SCORE/ESCORE(4);REAL*8 ESCORE;}
+
+;COMIN/BOUNDS,GEOM,MEDIA,MISC,SCORE,THRESH,USEFUL/;"NOTE ; BEFORE COMIN"
+"       The above expands into a series of COMMON statements"
+"       BOUNDS contains ECUT and PCUT"
+"       GEOM passes info to our HOWFAR routine"
+"       MEDIA contains the array MEDIA"
+"       MISC contains MED"
+"       SCORE contains the scoring array ESCORE"
+"       THRESH contains various thresholds"
+"       THRESH CONTAINS AE AND AP"
+"       USEFUL contains PRM"
+
+"---------------------------------------------------------------------"
+"STEP 2 PRE-HATCH-CALL-INITIALIZATION                                 "
+"---------------------------------------------------------------------"
+CHARACTER*4 MEDARR(24);
+DATA MEDARR /$S'TA', 22*' '/; "place medium name in an array"
+"                                              $S is a MORTRAN macro to"
+"                                              expand strings"
+
+" Initialize the EGSnrc system "
+call egs_init;
+
+"NMED and DUNIT default to 1, i.e. one medium and we work in cm"
+DO I = 1,24 [MEDIA(I, 1) = MEDARR(I);]
+
+/MED(1), MED(4)/ = 0;
+/MED(2), MED(3)/ = 1;
+
+%E  "tutorial_2_S1.mortran"
+ECUT(2) = 0.7;"   terminate electron histories at 1.5 MeV in the plate"
+PCUT(2) = 0.1;"   terminate   photon histories at 0.1 MeV in the plate"
+"                 only needed for region 2 since no transport elsewhere"
+"                 ECUT is total energy = 0.989   MeV kinetic energy"
+
+%E
+"---------------------------------------------------------------------"
+"STEP 3   HATCH-CALL                                                  "
+"---------------------------------------------------------------------"
+
+;OUTPUT;('\f  Start tutorial_2_S1'//' CALL HATCH to get cross-section data'/);
+CALL HATCH;"    pick up cross section data for TA"
+"               data file must be assigned to unit 12"
+
+;OUTPUT AE(1)-PRM, AP(1);
+(/' knock-on electrons can be created and any electron followed down to'
+  /T40,F8.3,' MeV kinetic energy'/
+' brem photons can be created and any photon followed down to      ',
+  /T40,F8.3,' MeV ');
+"Compton events can create electrons and photons below these cutoffs"
+
+"---------------------------------------------------------------------"
+"STEP 4  INITIALIZATION-FOR-HOWFAR and HOWNEAR                        "
+"---------------------------------------------------------------------"
+ZBOUNDS(1) = 0.0; "              plate is positioned at origin"
+ZBOUNDS(2) = ZBOUNDS(1) + 0.25; "first scoring region is 2.5 mm thick"
+ZBOUNDS(3) = ZBOUNDS(2) + 0.25; "second scoring region is 2.5 mm thick too"
+"                                plate is 5 mm thick"
+
+"---------------------------------------------------------------------"
+"STEP 5  INITIALIZATION-FOR-AUSGAB                                    "
+"---------------------------------------------------------------------"
+DO I = 1,4 [ESCORE(I) = 0.0;] "zero scoring array before starting"
+
+"---------------------------------------------------------------------"
+"STEP 6   DETERMINATION-OF-INICIDENT-PARTICLE-PARAMETERS              "
+"---------------------------------------------------------------------"
+"Define initial variables for 20 MeV beam of electrons incident"
+"perpendicular to the slab"
+
+IQIN = -1; "                 incident charge - electrons"
+EIN = 20 + PRM; "            20 MeV kinetic energy"
+/XIN,YIN,ZIN/ = 0.0; "       incident at origin"
+/UIN,VIN/ = 0.0; WIN = 1.0;" moving along Z axis"
+IRIN = 1; "                  starts in region 2, could be 1"
+WTIN = 1.0; "                weight = 1 since no variance reduction used"
+"---------------------------------------------------------------------"
+"STEP 7   SHOWER-CALL                                                 "
+"---------------------------------------------------------------------"
+NCASE = 10000; "INITIATE THE SHOWER NCASE TIMES"
+
+DO I = 1,NCASE [
+   CALL SHOWER(IQIN,EIN,XIN,YIN,ZIN,UIN,VIN,WIN,IRIN,WTIN);
+]
+
+"---------------------------------------------------------------------"
+"STEP 8   OUTPUT-OF-RESULTS                                           "
+"---------------------------------------------------------------------"
+ANORM = 100.0 / ((EIN + FLOAT(IQIN) * PRM) * FLOAT(NCASE));
+ "normalize to % of total input energy"
+TOTAL = 0.0;  DO I = 1,4 [TOTAL = TOTAL + ESCORE(I);]
+OUTPUT  NCASE, (ESCORE(I) * ANORM, I=1,4), TOTAL * ANORM;
+(//' For',I8,' incident particles'/
+' Fraction of energy reflected from plate=',T50,F10.3,'%'/
+' Fraction of energy deposited in first region=',T50,F10.3,'%'/
+' Fraction of energy deposited in second region=',T50,F10.3,'%'/
+' Fraction of energy transmitted through plate=',T50,F10.3,'%'/
+T50,11('-')/' Total fraction of energy accounted for=',
+T50,F10.3,'%'///);
+
+"-----------------------------------------------------------------"
+"STEP 9   finish run                                              "
+"-----------------------------------------------------------------"
+call egs_finish;
+
+STOP; END; "end of tutorial_2_S1 main routine"
+
+%E  "tutorial_2_S1.mortran"
+"********************************************************************"
+"                                                                    "
+"  SUBROUTINE AUSGAB                                                 "
+"                                                                    "
+"  In this AUSGAB routine for tutorial_2_S1, we score the energy     "
+"  deposited in the various regions. This amounts to the total       "
+"  energy reflected,deposited and transmitted by the slab.           "
+"                                                                    "
+"  For IARG=0, an electron or photon step is about to occur and we   "
+"  score the energy deposited, if any. Note that only electrons      "
+"  deposit energy during a step, and due to our geometry, electrons  "
+"  only take steps in region 2 - however there is no need to check.  "
+"  For IARG=1,2 and 4, particles have been discarded for falling     "
+"  below various energy cutoffs and all their energy is deposited    "
+"  locally (in fact EDEP = particles kinetic energy).                "
+"                                                                    "
+"  For IARG=3, we are discarding the particle since it is in         "
+"  region 1 or 3, so score its energy.                               "
+"                                                                    "
+"********************************************************************"
+SUBROUTINE AUSGAB(IARG);
+$IMPLICIT-NONE;
+$INTEGER IARG, IRL;
+
+COMIN/EPCONT,SCORE,STACK/; "we use EDEP from EPCONT,IR(NP) from STACK"
+"                           ESCORE is passed in user defined COMIN SCORE"
+IF(IARG <= 4) [
+   IRL = IR(NP);" pick up current region number"
+   ESCORE(IRL) = ESCORE(IRL) + EDEP;
+]
+RETURN; END; "end of ausgab"
+
+%E  "tutorial_2_S1.mortran"
+"*********************************************************************"
+"                                                                     "
+"  SUBROUTINE HOWFAR                                                  "
+"                                                                     "
+"  HOWFAR for use with tutorial_2_S1 (same as with tutorial_1         "
+"                                                                     "
+"*********************************************************************"
+SUBROUTINE HOWFAR;
+$IMPLICIT-NONE;
+$REAL TVAL;
+COMIN/STACK,EPCONT,GEOM/;
+"       COMMON STACK contains X,Y,Z,U,V,W,IR and NP(stack pointer)"
+"       COMMON EPCONT contains IRNEW, USTEP and IDISC"
+"       COMMON GEOM contains ZBOUNDS"
+
+IF(IR(NP) = 4) [
+   IDISC = 1; RETURN; "terminate this history: it is past the plate"
+]
+
+ELSEIF(IR(NP) = 3) [ "We are in the Ta plate - check the geometry"
+
+   IF(W(NP) > 0.0) [
+      "going forward - consider first since  most frequent"
+      TVAL = (ZBOUNDS(3) - Z(NP)) / W(NP); "distance to right plate boundary"
+      IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
+      ELSE [USTEP = TVAL; IRNEW = 4; RETURN;]
+   ] "END OF W(NP)>0 CASE"
+
+   ELSEIF(W(NP) < 0.0) [ "going back towards origin"
+      TVAL = -(Z(NP) - ZBOUNDS(2)) / W(NP); "distance to left plate boundary"
+      IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
+      ELSE [USTEP = TVAL; IRNEW = 2; RETURN;]
+   ] "END W(NP)<0 CASE"
+
+   ELSEIF(W(NP) = 0.0) [ "cannot hit boundary" RETURN;]
+] "end of region 2 case"
+
+ELSEIF(IR(NP) = 2) [ "We are in the Ta plate - check the geometry"
+
+   IF(W(NP) > 0.0) [
+      "going forward - consider first since  most frequent"
+      TVAL = (ZBOUNDS(2) - Z(NP)) / W(NP); "distance to right plate boundary"
+      IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
+      ELSE [USTEP = TVAL; IRNEW = 3; RETURN;]
+   ] "END OF W(NP)>0 CASE"
+
+   ELSEIF(W(NP) < 0.0) [ "going back towards origin"
+      TVAL = -(Z(NP) - ZBOUNDS(1)) / W(NP); "distance to left plate boundary"
+      IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
+      ELSE [USTEP = TVAL; IRNEW = 1; RETURN;]
+   ] "END W(NP)<0 CASE"
+
+   ELSEIF(W(NP) = 0.0) [ "cannot hit boundary" RETURN;]
+] "end of region 2 case"
+
+ELSEIF(IR(NP) = 1) [ "in region with source"
+   IF(W(NP) >  0.0)[
+      "going forward"
+      TVAL = (ZBOUNDS(1) - Z(NP)) / W(NP); "distance to left plate boundary"
+      IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
+      ELSE [USTEP = TVAL; IRNEW = 2; RETURN;]
+   ] "END OF W(NP)>0 CASE"
+
+   ELSE [ "it must be a reflected particle-discard it"
+      IDISC = 1; RETURN;
+   ]
+] "end region 1 case"
+
+END; "end of subroutine howfar"
+
+%E  "tutorial_2_S1.mortran"
+"*********************************************************************"
+"                                                                     "
+"  SUBROUTINE HOWNEAR                                                 "
+"                                                                     "
+"  The following is a general specification of HOWNEAR                "
+"                                                                     "
+"  Given a particle at (x,y,z) in region irl, HOWNEAR answers the     "
+"  question, What is the distance to the closest boundary?            "
+"                                                                     "
+"  In general this can be a complex subroutine.                       "
+"  Note that this subroutine must be linked to $CALL-HOWNEAR(#)       "
+"                                                                     "
+"*********************************************************************"
+SUBROUTINE HOWNEAR(tperp, x, y, z, irl);
+$IMPLICIT-NONE;
+$REAL tperp, x, y, z;
+$INTEGER irl;
+
+;COMIN/GEOM/;
+"       COMMON GEOM contains ZBOUNDS"
+
+IF(irl = 4) [OUTPUT; ('Called HOWNEAR in region 3'); RETURN;]
+
+ELSEIF(irl = 3) [ "We are in the Ta plate - check the geometry"
+    tperp = min((z - ZBOUNDS(2)), (ZBOUNDS(3) - z));
+]
+
+ELSEIF(irl = 2) [ "We are in the Ta plate - check the geometry"
+    tperp = min((z - ZBOUNDS(1)), (ZBOUNDS(2) - z));
+]
+
+ELSEIF(irl = 1) [
+    tperp = ZBOUNDS(1) - z;
+]
+
+END; "end of subroutine hownear"
+"============================end of tutorial_2_S1.mortran================="
