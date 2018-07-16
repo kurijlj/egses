@@ -1,7 +1,7 @@
 %C80
 "#############################################################################"
 "                                                                             "
-"  EGSnrc tutorial_2 application                                              "
+"  EGSnrc tutorial_2_A1 application                                           "
 "  Copyright (C) 2015 National Research Council Canada                        "
 "                                                                             "
 "  This file is part of EGSnrc.                                               "
@@ -90,7 +90,7 @@ DO I = 1,24 [MEDIA(I,1) = MEDARR(I);] "this is to avoid a data statement for"
 
 /MED(1),MED(3)/ = 0; MED(2) = 1;"vacuum in regions 1 and 3, TA in region 2"
 
-%E  "tutorial_2.mortran"
+%E  "tutorial_2_A1.mortran"
 ECUT(2) = 0.7;"   terminate electron histories at 1.5 MeV in the plate"
 PCUT(2) = 0.1;"   terminate   photon histories at 0.1 MeV in the plate"
 "                 only needed for region 2 since no transport elsewhere"
@@ -101,7 +101,7 @@ PCUT(2) = 0.1;"   terminate   photon histories at 0.1 MeV in the plate"
 "STEP 3   HATCH-CALL                                                  "
 "---------------------------------------------------------------------"
 
-;OUTPUT;('\f  Start tutorial_2'//' CALL HATCH to get cross-section data'/);
+;OUTPUT;('\f  Start tutorial_2_A1'//' CALL HATCH to get cross-section data'/);
 CALL HATCH;"    pick up cross section data for TA"
 "               data file must be assigned to unit 12"
 
@@ -163,14 +163,14 @@ T50,F10.3,'%'///);
 "-----------------------------------------------------------------"
 call egs_finish;
 
-STOP; END; "end of tutorial_2 main routine"
+STOP; END; "end of tutorial_2_A1 main routine"
 
-%E  "tutorial_2.mortran"
+%E  "tutorial_2_A1.mortran"
 "********************************************************************"
 "                                                                    "
 "  SUBROUTINE AUSGAB                                                 "
 "                                                                    "
-"  In this AUSGAB routine for tutorial_2, we score the energy        "
+"  In this AUSGAB routine for tutorial_2_A1, we score the energy     "
 "  deposited in the various regions. This amounts to the total       "
 "  energy reflected,deposited and transmitted by the slab.           "
 "                                                                    "
@@ -198,12 +198,12 @@ IF(IARG <= 4) [
 ]
 RETURN; END; "end of ausgab"
 
-%E  "tutorial_2.mortran"
+%E  "tutorial_2_A1.mortran"
 "*********************************************************************"
 "                                                                     "
 "  SUBROUTINE HOWFAR                                                  "
 "                                                                     "
-"  HOWFAR for use with tutorial_2 (same as with tutorial_1            "
+"  HOWFAR for use with tutorial_2_A1 (same as with tutorial_1         "
 "                                                                     "
 "*********************************************************************"
 SUBROUTINE HOWFAR;
@@ -250,7 +250,7 @@ ELSEIF(IR(NP) = 1) [ "in region with source"
 
 END; "end of subroutine howfar"
 
-%E  "tutorial_2.mortran"
+%E  "tutorial_2_A1.mortran"
 "*********************************************************************"
 "                                                                     "
 "  SUBROUTINE HOWNEAR                                                 "
@@ -283,4 +283,4 @@ ELSEIF(irl = 1) [
 ]
 
 END; "end of subroutine hownear"
-"============================end of tutorial_2.mortran================="
+"============================end of tutorial_2_A1.mortran================="
