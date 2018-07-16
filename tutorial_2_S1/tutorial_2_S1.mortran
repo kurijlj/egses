@@ -43,7 +43,7 @@
 !INDENT M 4;    "indent each mortran nesting level by 4"
 !INDENT F 2;    "indent each fortran nesting level by 2"
 $IMPLICIT-NONE;
-$INTEGER I, IQIN, IRIN, NCASE;
+$INTEGER I, IQIN, IRIN, NCASE, NREGS;
 $REAL XIN, YIN, ZIN, EIN, WTIN, UIN, VIN, WIN, ANORM, TOTAL;
 "---------------------------------------------------------------------"
 "STEP 1:  USER-OVERRIDE-OF-EGSnrc-MACROS                              "
@@ -114,15 +114,18 @@ CALL HATCH;"    pick up cross section data for TA"
 "---------------------------------------------------------------------"
 "STEP 4  INITIALIZATION-FOR-HOWFAR and HOWNEAR                        "
 "---------------------------------------------------------------------"
-ZBOUNDS(1) = 0.0; "              plate is positioned at origin"
-ZBOUNDS(2) = ZBOUNDS(1) + 0.25; "first scoring region is 2.5 mm thick"
-ZBOUNDS(3) = ZBOUNDS(2) + 0.25; "second scoring region is 2.5 mm thick too"
-"                                plate is 5 mm thick"
+NREGS = 4; "                    must be equal to MXREG"
+"ZBOUNDS(1) = 0.0;" "             plate is positioned at origin"
+"ZBOUNDS(2) = ZBOUNDS(1) + 0.5;" "first scoring region is 5 mm thick"
+"ZBOUNDS(3) = ZBOUNDS(2) + 0.5;" "second scoring region is 5 mm thick too"
+"                               plate is 1 cm thick"
+ZBOUNDS(1) = 0.5;
+FOR I = 2,(NREGS - 1) [ZBOUNDS(I) = ZBOUNDS(I - 1) + 0.5;]
 
 "---------------------------------------------------------------------"
 "STEP 5  INITIALIZATION-FOR-AUSGAB                                    "
 "---------------------------------------------------------------------"
-DO I = 1,4 [ESCORE(I) = 0.0;] "zero scoring array before starting"
+DO I = 1,NREGS [ESCORE(I) = 0.0;] "zero scoring array before starting"
 
 "---------------------------------------------------------------------"
 "STEP 6   DETERMINATION-OF-INICIDENT-PARTICLE-PARAMETERS              "
@@ -150,15 +153,20 @@ DO I = 1,NCASE [
 "---------------------------------------------------------------------"
 ANORM = 100.0 / ((EIN + FLOAT(IQIN) * PRM) * FLOAT(NCASE));
  "normalize to % of total input energy"
-TOTAL = 0.0;  DO I = 1,4 [TOTAL = TOTAL + ESCORE(I);]
-OUTPUT  NCASE, (ESCORE(I) * ANORM, I=1,4), TOTAL * ANORM;
-(//' For',I8,' incident particles'/
-' Fraction of energy reflected from plate=',T50,F10.3,'%'/
-' Fraction of energy deposited in first region=',T50,F10.3,'%'/
-' Fraction of energy deposited in second region=',T50,F10.3,'%'/
-' Fraction of energy transmitted through plate=',T50,F10.3,'%'/
-T50,11('-')/' Total fraction of energy accounted for=',
-T50,F10.3,'%'///);
+TOTAL = 0.0;  DO I = 1,NREGS [TOTAL = TOTAL + ESCORE(I);]
+"OUTPUT  NCASE, (ESCORE(I) * ANORM, I=1,4), TOTAL * ANORM;"
+"(//' For',I8,' incident particles'/"
+"' Fraction of energy reflected from plate=',T50,F10.3,'%'/"
+"' Fraction of energy deposited in first region=',T50,F10.3,'%'/"
+"' Fraction of energy deposited in second region=',T50,F10.3,'%'/"
+"' Fraction of energy transmitted through plate=',T50,F10.3,'%'/"
+"T50,11('-')/' Total fraction of energy accounted for=',"
+"T50,F10.3,'%'///);"
+OUTPUT NCASE; (//' Energy deposited per region for', I8, ' incident particles'/
+'Region', T50, 'EDEP (%)'/);
+FOR I = 1,NREGS [OUTPUT I, ESCORE(I) * ANORM; (I8, T50, F10.3, /);]
+OUTPUT TOTAL * ANORM;
+(' Total fraction of energy accounted for:', F10.3, ' %'///);
 
 "-----------------------------------------------------------------"
 "STEP 9   finish run                                              "
