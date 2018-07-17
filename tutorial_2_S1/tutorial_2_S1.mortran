@@ -43,23 +43,24 @@
 !INDENT M 4;    "indent each mortran nesting level by 4"
 !INDENT F 2;    "indent each fortran nesting level by 2"
 $IMPLICIT-NONE;
-$INTEGER I, IQIN, IRIN, NCASE, NREGS;
+$INTEGER I, IQIN, IRIN, NCASE;
 $REAL XIN, YIN, ZIN, EIN, WTIN, UIN, VIN, WIN, ANORM, TOTAL;
 "---------------------------------------------------------------------"
 "STEP 1:  USER-OVERRIDE-OF-EGSnrc-MACROS                              "
 "---------------------------------------------------------------------"
-REPLACE {$MXMED} WITH {1}    "only 1 medium in the problem(default 10)"
-REPLACE {$MXREG} WITH {4}    "only 4 geometric regions (default 2000)"
-REPLACE {$MXSTACK} WITH {15} "less than 15 particles on stack at once"
+REPLACE {$MXMED} WITH {1}     "number of different mediums used"
+REPLACE {$MXREG} WITH {11}    "number of scoring regions"
+REPLACE {$MXSTACK} WITH {15}  "less than 15 particles on stack at once"
+REPLACE {$REGTHCK} WITH {0.5} "regions thickness"
 
 "DEFINE A COMMON TO PASS INFORMATION TO THE GEOMETRY ROUTINE HOWFAR"
-REPLACE {;COMIN/GEOM/;} WITH {;COMMON/GEOM/ZBOUNDS(3); $REAL ZBOUNDS;}
+REPLACE {;COMIN/GEOM/;} WITH {;COMMON/GEOM/ZBOUNDS($MXREG - 1); $REAL ZBOUNDS;}
 REPLACE {$CALL-HOWNEAR(#);} WITH {
    ;CALL HOWNEAR({P1}, X(NP), Y(NP), Z(NP), IRL);
 }
 
 "Define a COMMON for scoring in AUSGAB"
-REPLACE {;COMIN/SCORE/;} WITH {;COMMON/SCORE/ESCORE(4);REAL*8 ESCORE;}
+REPLACE {;COMIN/SCORE/;} WITH {;COMMON/SCORE/ESCORE($MXREG);REAL*8 ESCORE;}
 
 ;COMIN/BOUNDS,GEOM,MEDIA,MISC,SCORE,THRESH,USEFUL/;"NOTE ; BEFORE COMIN"
 "       The above expands into a series of COMMON statements"
@@ -76,65 +77,58 @@ REPLACE {;COMIN/SCORE/;} WITH {;COMMON/SCORE/ESCORE(4);REAL*8 ESCORE;}
 "STEP 2 PRE-HATCH-CALL-INITIALIZATION                                 "
 "---------------------------------------------------------------------"
 CHARACTER*4 MEDARR(24);
-DATA MEDARR /$S'TA', 22*' '/; "place medium name in an array"
-"                                              $S is a MORTRAN macro to"
-"                                              expand strings"
+DATA MEDARR /$S'H2O', 21*' '/; "Place medium name in an array."
+"                               $S is a MORTRAN macro to expand strings."
 
 " Initialize the EGSnrc system "
 call egs_init;
 
-"NMED and DUNIT default to 1, i.e. one medium and we work in cm"
+"NMED and DUNIT default to 1, i.e. one medium and we work in cm."
+
 DO I = 1,24 [MEDIA(I, 1) = MEDARR(I);]
 
-/MED(1), MED(4)/ = 0;
-/MED(2), MED(3)/ = 1;
+MED($MXREG) = 0; "Last region must be vacuum."
+DO I = 1,$MXREG-1 [
+   MED(I) = 1; "   Assign H2O as material."
+   ECUT(I) = 0.7; "Terminate electron histories at 0.7 MeV in the material."
+   PCUT(I) = 0.1; "Terminate photon histories at 0.1 MeV in the material."
+]
 
 %E  "tutorial_2_S1.mortran"
-ECUT(2) = 0.7;"   terminate electron histories at 1.5 MeV in the plate"
-PCUT(2) = 0.1;"   terminate   photon histories at 0.1 MeV in the plate"
-"                 only needed for region 2 since no transport elsewhere"
-"                 ECUT is total energy = 0.989   MeV kinetic energy"
-
-%E
 "---------------------------------------------------------------------"
 "STEP 3   HATCH-CALL                                                  "
 "---------------------------------------------------------------------"
 
-;OUTPUT;('\f  Start tutorial_2_S1'//' CALL HATCH to get cross-section data'/);
-CALL HATCH;"    pick up cross section data for TA"
-"               data file must be assigned to unit 12"
+;OUTPUT;(/' Start tutorial_2_S1'//' CALL HATCH to get cross-section data'/);
+CALL HATCH;" Pick up cross section data for H2O."
+"            Data file must be assigned to unit 12."
 
 ;OUTPUT AE(1)-PRM, AP(1);
 (/' knock-on electrons can be created and any electron followed down to'
   /T40,F8.3,' MeV kinetic energy'/
 ' brem photons can be created and any photon followed down to      ',
   /T40,F8.3,' MeV ');
-"Compton events can create electrons and photons below these cutoffs"
+"Compton events can create electrons and photons below these cutoffs."
 
 "---------------------------------------------------------------------"
 "STEP 4  INITIALIZATION-FOR-HOWFAR and HOWNEAR                        "
 "---------------------------------------------------------------------"
-NREGS = 4; "                    must be equal to MXREG"
-"ZBOUNDS(1) = 0.0;" "             plate is positioned at origin"
-"ZBOUNDS(2) = ZBOUNDS(1) + 0.5;" "first scoring region is 5 mm thick"
-"ZBOUNDS(3) = ZBOUNDS(2) + 0.5;" "second scoring region is 5 mm thick too"
-"                               plate is 1 cm thick"
-ZBOUNDS(1) = 0.5;
-FOR I = 2,(NREGS - 1) [ZBOUNDS(I) = ZBOUNDS(I - 1) + 0.5;]
+ZBOUNDS(1) = $REGTHCK;
+DO I = 2,$MXREG-1 [ZBOUNDS(I) = ZBOUNDS(I - 1) + $REGTHCK;]
 
 "---------------------------------------------------------------------"
 "STEP 5  INITIALIZATION-FOR-AUSGAB                                    "
 "---------------------------------------------------------------------"
-DO I = 1,NREGS [ESCORE(I) = 0.0;] "zero scoring array before starting"
+DO I = 1,4 [ESCORE(I) = 0.0;] "Zero out scoring array before starting."
 
 "---------------------------------------------------------------------"
 "STEP 6   DETERMINATION-OF-INICIDENT-PARTICLE-PARAMETERS              "
 "---------------------------------------------------------------------"
 "Define initial variables for 20 MeV beam of electrons incident"
-"perpendicular to the slab"
+"perpendicular to the surface of material."
 
 IQIN = -1; "                 incident charge - electrons"
-EIN = 20 + PRM; "            20 MeV kinetic energy"
+EIN = 10 + PRM; "            20 MeV kinetic energy"
 /XIN,YIN,ZIN/ = 0.0; "       incident at origin"
 /UIN,VIN/ = 0.0; WIN = 1.0;" moving along Z axis"
 IRIN = 1; "                  starts in region 2, could be 1"
@@ -151,22 +145,19 @@ DO I = 1,NCASE [
 "---------------------------------------------------------------------"
 "STEP 8   OUTPUT-OF-RESULTS                                           "
 "---------------------------------------------------------------------"
+
+"Normalize to % of total input energy"
 ANORM = 100.0 / ((EIN + FLOAT(IQIN) * PRM) * FLOAT(NCASE));
- "normalize to % of total input energy"
-TOTAL = 0.0;  DO I = 1,NREGS [TOTAL = TOTAL + ESCORE(I);]
-"OUTPUT  NCASE, (ESCORE(I) * ANORM, I=1,4), TOTAL * ANORM;"
-"(//' For',I8,' incident particles'/"
-"' Fraction of energy reflected from plate=',T50,F10.3,'%'/"
-"' Fraction of energy deposited in first region=',T50,F10.3,'%'/"
-"' Fraction of energy deposited in second region=',T50,F10.3,'%'/"
-"' Fraction of energy transmitted through plate=',T50,F10.3,'%'/"
-"T50,11('-')/' Total fraction of energy accounted for=',"
-"T50,F10.3,'%'///);"
-OUTPUT NCASE; (//' Energy deposited per region for', I8, ' incident particles'/
-'Region', T50, 'EDEP (%)'/);
-FOR I = 1,NREGS [OUTPUT I, ESCORE(I) * ANORM; (I8, T50, F10.3, /);]
+TOTAL = 0.0;  DO I = 1,$MXREG [TOTAL = TOTAL + ESCORE(I);]
+
+OUTPUT NCASE; (//' Energy deposited per region for', I6, ' incident particles'/
+' ', 56('-') / ' Region', T25, 'EDEP (Gy)', T50, 'EDEP (%)' / ' ', 56('-'));
+DO I = 1,$MXREG [
+   OUTPUT I, ESCORE(I), ESCORE(I) * ANORM;
+   (I7, T25, F9.3, T50, F8.3);
+]
 OUTPUT TOTAL * ANORM;
-(' Total fraction of energy accounted for:', F10.3, ' %'///);
+(' ', 56('-') / ' Total fraction of energy accounted for:', F8.3, ' %'///);
 
 "-----------------------------------------------------------------"
 "STEP 9   finish run                                              "
@@ -224,57 +215,44 @@ COMIN/STACK,EPCONT,GEOM/;
 "       COMMON EPCONT contains IRNEW, USTEP and IDISC"
 "       COMMON GEOM contains ZBOUNDS"
 
-IF(IR(NP) = 4) [
-   IDISC = 1; RETURN; "terminate this history: it is past the plate"
+IF(IR(NP) = $MXREG) [ "We discard particles in the last region."
+   IDISC = 1; RETURN;
 ]
 
-ELSEIF(IR(NP) = 3) [ "We are in the Ta plate - check the geometry"
+ELSEIF(1 < IR(NP) & IR(NP) < $MXREG) [
 
    IF(W(NP) > 0.0) [
       "going forward - consider first since  most frequent"
-      TVAL = (ZBOUNDS(3) - Z(NP)) / W(NP); "distance to right plate boundary"
+      TVAL = (ZBOUNDS(IR(NP)) - Z(NP)) / W(NP); "distance to right plate"
+      "                                          boundary"
       IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
-      ELSE [USTEP = TVAL; IRNEW = 4; RETURN;]
+      ELSE [USTEP = TVAL; IRNEW = IR(NP) + 1; RETURN;]
    ] "END OF W(NP)>0 CASE"
 
    ELSEIF(W(NP) < 0.0) [ "going back towards origin"
-      TVAL = -(Z(NP) - ZBOUNDS(2)) / W(NP); "distance to left plate boundary"
+      TVAL = -(Z(NP) - ZBOUNDS(IR(NP) - 1)) / W(NP); "distance to left plate"
+      "                                               boundary"
       IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
-      ELSE [USTEP = TVAL; IRNEW = 2; RETURN;]
-   ] "END W(NP)<0 CASE"
-
-   ELSEIF(W(NP) = 0.0) [ "cannot hit boundary" RETURN;]
-] "end of region 2 case"
-
-ELSEIF(IR(NP) = 2) [ "We are in the Ta plate - check the geometry"
-
-   IF(W(NP) > 0.0) [
-      "going forward - consider first since  most frequent"
-      TVAL = (ZBOUNDS(2) - Z(NP)) / W(NP); "distance to right plate boundary"
-      IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
-      ELSE [USTEP = TVAL; IRNEW = 3; RETURN;]
-   ] "END OF W(NP)>0 CASE"
-
-   ELSEIF(W(NP) < 0.0) [ "going back towards origin"
-      TVAL = -(Z(NP) - ZBOUNDS(1)) / W(NP); "distance to left plate boundary"
-      IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
-      ELSE [USTEP = TVAL; IRNEW = 1; RETURN;]
+      ELSE [USTEP = TVAL; IRNEW = IR(NP) - 1; RETURN;]
    ] "END W(NP)<0 CASE"
 
    ELSEIF(W(NP) = 0.0) [ "cannot hit boundary" RETURN;]
 ] "end of region 2 case"
 
 ELSEIF(IR(NP) = 1) [ "in region with source"
-   IF(W(NP) >  0.0)[
-      "going forward"
-      TVAL = (ZBOUNDS(1) - Z(NP)) / W(NP); "distance to left plate boundary"
+   IF(W(NP) >  0.0)[ "going forward"
+      TVAL = (ZBOUNDS(IR(NP)) - Z(NP)) / W(NP); "distance to right boundary"
       IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
       ELSE [USTEP = TVAL; IRNEW = 2; RETURN;]
    ] "END OF W(NP)>0 CASE"
 
-   ELSE [ "it must be a reflected particle-discard it"
-      IDISC = 1; RETURN;
-   ]
+   ELSEIF(W(NP) < 0.0) [ "going back towards origin"
+      TVAL = - (Z(NP) / W(NP)); "distance to left plate boundary"
+      IF(TVAL > USTEP) [RETURN; "can take currently requested step"]
+      ELSE [IDISC = 1; RETURN; "particle is going pass the origin"]
+   ] "END W(NP)<0 CASE"
+
+   ELSEIF(W(NP) = 0.0) [ "cannot hit boundary" RETURN;]
 ] "end region 1 case"
 
 END; "end of subroutine howfar"
@@ -298,21 +276,18 @@ $IMPLICIT-NONE;
 $REAL tperp, x, y, z;
 $INTEGER irl;
 
-;COMIN/GEOM/;
-"       COMMON GEOM contains ZBOUNDS"
+;COMIN/GEOM/; "contains ZBOUNDS"
 
-IF(irl = 4) [OUTPUT; ('Called HOWNEAR in region 3'); RETURN;]
-
-ELSEIF(irl = 3) [ "We are in the Ta plate - check the geometry"
-    tperp = min((z - ZBOUNDS(2)), (ZBOUNDS(3) - z));
+IF(irl = $MXREG) [
+   tperp = z - ZBOUNDS(irl - 1);
 ]
 
-ELSEIF(irl = 2) [ "We are in the Ta plate - check the geometry"
-    tperp = min((z - ZBOUNDS(1)), (ZBOUNDS(2) - z));
+ELSEIF(1 < irl & irl < $MXREG) [
+    tperp = min((z - ZBOUNDS(irl - 1)), (ZBOUNDS(irl) - z));
 ]
 
 ELSEIF(irl = 1) [
-    tperp = ZBOUNDS(1) - z;
+    tperp = ZBOUNDS(irl) - z;
 ]
 
 END; "end of subroutine hownear"
