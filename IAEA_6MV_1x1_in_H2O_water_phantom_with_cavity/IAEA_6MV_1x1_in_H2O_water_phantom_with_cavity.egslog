@@ -1,0 +1,43 @@
+
+**************** finished parallel execution ******************
+ number of parallel jobs requested:                     2
+ max. number of jobs executing simultaneously:         32
+ elapsed time since first job started:    7738.2 s (   2.1495 h)
+***************************************************************
+
+
+
+ Summing the following .pardose files
+ ------------------------------------
+
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w2.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w3.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w4.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w5.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w6.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w7.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w8.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w9.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w10.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w11.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w12.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w13.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w14.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_w15.pardose
+ Sets of depths per page =  0
+ Set to  =  1
+
+ The dose values in      19542 voxels had error > 50% and have been
+ zeroed in the .3ddose file.
+
+
+ Total CPU time for this run =  1845.3 s =   0.513 hr
+
+ CPU time is for last run to finish only.
+
+ END OF RUN          Oct 26 2018 13:22:53
+
+
+
+End of run                                             Fri Oct 26 13:22:53 2018
+================================================================================
