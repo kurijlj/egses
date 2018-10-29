@@ -1,0 +1,45 @@
+
+**************** finished parallel execution ******************
+ number of parallel jobs requested:                    16
+ max. number of jobs executing simultaneously:         16
+ elapsed time since first job started:   12915.0 s (   3.5875 h)
+***************************************************************
+
+
+
+ Summing the following .pardose files
+ ------------------------------------
+
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w1.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w2.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w3.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w4.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w5.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w6.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w7.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w8.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w9.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w10.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w11.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w12.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w13.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w14.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w15.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_with_cavity_in_0.5T_w16.pardose
+ Sets of depths per page =  0
+ Set to  =  1
+
+ The dose values in      46069 voxels had error > 50% and have been
+ zeroed in the .3ddose file.
+
+
+ Total CPU time for this run = 12756.0 s =   3.543 hr
+
+ CPU time is for last run to finish only.
+
+ END OF RUN          Oct 29 2018 12:37:07
+
+
+
+End of run                                             Mon Oct 29 12:37:07 2018
+================================================================================
