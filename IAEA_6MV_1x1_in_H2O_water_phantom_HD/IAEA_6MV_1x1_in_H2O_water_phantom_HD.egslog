@@ -1,0 +1,45 @@
+
+**************** finished parallel execution ******************
+ number of parallel jobs requested:                    16
+ max. number of jobs executing simultaneously:         16
+ elapsed time since first job started:    4530.1 s (   1.2584 h)
+***************************************************************
+
+
+
+ Summing the following .pardose files
+ ------------------------------------
+
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w1.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w2.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w3.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w4.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w5.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w6.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w7.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w8.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w9.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w10.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w11.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w12.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w13.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w14.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w15.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_w16.pardose
+ Sets of depths per page =  0
+ Set to  =  1
+
+ The dose values in       4401 voxels had error > 50% and have been
+ zeroed in the .3ddose file.
+
+
+ Total CPU time for this run =  4099.9 s =   1.139 hr
+
+ CPU time is for last run to finish only.
+
+ END OF RUN          Nov 22 2018 10:46:49
+
+
+
+End of run                                             Thu Nov 22 10:46:49 2018
+================================================================================

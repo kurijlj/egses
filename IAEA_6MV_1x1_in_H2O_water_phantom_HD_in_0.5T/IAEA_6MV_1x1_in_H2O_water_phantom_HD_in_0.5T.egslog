@@ -1,0 +1,45 @@
+
+**************** finished parallel execution ******************
+ number of parallel jobs requested:                    16
+ max. number of jobs executing simultaneously:         16
+ elapsed time since first job started:   16003.0 s (   4.4453 h)
+***************************************************************
+
+
+
+ Summing the following .pardose files
+ ------------------------------------
+
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w1.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w2.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w3.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w4.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w5.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w6.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w7.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w8.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w9.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w10.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w11.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w12.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w13.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w14.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w15.pardose
+/home/ljubomir/EGSnrc/egs_home/emf_dosxyznrc/IAEA_6MV_1x1_in_H2O_water_phantom_HD_in_0.5T_w16.pardose
+ Sets of depths per page =  0
+ Set to  =  1
+
+ The dose values in       8707 voxels had error > 50% and have been
+ zeroed in the .3ddose file.
+
+
+ Total CPU time for this run = 14751.9 s =   4.098 hr
+
+ CPU time is for last run to finish only.
+
+ END OF RUN          Nov 22 2018 18:55:56
+
+
+
+End of run                                             Thu Nov 22 18:55:56 2018
+================================================================================
