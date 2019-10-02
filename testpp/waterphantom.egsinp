@@ -73,7 +73,7 @@
         direction = 0 0 1
         :start spectrum:
             type = monoenergetic
-            energy = 20.0 # in MeV
+            energy = 10.0 # in MeV
         :stop spectrum:
         :start shape:
             type = point
@@ -90,6 +90,7 @@
 :start view control:
     # Here we are just assigning some colors for nice
     # display in the egs_view application
+    set color = air 0 220 255 10
     set color = water 0 220 255 200
 :stop view control:
 
@@ -120,7 +121,7 @@
     Electron impact ionization= Off
     Photon cross sections= xcom
     Photon cross-sections output= Off
-    Magnetic Field= 0.0, 0.5, 0.0
+    Magnetic Field= 0.0, 1.5, 0.0
     EM ESTEPE= 0.02 
 
 :stop MC transport parameter:
