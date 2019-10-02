@@ -1,0 +1,8 @@
+  Warning: material data file not supplied.
+  Thus, you must define media explicitly in input file
+  or via density correction file.
+  
+  For medium: tantalum                
+  Density correction file specified in .egsinp file.
+  Composition specified in density correction file
+  Rho specified in density correction file
