@@ -42,14 +42,14 @@ include $(SPEC_DIR)egspp_$(my_machine).conf
 # Specify the name of the user code.
 # The name of the executable is determined from this variable.
 #
-USER_CODE = tutor7pp
+USER_CODE = testpp
 
 # The following can be used to add user macros and mortran subroutines.
 # The file(s) specified here are added after egsnrc.macros, machine.macros
 # and egs_c_interface2.macros but before any files that have
 # executable code.
 #
-EGSPP_USER_MACROS = tutor7pp.macros
+EGSPP_USER_MACROS = testpp.macros
 
 # Specify from which base class this application is being derived.
 # This has the effect of automatically compiling the base application

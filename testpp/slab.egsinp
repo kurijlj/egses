@@ -1,75 +1,104 @@
 
 ###############################################################################
 #
-#  EGSnrc egs++ tutor7pp application sample input file
-#  Copyright (C) 2015 National Research Council Canada
-#
-#  This file is part of EGSnrc.
-#
-#  EGSnrc is free software: you can redistribute it and/or modify it under
-#  the terms of the GNU Affero General Public License as published by the
-#  Free Software Foundation, either version 3 of the License, or (at your
-#  option) any later version.
-#
-#  EGSnrc is distributed in the hope that it will be useful, but WITHOUT ANY
-#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-#  FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for
-#  more details.
-#
-#  You should have received a copy of the GNU Affero General Public License
-#  along with EGSnrc. If not, see <http://www.gnu.org/licenses/>.
-#
-###############################################################################
-#
-#  Author:          Iwan Kawrakow, 2005
-#
-#  Contributors:
-#
-###############################################################################
-#
-#  An example input file for tutor7pp.
+#  Simple slab simulation
 #
 ###############################################################################
 
+
+######################################## Run control
+:start run control:
+    ncase = 1000
+    #statistical accuracy sought = 1  # this input is optional
+    #max cpu hours allowed = 15       # this input is optional
+    #calculation = combine   # could als be first or restart or analyze
+                             # the input is optional and if missing, a
+                             # fresh calculation will be done
+:stop run control:
 
 ######################################## Define the geometry:
 #                                        a 1mm plate of tantalum
 #
 :start geometry definition:
     :start geometry:
-        library = egs_planes
-        type = EGS_Zplanes
-        positions = 0 0.1
         name = slab
+        library = egs_ndgeometry
+        type = EGS_XYZGeometry
+        x-planes = -5, 5 # in cm
+        y-planes = -5, 5 # in cm
+        z-planes = -10, 0, 0.1, 10 # in cm
         :start media input:
-            media = TA
+            media = vacuum tantalum # Indexed as 0 1
+            set medium = 1 1 # Set region 1 to medium 1 (tantalum)
+                             # Other regions default to medium 0 (vaccum)
         :stop media input:
     :stop geometry:
+
+    # Use the geometry with this name for the simulation
     simulation geometry = slab
 :stop geometry definition:
+
+######################################## Define the media:
+#
+:start media definition: # Only 1 media defiition block allowed
+
+    # Defining media in the input file like this is called "pegsless" mode
+
+    ### Cutoff energies, in MeV
+    ae = 0.521 # lowest energy for electrons (kinetic + 0.511)
+    ap = 0.010 # lowest energy for photons (kinetic)
+    ue = 50.511 # maximum energy for electrons (kinetic + 0.511)
+    up = 50.000 # lowest energy for photons (kinetic)
+
+    ### Tanatalum
+    :start tantalum: # this name can be anything
+        density correction file = tantalum # name of the file (no ext.)
+    :stop tantalum:
+
+    ### Lead
+    :start lead:
+        density correction file = lead
+    :stop lead:
+
+    ### Water
+    :start water:
+        density correction file = water
+    :stop water:
+
+:stop media definition:
 
 ######################################## Define the source:
 #                                        a 20 MeV pencil beam of electrons
 #
 :start source definition:
     :start source:
-        library = egs_parallel_beam
         name = the_source
-        :start shape:
-            type = point
-            position = 0 0 1e-7
-        :stop shape:
-        direction = 0 0 1
+        library = egs_parallel_beam
         charge = -1
+        direction = 0 0 1
         :start spectrum:
             type = monoenergetic
-            energy = 20.0
+            energy = 20.0 # in MeV
         :stop spectrum:
+        :start shape:
+            type = point
+            position = 0 0 -10
+        :stop shape:
     :stop source:
 
     simulation source = the_source
 
 :stop source definition:
+
+######################################### Viewer control
+#
+:start view control:
+    # Here we are just assigning some colors for nice
+    # display in the egs_view application
+    set color = lead 120 120 200 200
+    set color = tantalum 120 255 120 255
+    set color = water 0 220 255 200
+:stop view control:
 
 ######################################### Transport parameters
 #                                         you can add any other option
@@ -77,35 +106,19 @@
 #
 :start MC transport parameter:
 
-    Global ECUT = 1.5
-    Global PCUT = 0.1
+    #Global ECUT = 1.5
+    #Global PCUT = 0.1
 
 :stop MC transport parameter:
 
-
-######################################## Run control
-:start run control:
-    ncase = 1000000
-    statistical accuracy sought = 1  # this input is optional
-    max cpu hours allowed = 15       # this input is optional
-    #calculation = combine   # could als be first or restart or analyze
-                             # the input is optional and if missing, a
-                             # fresh calculation will be done
-:stop run control:
-
-######################################### Scoring options.
-#        The entire section that follows can be missing. If missing, just
-#        energy deposition fractions will be calculated. If present,
-#        the user can specify in which regions to score a pulse height
-#        distribution.
+######################################### Ausgab objects
 #
-:start scoring options:
-    pulse height regions = 1  # a list of regions to score pulse height
-                              # distributions
-    pulse height bins = 100   # how many bins to use for each pulse height
-                              # distribution. This must be either a single
-                              # input, in which case all pulse height
-                              # distributions will use this number of bins,
-                              # or the same number of inputs as pulse height
-                              # regions.
-:stop scoring options:
+:start ausgab object definition: # Only 1 ausgab definition block allowed
+
+    ### Particle tracks
+    :start ausgab object:
+        name = tracks
+        library = egs_track_scoring
+    :stop ausgab object:
+
+:stop ausgab object definition:
