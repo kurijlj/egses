@@ -1,4 +1,3 @@
-
 ###############################################################################
 #
 #  Simple slab simulation
@@ -16,10 +15,12 @@
                              # fresh calculation will be done
 :stop run control:
 
+
 ######################################## Define the geometry:
-#                                        a 1mm plate of tantalum
 #
 :start geometry definition:
+
+    ### Define plate of tantalum
     :start geometry:
         name = slab
         library = egs_ndgeometry
@@ -36,7 +37,9 @@
 
     # Use the geometry with this name for the simulation
     simulation geometry = slab
+
 :stop geometry definition:
+
 
 ######################################## Define the media:
 #
@@ -46,9 +49,9 @@
 
     ### Cutoff energies, in MeV
     ae = 0.521 # lowest energy for electrons (kinetic + 0.511)
-    ap = 0.010 # lowest energy for photons (kinetic)
+    ap = 0.01 # lowest energy for photons (kinetic)
     ue = 50.511 # maximum energy for electrons (kinetic + 0.511)
-    up = 50.000 # lowest energy for photons (kinetic)
+    up = 50.0 # lowest energy for photons (kinetic)
 
     ### Tanatalum
     :start tantalum: # this name can be anything
@@ -66,6 +69,7 @@
     :stop water:
 
 :stop media definition:
+
 
 ######################################## Define the source:
 #                                        a 20 MeV pencil beam of electrons
@@ -90,6 +94,7 @@
 
 :stop source definition:
 
+
 ######################################### Viewer control
 #
 :start view control:
@@ -99,6 +104,7 @@
     set color = tantalum 120 255 120 255
     set color = water 0 220 255 200
 :stop view control:
+
 
 ######################################### Transport parameters
 #                                         you can add any other option
@@ -111,6 +117,7 @@
 
 :stop MC transport parameter:
 
+
 ######################################### Ausgab objects
 #
 :start ausgab object definition: # Only 1 ausgab definition block allowed
@@ -122,3 +129,4 @@
     :stop ausgab object:
 
 :stop ausgab object definition:
+

@@ -52,13 +52,13 @@
 
     ### Air
     :start air: # this name can be anything
-        density correction file = air
+        density correction file = air_dry_nearsealevel
     :stop air:
 
     ### Water
-    :start lead:
+    :start water:
         density correction file = water_liquid
-    :stop lead:
+    :stop water:
 
 :stop media definition:
 
