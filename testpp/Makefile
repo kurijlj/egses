@@ -49,7 +49,7 @@ USER_CODE = testpp
 # and egs_c_interface2.macros but before any files that have
 # executable code.
 #
-EGSPP_USER_MACROS = testpp.macros
+EGSPP_USER_MACROS = testpp.macros $(EGS_SOURCEDIR)emf_macros.mortran
 
 # Specify from which base class this application is being derived.
 # This has the effect of automatically compiling the base application
