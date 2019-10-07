@@ -24,9 +24,9 @@
         name = free_space
         library = egs_ndgeometry
         type = EGS_XYZGeometry
-        x-planes = -20, 20 # in cm
-        y-planes = -20, 20 # in cm
-        z-planes = -20, 20 # in cm
+        x-planes = -14, 14 # in cm
+        y-planes = -14, 14 # in cm
+        z-planes = 0, 28 # in cm
         :start media input:
             media = vacuum air
         :stop media input:
@@ -51,8 +51,6 @@
     ### Air
     :start air: # this name can be anything
         density correction file = air_dry_nearsealevel
-        Magnetic Field= 0.0, 1.5, 0.0
-        EM ESTEPE= 0.02 
     :stop air:
 
 :stop media definition:
@@ -72,7 +70,7 @@
         :stop spectrum:
         :start shape:
             type = point
-            position = 0 0 -20
+            position = 0 0 0
         :stop shape:
     :stop source:
 
@@ -86,7 +84,6 @@
     # Here we are just assigning some colors for nice
     # display in the egs_view application
     set color = air 0 220 255 10
-    set color = water 0 220 255 200
 :stop view control:
 
 ######################################### Transport parameters
@@ -116,7 +113,7 @@
     Electron impact ionization= Off
     Photon cross sections= xcom
     Photon cross-sections output= Off
-    Magnetic Field= 0.0, 1.5, 0.0
+    Magnetic Field= 0.0, 0.5, 0.0
     EM ESTEPE= 0.02 
 
 :stop MC transport parameter:
