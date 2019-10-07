@@ -1,6 +1,6 @@
 In EGS_Application::initSimulation()
 ================================================================================
-EGSnrc version 4 for x86_64-unknown-linux-gnu          Wed Oct  2 15:47:48 2019
+EGSnrc version 4 for x86_64-unknown-linux-gnu          Mon Oct  7 13:56:20 2019
 ================================================================================
 configuration.................................................linux
 user code.....................................................testpp
@@ -131,8 +131,6 @@ Ximax                                             0.5
 Boundary crossing algorithm                       PRESTA-I
 Skin depth for BCA                                324.317
 Electron-step algorithm                           EGSnrc
-Magnetic Field                                    0 1.5 0 
-EM ESTEPE                                         0.02
 ==============================================
 
 
@@ -193,7 +191,7 @@ Particle Track Scoring (tracks)
 
 
 
-Starting simulation on Wed Oct  2 15:47:48 2019
+Starting simulation on Mon Oct  7 13:56:21 2019
 
     Fresh simulation of 1000 histories
 
@@ -204,21 +202,21 @@ Running 1000 histories
   Batch             CPU time        Result   Uncertainty(%)
 ==========================================================
       1                0.02              0         100.00
-      2                0.03              0         100.00
-      3                0.04              0         100.00
-      4                0.06              0         100.00
-      5                0.07              0         100.00
-      6                0.08              0         100.00
-      7                0.10              0         100.00
-      8                0.11              0         100.00
-      9                0.12              0         100.00
-     10                0.14              0         100.00
+      2                0.04              0         100.00
+      3                0.05              0         100.00
+      4                0.08              0         100.00
+      5                0.10              0         100.00
+      6                0.12              0         100.00
+      7                0.14              0         100.00
+      8                0.16              0         100.00
+      9                0.18              0         100.00
+     10                0.20              0         100.00
 
 
 Finished simulation
 
-Total cpu time for this run:            0.14 (sec.) 0.0000(hours)
-Histories per hour:                     2.57143e+07   
+Total cpu time for this run:            0.20 (sec.) 0.0001(hours)
+Histories per hour:                     1.8e+07       
 Number of random numbers used:          1457715       
 Number of electron CH steps:            58973         
 Number of all electron steps:           62005         
@@ -237,9 +235,9 @@ Finished simulation
 
   Elapsed time:                    0.7 s (  0.000 h)
   CPU time:                        0.7 s (  0.000 h)
-  Ratio:                          1.010
+  Ratio:                          1.009
 
 
-End of run                                             Wed Oct  2 15:47:48 2019
+End of run                                             Mon Oct  7 13:56:21 2019
 ================================================================================
 finishSimulation(testpp) 0

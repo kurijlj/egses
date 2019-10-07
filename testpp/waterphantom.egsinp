@@ -53,6 +53,8 @@
     ### Air
     :start air: # this name can be anything
         density correction file = air_dry_nearsealevel
+        Magnetic Field= 0.0, 1.5, 0.0
+        EM ESTEPE= 0.02 
     :stop air:
 
     ### Water
@@ -121,8 +123,8 @@
     Electron impact ionization= Off
     Photon cross sections= xcom
     Photon cross-sections output= Off
-    Magnetic Field= 0.0, 1.5, 0.0
-    EM ESTEPE= 0.02 
+    #Magnetic Field= 0.0, 1.5, 0.0
+    #EM ESTEPE= 0.02 
 
 :stop MC transport parameter:
 
