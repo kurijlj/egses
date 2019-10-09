@@ -3,11 +3,11 @@ EGS_BaseSource::EGS_BaseSource: input is:
 :START  source:
     name  =  multisource
     library  =  egs_source_collection
-    source names  =  source_1 source_5
-    weights  =  1.0 1.0
+    source names  =  source_1 source_5 source_7 source_8 source_9 source_10
+    weights  =  1.0 1.0 1.0 1.0 1.0 1.0
 :STOP  source:
 ================================================================================
-EGSnrc version 4 for x86_64-unknown-linux-gnu          Wed Oct  9 13:42:50 2019
+EGSnrc version 4 for x86_64-unknown-linux-gnu          Wed Oct  9 14:14:34 2019
 ================================================================================
 configuration.............................linux
 user code.................................testpp
@@ -185,7 +185,7 @@ Particle Track Scoring (tracks)
 
 
 
-Starting simulation on Wed Oct  9 13:42:50 2019
+Starting simulation on Wed Oct  9 14:14:35 2019
 
     Fresh simulation of 1000 histories
 
@@ -195,22 +195,22 @@ Running 1000 histories
 
   Batch             CPU time        Result   Uncertainty(%)
 ==========================================================
-      1                0.00              0         100.00
-      2                0.01              0         100.00
+      1                0.01              0         100.00
+      2                0.02              0         100.00
       3                0.02              0         100.00
-      4                0.02              0         100.00
-      5                0.03              0         100.00
-      6                0.03              0         100.00
-      7                0.04              0         100.00
-      8                0.05              0         100.00
-      9                0.05              0         100.00
-     10                0.06              0         100.00
+      4                0.03              0         100.00
+      5                0.04              0         100.00
+      6                0.05              0         100.00
+      7                0.06              0         100.00
+      8                0.07              0         100.00
+      9                0.08              0         100.00
+     10                0.10              0         100.00
 
 
 Finished simulation
 
-Total cpu time for this run:            0.06 (sec.) 0.0000(hours)
-Histories per hour:                     6e+07         
+Total cpu time for this run:            0.10 (sec.) 0.0000(hours)
+Histories per hour:                     3.6e+07       
 Number of random numbers used:          2000          
 Number of electron CH steps:            0             
 Number of all electron steps:           0             
@@ -227,11 +227,11 @@ Particle Track Scoring (tracks)
 ================================================================================
 Finished simulation
 
-  Elapsed time:                    0.4 s (  0.000 h)
-  CPU time:                        0.4 s (  0.000 h)
-  Ratio:                          1.015
+  Elapsed time:                    0.5 s (  0.000 h)
+  CPU time:                        0.5 s (  0.000 h)
+  Ratio:                          1.013
 
 
-End of run                                             Wed Oct  9 13:42:50 2019
+End of run                                             Wed Oct  9 14:14:35 2019
 ================================================================================
 finishSimulation(testpp) 0
