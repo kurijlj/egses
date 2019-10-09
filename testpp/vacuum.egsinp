@@ -70,7 +70,7 @@
         :stop spectrum:
         :start shape:
             type = point
-            position = 14 0 0
+            position = -14 0 0
         :stop shape:
     :stop source:
 
