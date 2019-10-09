@@ -24,9 +24,9 @@
         name = free_space
         library = egs_ndgeometry
         type = EGS_XYZGeometry
-        x-planes = -14, 14 # in cm
-        y-planes = -14, 14 # in cm
-        z-planes = 0, 28 # in cm
+        x-planes = -20, 20 # in cm
+        y-planes = -20, 20# in cm
+        z-planes = 0, 40 # in cm
         :start media input:
             media = vacuum air
         :stop media input:
@@ -70,7 +70,7 @@
         :stop spectrum:
         :start shape:
             type = point
-            position = 0 0 0
+            position = 14 0 0
         :stop shape:
     :stop source:
 
