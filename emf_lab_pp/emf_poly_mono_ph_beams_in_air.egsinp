@@ -8,7 +8,7 @@
 
 ######################################## Run control
 :start run control:
-    ncase = 4000
+    ncase = 10000
     #statistical accuracy sought = 1  # this input is optional
     #max cpu hours allowed = 15       # this input is optional
     #calculation = combine   # could als be first or restart or analyze
@@ -21,81 +21,19 @@
 #
 :start geometry definition:
     :start geometry:
-        name = source_cylinder
-        library = egs_cylinders
-        type = EGS_ZCylinders
-        radii = 0.2
-        :start media input:
-            media = cobalt
-        :stop media input:
-    :stop geometry:
-
-    :start geometry:
-        name = source_cylinder_tops
-        library = egs_planes
-        type = EGS_Zplanes
-        positions = -0.4 0.4
-    :stop geometry:
-
-    :start geometry:
-        name = cobalt_source_mesh
-        library = egs_cdgeometry
-        base geometry = source_cylinder_tops
-        set geometry = 0 source_cylinder
-    :stop geometry:
-
-    :start geometry:
-        name = source_mesh_position
-        library = egs_gtransformed
-        my geometry = cobalt_source_mesh
-        :start transformation:
-            translation = 0.0 0.0 -40.4
-            rotation = 0.0 0.0 0.0
-        :stop transformation:
-    :stop geometry:
-
-    :start geometry:
-        name = abs_phantom
-        library = egs_spheres
-        radii = 8.0
-        :start media input:
-            media = abs_plastic
-        :stop media input:
-    :stop geometry:
-
-    :start geometry:
-        name = air_cylinder
-        library = egs_cylinders
-        type = EGS_ZCylinders
-        radii = 50.0
+        name = free_space
+        library = egs_ndgeometry
+        type = EGS_XYZGeometry
+        x-planes = -20, 20 # in cm
+        y-planes = -20, 20# in cm
+        z-planes = 0, 40 # in cm
         :start media input:
             media = air
         :stop media input:
     :stop geometry:
 
-    :start geometry:
-        name = air_cylinder_tops
-        library = egs_planes
-        type = EGS_Zplanes
-        positions = -50.0 50.0
-    :stop geometry:
-
-    :start geometry:
-        name = air_volume
-        library = egs_cdgeometry
-        base geometry = air_cylinder_tops
-        set geometry = 0 air_cylinder
-    :stop geometry:
-
-    :start geometry:
-        name = emf_lab
-        library = egs_genvelope
-        base geometry = air_volume
-        inscribed geometries = abs_phantom source_mesh_position
-    :stop geometry:
-
     # Use the geometry with this name for the simulation
-    simulation geometry = emf_lab
+    simulation geometry = free_space
 :stop geometry definition:
 
 ######################################## Define the media:
@@ -107,57 +45,118 @@
     ### Cutoff energies, in MeV
     ae = 0.521 # lowest energy for electrons (kinetic + 0.511)
     ap = 0.010 # lowest energy for photons (kinetic)
-    ue = 5.511 # maximum energy for electrons (kinetic + 0.511)
-    up = 5.000 # maximum energy for photons (kinetic)
+    ue = 50.511 # maximum energy for electrons (kinetic + 0.511)
+    up = 50.000 # lowest energy for photons (kinetic)
 
     ### Air
     :start air: # this name can be anything
         density correction file = air_dry_nearsealevel
     :stop air:
 
-    ### Water
-    :start abs_plastic:
-        density correction file = polyacrylonitrile
-    :stop abs_plastic:
-
-    ### Cobalt
-    :start cobalt:
-        density correction file = cobalt
-    :stop cobalt:
-
 :stop media definition:
 
 ######################################## Define the source:
+#                                        a 20 MeV pencil beam of electrons
 #
 :start source definition:
     :start source:
-        name = cobalt_source
+        name = source_1
         library = egs_parallel_beam
         charge = 0
         direction = 0 0 1
-
         :start spectrum:
-            type = tabulated spectrum
-            spectrum file = co60.spectrum
+            type = monoenergetic
+            energy = 1.25 # in MeV
         :stop spectrum:
-
         :start shape:
-            library = egs_circle
-            radius = 0.2
+            type = point
+            position = -1.9 0 0
         :stop shape:
     :stop source:
 
     :start source:
-        name = source_position
-        library = egs_transformed_source
-        source name = cobalt_source
-        :start transformation:
-            translation = 0.0 0.0 -40.0
-            rotation = 0.0 0.0 0.0
-        :stop transformation:
+        name = source_5
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 6.0 # in MeV
+        :stop spectrum:
+        :start shape:
+            type = point
+            position = -7.3 0 0
+        :stop shape:
     :stop source:
 
-    simulation source = source_position
+    :start source:
+        name = source_7
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 10.0 # in MeV
+        :stop spectrum:
+        :start shape:
+            type = point
+            position = -10.0 0 0
+        :stop shape:
+    :stop source:
+
+    :start source:
+        name = source_8
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 12.0 # in MeV
+        :stop spectrum:
+        :start shape:
+            type = point
+            position = -11.3 0 0
+        :stop shape:
+    :stop source:
+
+    :start source:
+        name = source_9
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 14.0 # in MeV
+        :stop spectrum:
+        :start shape:
+            type = point
+            position = -12.7 0 0
+        :stop shape:
+    :stop source:
+
+    :start source:
+        name = source_10
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 15.0 # in MeV
+        :stop spectrum:
+        :start shape:
+            type = point
+            position = -14.0 0 0
+        :stop shape:
+    :stop source:
+
+    :start source:
+        name = multisource
+        library = egs_source_collection
+        source names = source_1 source_5 source_7 source_8 source_9 source_10
+        weights = 1.0 1.0 1.0 1.0 1.0 1.0
+    :stop source:
+
+    simulation source = multisource
 
 :stop source definition:
 
@@ -166,9 +165,7 @@
 :start view control:
     # Here we are just assigning some colors for nice
     # display in the egs_view application
-    set color = air 0 220 255 20
-    set color = abs_plastic 100 100 100 255
-    set color = cobalt 190 190 190 255
+    set color = air 0 220 255 10
 :stop view control:
 
 ######################################### Transport parameters
@@ -198,8 +195,8 @@
     Electron impact ionization= Off
     Photon cross sections= xcom
     Photon cross-sections output= Off
-    #Magnetic Field= 0.0, 0.5, 0.0
-    #EM ESTEPE= 0.02 
+    Magnetic Field= 0.0, 0.5, 0.0
+    EM ESTEPE= 0.02 
 
 :stop MC transport parameter:
 
@@ -211,14 +208,6 @@
     :start ausgab object:
         name = tracks
         library = egs_track_scoring
-    :stop ausgab object:
-
-    ### Dose scoring in the spherical abs_phantom
-    :start ausgab object:
-        name = phantom_dose
-        library = egs_dose_scoring
-        volume = 33.510
-        region dose = yes
     :stop ausgab object:
 
 :stop ausgab object definition:
