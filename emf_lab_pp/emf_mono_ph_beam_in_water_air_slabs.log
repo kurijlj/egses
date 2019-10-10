@@ -1,6 +1,6 @@
 In EGS_Application::initSimulation()
 ================================================================================
-EGSnrc version 4 for x86_64-unknown-linux-gnu          Thu Oct 10 16:04:58 2019
+EGSnrc version 4 for x86_64-unknown-linux-gnu          Thu Oct 10 16:18:57 2019
 ================================================================================
 configuration................................linux
 user code....................................emf_lab_pp
@@ -164,7 +164,7 @@ EM ESTEPE                                         0.02
 
 The simulation uses the following source:
 =========================================
- Collimated source from a shape of type point onto a shape of type rectangle with monoenergetic 6 MeV, photons
+ Collimated source from a shape of type point onto a shape of type rectangle with monoenergetic 1.25 MeV, photons
 
 
 Random number generator:
@@ -193,7 +193,7 @@ Particle Track Scoring (tracks)
 
 
 
-Starting simulation on Thu Oct 10 16:04:58 2019
+Starting simulation on Thu Oct 10 16:18:58 2019
 
     Fresh simulation of 10000 histories
 
@@ -203,30 +203,30 @@ Running 10000 histories
 
   Batch             CPU time        Result   Uncertainty(%)
 ==========================================================
-      1                0.33              0         100.00
-      2                0.58              0         100.00
-      3                0.87              0         100.00
-      4                1.16              0         100.00
-      5                1.47              0         100.00
-      6                1.76              0         100.00
-      7                2.00              0         100.00
-      8                2.30              0         100.00
-      9                2.59              0         100.00
-     10                2.89              0         100.00
+      1                0.18              0         100.00
+      2                0.28              0         100.00
+      3                0.42              0         100.00
+      4                0.59              0         100.00
+      5                0.75              0         100.00
+      6                0.94              0         100.00
+      7                1.10              0         100.00
+      8                1.21              0         100.00
+      9                1.34              0         100.00
+     10                1.49              0         100.00
 
 
 Finished simulation
 
-Total cpu time for this run:            2.89 (sec.) 0.0008(hours)
-Histories per hour:                     1.24567e+07   
-Number of random numbers used:          31072499      
-Number of electron CH steps:            1.88614e+06   
-Number of all electron steps:           1.88937e+06   
+Total cpu time for this run:            1.49 (sec.) 0.0004(hours)
+Histories per hour:                     2.41611e+07   
+Number of random numbers used:          16017983      
+Number of electron CH steps:            1.16869e+06   
+Number of all electron steps:           1.16942e+06   
 
 Particle Track Scoring (tracks)
 ======================================================
    Total events scored:     1024
-   Total tracks scored:     41343
+   Total tracks scored:     17330
    Still being scored:      0
    Output file name:        /home/ljubomir/EGSnrc/egs_home/emf_lab_pp/emf_mono_ph_beam_in_water_air_slabs.ptracks
 
@@ -235,11 +235,11 @@ Particle Track Scoring (tracks)
 ================================================================================
 Finished simulation
 
-  Elapsed time:                    3.4 s (  0.001 h)
-  CPU time:                        3.4 s (  0.001 h)
-  Ratio:                          1.009
+  Elapsed time:                    2.0 s (  0.001 h)
+  CPU time:                        2.0 s (  0.001 h)
+  Ratio:                          1.006
 
 
-End of run                                             Thu Oct 10 16:05:01 2019
+End of run                                             Thu Oct 10 16:18:59 2019
 ================================================================================
 finishSimulation(emf_lab_pp) 0

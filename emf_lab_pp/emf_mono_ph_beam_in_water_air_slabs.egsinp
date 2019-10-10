@@ -82,7 +82,7 @@
         distance = 6.0
         :start spectrum:
             type = monoenergetic
-            energy = 6.0 # in MeV
+            energy = 1.25 # in MeV
         :stop spectrum:
     :stop source:
 
