@@ -8,7 +8,7 @@
 
 ######################################## Run control
 :start run control:
-    ncase = 1000
+    ncase = 4000
     #statistical accuracy sought = 1  # this input is optional
     #max cpu hours allowed = 15       # this input is optional
     #calculation = combine   # could als be first or restart or analyze
@@ -21,17 +21,82 @@
 #
 :start geometry definition:
     :start geometry:
+        name = source_cylinder
+        library = egs_cylinders
+        type = EGS_ZCylinders
+        radii = 0.2
+        :start media input:
+            media = cobalt
+        :stop media input:
+    :stop geometry:
+
+    :start geometry:
+        name = source_cylinder_tops
+        library = egs_planes
+        type = EGS_Zplanes
+        positions = -0.4 0.4
+    :stop geometry:
+
+    :start geometry:
+        name = cobalt_source
+        library = egs_cdgeometry
+        base geometry = source_cylinder_tops
+        set geometry = 0 source_cylinder
+    :stop geometry:
+
+    :start geometry:
+        name = source_position
+        library = egs_gtransformed
+        my geometry = cobalt_source
+        :start transformation:
+            translation = 0.0 0.0 -40.4
+            rotation    = 0.0 0.0 0.0
+        :stop transformation:
+    :stop geometry:
+
+    :start geometry:
         name = abs_phantom
         library = egs_spheres
         radii = 8.0
         :start media input:
-            media = air abs_plastic
-            set medium = 0 1
+            media = abs_plastic
         :stop media input:
     :stop geometry:
 
+    :start geometry:
+        name = air_cylinder
+        library = egs_cylinders
+        type = EGS_ZCylinders
+        radii = 50.0
+        :start media input:
+            media = air
+        :stop media input:
+    :stop geometry:
+
+    :start geometry:
+        name = air_cylinder_tops
+        library = egs_planes
+        type = EGS_Zplanes
+        positions = -50.0 50.0
+    :stop geometry:
+
+    :start geometry:
+        name = air_volume
+        library = egs_cdgeometry
+        base geometry = air_cylinder_tops
+        set geometry = 0 air_cylinder
+    :stop geometry:
+
+    :start geometry:
+        name = emf_lab
+        library = egs_genvelope
+        base geometry = air_volume
+        inscribed geometries = abs_phantom source_position
+        #inscribed geometries = source_position
+    :stop geometry:
+
     # Use the geometry with this name for the simulation
-    simulation geometry = abs_phantom
+    simulation geometry = emf_lab
 :stop geometry definition:
 
 ######################################## Define the media:
@@ -56,24 +121,29 @@
         density correction file = polyacrylonitrile
     :stop abs_plastic:
 
+    ### Cobalt
+    :start cobalt:
+        density correction file = cobalt
+    :stop cobalt:
+
 :stop media definition:
 
 ######################################## Define the source:
-#                                        a 20 MeV pencil beam of electrons
 #
 :start source definition:
     :start source:
         name = the_source
         library = egs_parallel_beam
-        charge = -1
+        charge = 0
         direction = 0 0 1
         :start spectrum:
-            type = monoenergetic
-            energy = 20.0 # in MeV
+            type = tabulated spectrum
+            spectrum file = co60
         :stop spectrum:
         :start shape:
-            type = point
-            position = 0 0 0
+            library = egs_circle
+            radius = 0.2
+            position = 0.0 0.0 -40.0
         :stop shape:
     :stop source:
 
@@ -88,6 +158,7 @@
     # display in the egs_view application
     set color = air 0 220 255 20
     set color = abs_plastic 100 100 100 255
+    set color = cobalt 190 190 190 255
 :stop view control:
 
 ######################################### Transport parameters
@@ -130,6 +201,14 @@
     :start ausgab object:
         name = tracks
         library = egs_track_scoring
+    :stop ausgab object:
+
+    ### Dose scoring in the spherical abs_phantom
+    :start ausgab object:
+        name = phantom_dose
+        library = egs_dose_scoring
+        volume = 33.510
+        region dose = yes
     :stop ausgab object:
 
 :stop ausgab object definition:
