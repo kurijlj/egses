@@ -38,19 +38,19 @@
     :stop geometry:
 
     :start geometry:
-        name = cobalt_source
+        name = cobalt_source_mesh
         library = egs_cdgeometry
         base geometry = source_cylinder_tops
         set geometry = 0 source_cylinder
     :stop geometry:
 
     :start geometry:
-        name = source_position
+        name = source_mesh_position
         library = egs_gtransformed
-        my geometry = cobalt_source
+        my geometry = cobalt_source_mesh
         :start transformation:
             translation = 0.0 0.0 -40.4
-            rotation    = 0.0 0.0 0.0
+            rotation = 0.0 0.0 0.0
         :stop transformation:
     :stop geometry:
 
@@ -91,8 +91,7 @@
         name = emf_lab
         library = egs_genvelope
         base geometry = air_volume
-        inscribed geometries = abs_phantom source_position
-        #inscribed geometries = source_position
+        inscribed geometries = abs_phantom source_mesh_position
     :stop geometry:
 
     # Use the geometry with this name for the simulation
@@ -132,22 +131,33 @@
 #
 :start source definition:
     :start source:
-        name = the_source
+        name = cobalt_source
         library = egs_parallel_beam
         charge = 0
         direction = 0 0 1
+
         :start spectrum:
             type = tabulated spectrum
             spectrum file = co60.spectrum
         :stop spectrum:
+
         :start shape:
             library = egs_circle
             radius = 0.2
-            position = 0.0 0.0 -40.0
         :stop shape:
     :stop source:
 
-    simulation source = the_source
+    :start source:
+        name = source_position
+        library = egs_transformed_source
+        source name = cobalt_source
+        :start transformation:
+            translation = 0.0 0.0 -40.0
+            rotation = 0.0 0.0 0.0
+        :stop transformation:
+    :stop source:
+
+    simulation source = source_position
 
 :stop source definition:
 
