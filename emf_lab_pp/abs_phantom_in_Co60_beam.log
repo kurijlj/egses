@@ -1,0 +1,277 @@
+In EGS_Application::initSimulation()
+================================================================================
+EGSnrc version 4 for x86_64-unknown-linux-gnu          Thu Oct 10 12:42:06 2019
+================================================================================
+configuration...........................................linux
+user code...............................................emf_lab_pp
+pegs file...............................................
+using host..............................................raptor.ff.bg.ac.rs
+input file..............................................abs_phantom_in_Co60_beam
+output file(s)..........................................abs_phantom_in_Co60_beam
+================================================================================
+In initCrossSections(): spin effects = 1
+Property Photon cross-sections output: 0
+Property Photonuclear attenuation: 0
+Property Bound Compton scattering: 0
+Property Radiative Compton corrections: 0
+Property Rayleigh scattering: 0
+Property Atomic relaxations: 0
+Property Photoelectron angular sampling: 0
+Property Spin effects: 1
+Property Triplet production: 0
+Property Brems cross sections: 0
+Property Brems angular sampling: 0
+Property Pair cross sections: 0
+Property Pair angular sampling: 1
+Property Electron-step algorithm: 2
+Property Boundary crossing algorithm: 1
+ ===> Photonuclear flag:   0
+  PEGSLESS INPUT.  CALCULATING ELECTRON CROSS-SECTIONS.
+
+  Medium data: 
+
+ AE =    5.21000E-01 MeV,  UE =    5.51100E+00 MeV
+ AP =    1.00000E-02 MeV,  UP =    5.00000E+00 MeV
+
+  No material data file supplied.  Material data obtained from
+  .egsinp file or density correction file.
+
+   Medium: cobalt                  
+ Sterncid: cobalt                  
+     rho:    8.90000E+00 g/cm^3
+ Elements: CO  
+    rhoz:    1.00000E+00
+      pz:    1.69684E-02
+  iunrst:     0
+  iaprim:     0
+    gasp:    0.00000E+00 atm.
+  density correction file: /home/ljubomir/EGSnrc/HEN_HOUSE/pegs4/density_corrections/elements/cobalt.density
+
+   Medium: abs_plastic             
+ Sterncid: abs_plastic             
+     rho:    1.17000E+00 g/cm^3
+ Elements: H   C   N   
+    rhoz:    5.69830E-02   6.79056E-01   2.63962E-01
+      pz:    5.65324E-02   5.65355E-02   1.88454E-02
+  iunrst:     0
+  iaprim:     0
+    gasp:    0.00000E+00 atm.
+  density correction file: /home/ljubomir/EGSnrc/HEN_HOUSE/pegs4/density_corrections/compounds/polyacrylonitrile.density
+
+   Medium: air                     
+ Sterncid: air                     
+     rho:    1.20479E-03 g/cm^3
+ Elements: C   N   O   AR  
+    rhoz:    1.24000E-04   7.55267E-01   2.31781E-01   1.28270E-02
+      pz:    1.03237E-05   5.39218E-02   1.44869E-02   3.21092E-04
+  iunrst:     0
+  iaprim:     0
+    gasp:    0.00000E+00 atm.
+  density correction file: /home/ljubomir/EGSnrc/HEN_HOUSE/pegs4/density_corrections/compounds/air_dry_nearsealevel.density
+
+
+(Re)-initializing photon cross sections with files from the series: xcom
+
+ Compton cross sections: default
+ Using Compton cross sections from /home/ljubomir/EGSnrc/HEN_HOUSE/data/compton_sigma.data
+ Working on medium   1 ... OK
+ Working on medium   2 ... OK
+ Working on medium   3 ... OK
+  old PRESTA calculates default min. step-size for BCA: 
+      minimum ECUT found:   0.69999999999999996     
+      default BLCMIN is:    4.9416671306814486     
+      this corresponds to    140.00345917283477       elastic MFPs 
+
+Reading screened Rutherford MS data ...............  done 
+
+
+Reading spin data base from /home/ljubomir/EGSnrc/HEN_HOUSE/data/spinms.data
+EGSnrc spin data, version 2.0   
+Data generated on a machine with 1234 endianess
+The endianess of this CPU is 1234
+Ranges:      1.00   100.00  0.30054  1.00000
+
+
+  medium    1 .....................  done
+  medium    2 .....................  done
+  medium    3 .....................  done
+  
+  Medium            1  sige =    8.3279587251768685        8.0267427167541854       monotone =  F F
+  Medium            2  sige =    6.4086294693562831        6.2011721210055111       monotone =  F F
+  Medium            3  sige =    6.4771606019169106        6.2459837987453177       monotone =  F F
+  
+  Initializing tmxs for estepe =   0.25000000000000000       and ximax =   0.50000000000000000     
+  
+Output from subroutine EDGSET:
+==============================
+ Atomic relaxations not requested! 
+
+ Bound Compton scattering not requested! 
+
+EGSnrc SUCCESSFULLY 'HATCHED' FOR     3 MEDIA.
+
+
+The following media are defined:
+================================
+
+  0  cobalt                   AE= 0.5210 AP= 0.0100 0
+  1  abs_plastic              AE= 0.5210 AP= 0.0100 1
+  2  air                      AE= 0.5210 AP= 0.0100 2
+
+
+Transport parameter and cross section options:
+==============================================
+Photon cross sections                             xcom            
+Compton cross sections                            default         
+Global Pcut                                       0.01
+Pair cross sections                               BH
+Pair angular sampling                             Simple
+Triplet production                                Off
+Bound Compton scattering                          Off
+Radiative Compton corrections                     Off
+Rayleigh scattering                               Off
+Atomic relaxations                                Off
+Photoelectron angular sampling                    Off
+Photonuclear attenuation                          Off
+Photonuclear cross sections                       default         
+
+Global Ecut                                       0.7
+Brems cross sections                              BH
+Brems angular sampling                            Simple
+Spin effects                                      On
+Electron Impact Ionization                        Off             
+Global Smax                                       1e+10
+ESTEPE                                            0.25
+Ximax                                             0.5
+Boundary crossing algorithm                       PRESTA-I
+Skin depth for BCA                                140.003
+Electron-step algorithm                           EGSnrc
+==============================================
+
+
+
+======================== geometry =====================
+ type = EGS_EnvelopeGeometry
+ name = emf_lab
+ number of regions = 3
+ base geometry = air_volume (type EGS_CDGeometry)
+ inscribed geometries:
+   abs_phantom (type EGS_cSpheres)
+   source_position (type EGS_CDGeometryT)
+=======================================================
+
+
+The simulation uses the following source:
+=========================================
+ Parallel beam from a shape of type circle with tabulated histogram spectrum defined in co60.spectrum, photons
+
+
+Random number generator:
+============================================
+  type                = ranmar
+  high resolution     = no
+  initial seeds       = 33 97
+  numbers used so far = 0
+
+
+The following ausgab objects are included in the simulation
+===========================================================
+
+
+Particle Track Scoring (tracks)
+======================================================
+ - Scoring photon tracks       = YES
+ - Scoring electron tracks     = YES
+ - Scoring positron tracks     = YES
+ - First event to score        = 0
+ - Last event to score         = 1024
+ - Track buffer size           = 1024
+ - Output file name            = /home/ljubomir/EGSnrc/egs_home/emf_lab_pp/abs_phantom_in_Co60_beam.ptracks
+
+
+*******************************************
+Dose Scoring Object (phantom_dose)
+*******************************************
+
+ - Regions in dose calculator :3
+
+
+--------------------------------------
+medium       rho/[g/cm**3]
+--------------------------------------
+cobalt       8.90
+abs_plastic  1.17
+air          0.00
+--------------------------------------
+
+*******************************************
+
+
+
+
+
+Starting simulation on Thu Oct 10 12:42:06 2019
+
+    Fresh simulation of 4000 histories
+
+
+
+Running 4000 histories
+
+  Batch             CPU time        Result   Uncertainty(%)
+==========================================================
+      1                0.01              0         100.00
+      2                0.01              0         100.00
+      3                0.01              0         100.00
+      4                0.02              0         100.00
+      5                0.02              0         100.00
+      6                0.02              0         100.00
+      7                0.02              0         100.00
+      8                0.03              0         100.00
+      9                0.03              0         100.00
+     10                0.03              0         100.00
+
+
+Finished simulation
+
+Total cpu time for this run:            0.03 (sec.) 0.0000(hours)
+Histories per hour:                     4.8e+08       
+Number of random numbers used:          206660        
+Number of electron CH steps:            7374          
+Number of all electron steps:           7463          
+
+Particle Track Scoring (tracks)
+======================================================
+   Total events scored:     1024
+   Total tracks scored:     3092
+   Still being scored:      0
+   Output file name:        /home/ljubomir/EGSnrc/egs_home/emf_lab_pp/abs_phantom_in_Co60_beam.ptracks
+
+
+======================================================
+Dose Scoring Object(phantom_dose)
+======================================================
+=> last case = 4000 fluence = 31831
+
+==> Summary of region dosimetry (per fluence)
+ir medium       rho/[g/cm3]  V/cm3    Edep/[MeV*cm2]            D/[Gy*cm2]         
+-----------------------------------------------------------------------------------
+0 air           0.001    33.5100 1.2631e-04 +/- 22.167 % 5.0120e-13 +/- 22.167 %
+1 abs_plastic   1.170    33.5100 3.2190e-02 +/- 2.334  % 1.3153e-13 +/- 2.334  %
+2 cobalt        8.900    33.5100 0.0000e+00 +/- 100.000% 0.0000e+00 +/- 100.000%
+-----------------------------------------------------------------------------------
+
+======================================================
+
+
+================================================================================
+Finished simulation
+
+  Elapsed time:                    0.6 s (  0.000 h)
+  CPU time:                        0.6 s (  0.000 h)
+  Ratio:                          1.011
+
+
+End of run                                             Thu Oct 10 12:42:07 2019
+================================================================================
+finishSimulation(emf_lab_pp) 0

@@ -138,7 +138,7 @@
         direction = 0 0 1
         :start spectrum:
             type = tabulated spectrum
-            spectrum file = co60
+            spectrum file = co60.spectrum
         :stop spectrum:
         :start shape:
             library = egs_circle
