@@ -1,6 +1,6 @@
 In EGS_Application::initSimulation()
 ================================================================================
-EGSnrc version 4 for x86_64-unknown-linux-gnu          Thu Oct 10 12:42:06 2019
+EGSnrc version 4 for x86_64-unknown-linux-gnu          Thu Oct 10 13:29:46 2019
 ================================================================================
 configuration...........................................linux
 user code...............................................emf_lab_pp
@@ -157,13 +157,13 @@ Electron-step algorithm                           EGSnrc
  base geometry = air_volume (type EGS_CDGeometry)
  inscribed geometries:
    abs_phantom (type EGS_cSpheres)
-   source_position (type EGS_CDGeometryT)
+   source_mesh_position (type EGS_CDGeometryT)
 =======================================================
 
 
 The simulation uses the following source:
 =========================================
- Parallel beam from a shape of type circle with tabulated histogram spectrum defined in co60.spectrum, photons
+ Transformed Parallel beam from a shape of type circle with tabulated histogram spectrum defined in co60.spectrum, photons
 
 
 Random number generator:
@@ -210,7 +210,7 @@ air          0.00
 
 
 
-Starting simulation on Thu Oct 10 12:42:06 2019
+Starting simulation on Thu Oct 10 13:29:47 2019
 
     Fresh simulation of 4000 histories
 
@@ -220,30 +220,30 @@ Running 4000 histories
 
   Batch             CPU time        Result   Uncertainty(%)
 ==========================================================
-      1                0.01              0         100.00
+      1                0.00              0         100.00
       2                0.01              0         100.00
       3                0.01              0         100.00
       4                0.02              0         100.00
       5                0.02              0         100.00
-      6                0.02              0         100.00
-      7                0.02              0         100.00
-      8                0.03              0         100.00
-      9                0.03              0         100.00
-     10                0.03              0         100.00
+      6                0.03              0         100.00
+      7                0.03              0         100.00
+      8                0.04              0         100.00
+      9                0.04              0         100.00
+     10                0.04              0         100.00
 
 
 Finished simulation
 
-Total cpu time for this run:            0.03 (sec.) 0.0000(hours)
-Histories per hour:                     4.8e+08       
-Number of random numbers used:          206660        
-Number of electron CH steps:            7374          
-Number of all electron steps:           7463          
+Total cpu time for this run:            0.04 (sec.) 0.0000(hours)
+Histories per hour:                     3.6e+08       
+Number of random numbers used:          327553        
+Number of electron CH steps:            12388         
+Number of all electron steps:           12449         
 
 Particle Track Scoring (tracks)
 ======================================================
    Total events scored:     1024
-   Total tracks scored:     3092
+   Total tracks scored:     4624
    Still being scored:      0
    Output file name:        /home/ljubomir/EGSnrc/egs_home/emf_lab_pp/abs_phantom_in_Co60_beam.ptracks
 
@@ -256,8 +256,8 @@ Dose Scoring Object(phantom_dose)
 ==> Summary of region dosimetry (per fluence)
 ir medium       rho/[g/cm3]  V/cm3    Edep/[MeV*cm2]            D/[Gy*cm2]         
 -----------------------------------------------------------------------------------
-0 air           0.001    33.5100 1.2631e-04 +/- 22.167 % 5.0120e-13 +/- 22.167 %
-1 abs_plastic   1.170    33.5100 3.2190e-02 +/- 2.334  % 1.3153e-13 +/- 2.334  %
+0 air           0.001    33.5100 9.2739e-05 +/- 25.765 % 3.6799e-13 +/- 25.765 %
+1 abs_plastic   1.170    33.5100 5.4470e-02 +/- 1.516  % 2.2257e-13 +/- 1.516  %
 2 cobalt        8.900    33.5100 0.0000e+00 +/- 100.000% 0.0000e+00 +/- 100.000%
 -----------------------------------------------------------------------------------
 
@@ -269,9 +269,9 @@ Finished simulation
 
   Elapsed time:                    0.6 s (  0.000 h)
   CPU time:                        0.6 s (  0.000 h)
-  Ratio:                          1.011
+  Ratio:                          1.013
 
 
-End of run                                             Thu Oct 10 12:42:07 2019
+End of run                                             Thu Oct 10 13:29:47 2019
 ================================================================================
 finishSimulation(emf_lab_pp) 0
