@@ -73,7 +73,7 @@
             radius = 0.2
         :stop shape:
     :stop source:
-    :start source
+    :start source:
         name = source_1
         library = egs_transformed_source
         source name = source_shape_1
@@ -97,7 +97,7 @@
             radius = 0.2
         :stop shape:
     :stop source:
-    :start source
+    :start source:
         name = source_2
         library = egs_transformed_source
         source name = source_shape_2
@@ -121,7 +121,7 @@
             radius = 0.2
         :stop shape:
     :stop source:
-    :start source
+    :start source:
         name = source_3
         library = egs_transformed_source
         source name = source_shape_3
@@ -145,7 +145,7 @@
             radius = 0.2
         :stop shape:
     :stop source:
-    :start source
+    :start source:
         name = source_4
         library = egs_transformed_source
         source name = source_shape_4
@@ -169,7 +169,7 @@
             radius = 0.2
         :stop shape:
     :stop source:
-    :start source
+    :start source:
         name = source_5
         library = egs_transformed_source
         source name = source_shape_5
@@ -193,7 +193,7 @@
             radius = 0.2
         :stop shape:
     :stop source:
-    :start source
+    :start source:
         name = source_6
         library = egs_transformed_source
         source name = source_shape_6
