@@ -1,0 +1,267 @@
+
+###############################################################################
+#
+#  Simple slab simulation
+#
+###############################################################################
+
+
+######################################## Run control
+:start run control:
+    ncase = 10000
+    #statistical accuracy sought = 1  # this input is optional
+    #max cpu hours allowed = 15       # this input is optional
+    #calculation = combine   # could als be first or restart or analyze
+                             # the input is optional and if missing, a
+                             # fresh calculation will be done
+:stop run control:
+
+######################################## Define the geometry:
+#                                        a 1mm plate of tantalum
+#
+:start geometry definition:
+    :start geometry:
+        name = free_space
+        library = egs_ndgeometry
+        type = EGS_XYZGeometry
+        x-planes = -20, 20 # in cm
+        y-planes = -20, 20# in cm
+        z-planes = 0, 40 # in cm
+        :start media input:
+            media = air
+        :stop media input:
+    :stop geometry:
+
+    # Use the geometry with this name for the simulation
+    simulation geometry = free_space
+:stop geometry definition:
+
+######################################## Define the media:
+#
+:start media definition: # Only 1 media defiition block allowed
+
+    # Defining media in the input file like this is called "pegsless" mode
+
+    ### Cutoff energies, in MeV
+    ae = 0.521 # lowest energy for electrons (kinetic + 0.511)
+    ap = 0.010 # lowest energy for photons (kinetic)
+    ue = 50.511 # maximum energy for electrons (kinetic + 0.511)
+    up = 50.000 # lowest energy for photons (kinetic)
+
+    ### Air
+    :start air: # this name can be anything
+        density correction file = air_dry_nearsealevel
+    :stop air:
+
+:stop media definition:
+
+######################################## Define the source:
+#                                        a 20 MeV pencil beam of electrons
+#
+:start source definition:
+    :start source:
+        name = source_shape_1
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 1.25 # in MeV
+        :stop spectrum:
+        :start shape:
+            library = egs_circle
+            radius = 0.2
+        :stop shape:
+    :stop source:
+    :start source
+        name = source_1
+        library = egs_transformed_source
+        source name = source_shape_1
+        :start transformation:
+            translation = -2.0 0.0 0.0
+            rotation = 0.0 0.0 0.0
+        :stop transformation:
+    :stop source:
+
+    :start source:
+        name = source_shape_2
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 6.0 # in MeV
+        :stop spectrum:
+        :start shape:
+            library = egs_circle
+            radius = 0.2
+        :stop shape:
+    :stop source:
+    :start source
+        name = source_2
+        library = egs_transformed_source
+        source name = source_shape_2
+        :start transformation:
+            translation = -7.0 0.0 0.0
+            rotation = 0.0 0.0 0.0
+        :stop transformation:
+    :stop source:
+
+    :start source:
+        name = source_shape_3
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 10.0 # in MeV
+        :stop spectrum:
+        :start shape:
+            library = egs_circle
+            radius = 0.2
+        :stop shape:
+    :stop source:
+    :start source
+        name = source_3
+        library = egs_transformed_source
+        source name = source_shape_3
+        :start transformation:
+            translation = -10.0 0.0 0.0
+            rotation = 0.0 0.0 0.0
+        :stop transformation:
+    :stop source:
+
+    :start source:
+        name = source_shape_4
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 12.0 # in MeV
+        :stop spectrum:
+        :start shape:
+            library = egs_circle
+            radius = 0.2
+        :stop shape:
+    :stop source:
+    :start source
+        name = source_4
+        library = egs_transformed_source
+        source name = source_shape_4
+        :start transformation:
+            translation = -11.0 0.0 0.0
+            rotation = 0.0 0.0 0.0
+        :stop transformation:
+    :stop source:
+
+    :start source:
+        name = source_shape_5
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 14.0 # in MeV
+        :stop spectrum:
+        :start shape:
+            library = egs_circle
+            radius = 0.2
+        :stop shape:
+    :stop source:
+    :start source
+        name = source_5
+        library = egs_transformed_source
+        source name = source_shape_5
+        :start transformation:
+            translation = -13.0 0.0 0.0
+            rotation = 0.0 0.0 0.0
+        :stop transformation:
+    :stop source:
+
+    :start source:
+        name = source_shape_6
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 15.0 # in MeV
+        :stop spectrum:
+        :start shape:
+            library = egs_circle
+            radius = 0.2
+        :stop shape:
+    :stop source:
+    :start source
+        name = source_6
+        library = egs_transformed_source
+        source name = source_shape_6
+        :start transformation:
+            translation = -14.0 0.0 0.0
+            rotation = 0.0 0.0 0.0
+        :stop transformation:
+    :stop source:
+
+    :start source:
+        name = multisource
+        library = egs_source_collection
+        source names = source_1 source_2 source_3 source_4 source_5 source_6
+        weights = 1.0 1.0 1.0 1.0 1.0 1.0
+    :stop source:
+
+    simulation source = multisource
+
+:stop source definition:
+
+######################################### Viewer control
+#
+:start view control:
+    # Here we are just assigning some colors for nice
+    # display in the egs_view application
+    set color = air 0 220 255 10
+:stop view control:
+
+######################################### Transport parameters
+#                                         you can add any other option
+#                                         supported by EGSnrc
+#
+:start MC transport parameter:
+
+    Global ECUT= 0.521
+    Global PCUT= 0.01
+    Global SMAX= 0
+    ESTEPE= 0.25
+    XIMAX= 0.5
+    Boundary crossing algorithm= PRESTA-I
+    Skin depth for BCA= 0
+    Electron-step algorithm= PRESTA-II
+    Spin effects= On
+    Brems angular sampling= Simple
+    Brems cross sections= BH
+    Bound Compton scattering= Off
+    Compton cross sections= default
+    Pair angular sampling= Simple
+    Pair cross sections= BH
+    Photoelectron angular sampling= Off
+    Rayleigh scattering= Off
+    Atomic relaxations= Off
+    Electron impact ionization= Off
+    Photon cross sections= xcom
+    Photon cross-sections output= Off
+    Magnetic Field= 0.0, 0.5, 0.0
+    EM ESTEPE= 0.02 
+
+:stop MC transport parameter:
+
+######################################### Ausgab objects
+#
+:start ausgab object definition: # Only 1 ausgab definition block allowed
+
+    ### Particle tracks
+    :start ausgab object:
+        name = tracks
+        library = egs_track_scoring
+    :stop ausgab object:
+
+:stop ausgab object definition:
