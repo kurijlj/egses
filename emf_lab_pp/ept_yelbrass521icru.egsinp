@@ -1,0 +1,128 @@
+
+###############################################################################
+#
+#  Simple slab simulation to test individual materials for electron production
+#  and scatter when irradiated with 6MV pencil photon beam.
+#
+#  Tanatlum test.
+#
+###############################################################################
+
+
+# Run control setup
+:start run control:
+    ncase = 80000
+:stop run control:
+
+
+# Geometry setup
+:start geometry definition:
+
+    # Test plates geometry and material definition
+
+    # Tantalum plate
+    :start geometry:
+        name = lab
+        library = egs_ndgeometry
+        type = EGS_XYZGeometry
+        x-planes = -5.0, 5.0 # in cm
+        y-planes = -5.0, 5.0 # in cm
+        z-planes =  -10.0, 0.0, 0.1, 20.0 # in cm
+        :start media input:
+            media = vacuum YELBRASS521ICRU
+            set medium = 1 1
+        :stop media input:
+    :stop geometry:
+
+    # Set simulation geometry
+    simulation geometry = lab
+:stop geometry definition:
+
+
+# Media definition
+
+
+# Particle sources definition
+:start source definition:
+
+    # Define individual sources
+
+    :start source:
+        name = the_source
+        library = egs_parallel_beam
+        charge = 0
+        direction = 0 0 1
+        :start spectrum:
+            type = monoenergetic
+            energy = 6.0 # in MeV
+        :stop spectrum:
+        :start shape:
+            type = point
+            position = 0.0 0.0 -10.0
+        :stop shape:
+    :stop source:
+
+    # Set simulation source
+    simulation source = the_source
+
+:stop source definition:
+
+
+# Transport parameters setup
+:start MC transport parameter:
+
+    Global ECUT= 0.521
+    Global PCUT= 0.01
+    Global SMAX= 0
+    ESTEPE= 0.25
+    XIMAX= 0.5
+    Boundary crossing algorithm= PRESTA-I
+    Skin depth for BCA= 0
+    Electron-step algorithm= PRESTA-II
+    Spin effects= On
+    Brems angular sampling= Simple
+    Brems cross sections= BH
+    Bound Compton scattering= Off
+    Compton cross sections= default
+    Pair angular sampling= Simple
+    Pair cross sections= BH
+    Photoelectron angular sampling= Off
+    Rayleigh scattering= Off
+    Atomic relaxations= Off
+    Electron impact ionization= Off
+    Photon cross sections= xcom
+    Photon cross-sections output= Off
+
+:stop MC transport parameter:
+
+
+# Ausgab objects definition
+:start ausgab object definition: # Only 1 ausgab definition block allowed
+
+    # Particle tracks
+    :start ausgab object:
+        name = electron_tracks
+        library = egs_track_scoring
+        score photons = no
+        score positrons = no
+        stop scoring = 4096
+        buffer size = 4096
+    :stop ausgab object:
+
+:stop ausgab object definition:
+
+
+# Viewer setup
+:start view control:
+    # Here we are just assigning some colors for nice
+    # display in the egs_view application
+    set color = vacuum 0 0 0 0
+    set color = TA521ICRU       110 110 110 255
+    set color = PB521ICRU       220 220 220 255
+    set color = AL521ICRU       240 240 240 255
+    set color = CU521ICRU       184 115  51 255
+    set color = YELBRASS521ICRU 181 166  66 255
+    set color = STEEL521ICRU     67  70  75 255
+    set color = ZN521ICRU       186 196 200 255
+    set color = TI521ICRU       130 135 136 255
+:stop view control:
