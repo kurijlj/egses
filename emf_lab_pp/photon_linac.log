@@ -1,0 +1,205 @@
+In EGS_Application::initSimulation()
+================================================================================
+EGSnrc version 4 for x86_64-unknown-linux-gnu          Thu Oct 17 09:28:57 2019
+================================================================================
+configuration................................................linux
+user code....................................................emf_lab_pp
+pegs file....................................................700icru on EGS_HOME
+using host...................................................raptor.ff.bg.ac.rs
+input file...................................................photon_linac
+output file(s)...............................................photon_linac
+================================================================================
+In initCrossSections(): spin effects = 1
+Property Photon cross-sections output: 0
+Property Photonuclear attenuation: 0
+Property Bound Compton scattering: 0
+Property Radiative Compton corrections: 0
+Property Rayleigh scattering: 0
+Property Atomic relaxations: 0
+Property Photoelectron angular sampling: 0
+Property Spin effects: 1
+Property Triplet production: 0
+Property Brems cross sections: 0
+Property Brems angular sampling: 0
+Property Pair cross sections: 0
+Property Pair angular sampling: 1
+Property Electron-step algorithm: 2
+Property Boundary crossing algorithm: 1
+ ===> Photonuclear flag:   0
+ Found medium with gas pressure
+
+(Re)-initializing photon cross sections with files from the series: xcom
+
+ Compton cross sections: default
+ Using Compton cross sections from /home/ljubomir/EGSnrc/HEN_HOUSE/data/compton_sigma.data
+ Working on medium   1 ... OK
+ Working on medium   2 ... OK
+ Working on medium   3 ... OK
+ Working on medium   4 ... OK
+ Working on medium   5 ... OK
+  old PRESTA calculates default min. step-size for BCA: 
+      minimum ECUT found:   0.69999999999999996     
+      default BLCMIN is:    3.9087496830885597     
+      this corresponds to    49.836601456967607       elastic MFPs 
+
+Reading screened Rutherford MS data ...............  done 
+
+
+Reading spin data base from /home/ljubomir/EGSnrc/HEN_HOUSE/data/spinms.data
+EGSnrc spin data, version 2.0   
+Data generated on a machine with 1234 endianess
+The endianess of this CPU is 1234
+Ranges:      1.00   100.00  0.30054  1.00000
+
+
+  medium    1 .....................  done
+  medium    2 .....................  done
+  medium    3 .....................  done
+  medium    4 .....................  done
+  medium    5 .....................  done
+  
+  Medium            1  sige =    1.8263355989273902        1.8192905080056323       monotone =  T T
+  Medium            2  sige =   0.35816548270345605       0.35304207939639420       monotone =  F T
+  Medium            3  sige =   0.89979639692723368       0.89277520733542570       monotone =  T T
+  Medium            4  sige =   0.59071566164981137       0.58400252500020988       monotone =  T T
+  Medium            5  sige =   0.42420057725694926       0.41769625494703400       monotone =  T T
+  
+  Initializing tmxs for estepe =   0.25000000000000000       and ximax =   0.50000000000000000     
+  
+Output from subroutine EDGSET:
+==============================
+ Atomic relaxations not requested! 
+
+ Bound Compton scattering not requested! 
+
+EGSnrc SUCCESSFULLY 'HATCHED' FOR     5 MEDIA.
+
+
+The following media are defined:
+================================
+
+  0  W700ICRU                 AE= 0.7000 AP= 0.0100 0
+  1  AIR700ICRU               AE= 0.7000 AP= 0.0100 1
+  2  FE700ICRU                AE= 0.7000 AP= 0.0100 2
+  3  AL700ICRU                AE= 0.7000 AP= 0.0100 3
+  4  PMMA700ICRU              AE= 0.7000 AP= 0.0100 4
+
+
+Transport parameter and cross section options:
+==============================================
+Photon cross sections                             xcom            
+Compton cross sections                            default         
+Global Pcut                                       0.01
+Pair cross sections                               BH
+Pair angular sampling                             Simple
+Triplet production                                Off
+Bound Compton scattering                          Off
+Radiative Compton corrections                     Off
+Rayleigh scattering                               Off
+Atomic relaxations                                Off
+Photoelectron angular sampling                    Off
+Photonuclear attenuation                          Off
+Photonuclear cross sections                       default         
+
+Global Ecut                                       0.7
+Brems cross sections                              BH
+Brems angular sampling                            Simple
+Spin effects                                      On
+Electron Impact Ionization                        Off             
+Global Smax                                       1e+10
+ESTEPE                                            0.25
+Ximax                                             0.5
+Boundary crossing algorithm                       PRESTA-I
+Skin depth for BCA                                49.8366
+Electron-step algorithm                           EGSnrc
+==============================================
+
+
+
+======================== geometry =====================
+ type = EGS_CDGeometry
+ name = final_linac
+ number of regions = 126
+
+
+The simulation uses the following source:
+=========================================
+ Parallel beam from a shape of type point with monoenergetic 10 MeV, photons
+
+
+Random number generator:
+============================================
+  type                = ranmar
+  high resolution     = no
+  initial seeds       = 33 97
+  numbers used so far = 0
+
+
+The following ausgab objects are included in the simulation
+===========================================================
+
+
+Particle Track Scoring (tracks)
+======================================================
+ - Scoring photon tracks       = YES
+ - Scoring electron tracks     = YES
+ - Scoring positron tracks     = NO
+ - First event to score        = 0
+ - Last event to score         = 2048
+ - Track buffer size           = 2048
+ - Output file name            = /home/ljubomir/EGSnrc/egs_home/emf_lab_pp/photon_linac.ptracks
+
+
+
+
+
+Starting simulation on Thu Oct 17 09:28:57 2019
+
+    Fresh simulation of 80000 histories
+
+
+
+Running 80000 histories
+
+  Batch             CPU time        Result   Uncertainty(%)
+==========================================================
+      1                2.29              0         100.00
+      2                4.49              0         100.00
+      3                6.66              0         100.00
+      4                8.85              0         100.00
+      5               11.03              0         100.00
+      6               13.25              0         100.00
+      7               15.44              0         100.00
+      8               17.57              0         100.00
+      9               19.69              0         100.00
+     10               21.78              0         100.00
+
+
+Finished simulation
+
+Total cpu time for this run:            21.78 (sec.) 0.0061(hours)
+Histories per hour:                     1.32231e+07   
+Number of random numbers used:          295932553     
+Number of electron CH steps:            1.5139e+07    
+Number of all electron steps:           1.52814e+07   
+
+Particle Track Scoring (tracks)
+======================================================
+   Total events scored:     2048
+   Total tracks scored:     45965
+   Still being scored:      0
+   Output file name:        /home/ljubomir/EGSnrc/egs_home/emf_lab_pp/photon_linac.ptracks
+
+
+
+================================================================================
+Finished simulation
+
+  Elapsed time:                   22.2 s (  0.006 h)
+  CPU time:                       22.1 s (  0.006 h)
+  Ratio:                          1.001
+
+
+End of run                                             Thu Oct 17 09:29:19 2019
+================================================================================
+finishSimulation(emf_lab_pp) 0

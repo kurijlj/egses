@@ -273,7 +273,7 @@
 
 # Run control
 :start run control:
-    ncase = 10000
+    ncase = 80000
 :stop run control:
 
 
