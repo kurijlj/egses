@@ -1,0 +1,244 @@
+In EGS_Application::initSimulation()
+================================================================================
+EGSnrc version 4 for i686-pc-linux-gnu                 Thu Oct 17 22:29:34 2019
+================================================================================
+configuration..............................................corsair
+user code..................................................emf_lab_pp
+pegs file..................................................521icru on EGS_HOME
+using host.................................................slackwarebox
+input file.................................................pdd_water_cyl_phantom
+output file(s).............................................pdd_water_cyl_phantom
+================================================================================
+In initCrossSections(): spin effects = 1
+Property Photon cross-sections output: 0
+Property Photonuclear attenuation: 0
+Property Bound Compton scattering: 0
+Property Radiative Compton corrections: 0
+Property Rayleigh scattering: 0
+Property Atomic relaxations: 0
+Property Photoelectron angular sampling: 0
+Property Spin effects: 1
+Property Triplet production: 0
+Property Brems cross sections: 0
+Property Brems angular sampling: 0
+Property Pair cross sections: 0
+Property Pair angular sampling: 1
+Property Electron-step algorithm: 2
+Property Boundary crossing algorithm: 1
+ ===> Photonuclear flag:   0
+ Found medium with gas pressure
+ Rayleigh data available for medium  2 in PEGS4 data set.
+
+(Re)-initializing photon cross sections with files from the series: xcom
+
+ Compton cross sections: default
+ Using Compton cross sections from /home/ljubak/EGSnrc/HEN_HOUSE/data/compton_sigma.data
+ Working on medium   1 ... OK
+ Working on medium   2 ... OK
+  old PRESTA calculates default min. step-size for BCA: 
+      minimum ECUT found:   0.52100000000000002     
+      default BLCMIN is:    3.1855790618759712     
+      this corresponds to    24.181286813787548       elastic MFPs 
+
+Reading screened Rutherford MS data ...............  done 
+
+
+Reading spin data base from /home/ljubak/EGSnrc/HEN_HOUSE/data/spinms.data
+EGSnrc spin data, version 2.0   
+Data generated on a machine with 1234 endianess
+The endianess of this CPU is 1234
+Ranges:      1.00   100.00  0.30054  1.00000
+
+
+  medium    1 .....................  done
+  medium    2 .....................  done
+  
+  Medium            1  sige =    6.4595132015164021        6.2354615343201152       monotone =  F F
+  Medium            2  sige =    6.3784170227787520        6.1807995067678911       monotone =  F F
+  
+  Initializing tmxs for estepe =   0.25000000000000000       and ximax =   0.50000000000000000     
+  
+Output from subroutine EDGSET:
+==============================
+ Atomic relaxations not requested! 
+
+ Bound Compton scattering not requested! 
+
+EGSnrc SUCCESSFULLY 'HATCHED' FOR     2 MEDIA.
+
+
+The following media are defined:
+================================
+
+  0  AIR521ICRU               AE= 0.5210 AP= 0.0100 0
+  1  H2O521ICRU               AE= 0.5210 AP= 0.0100 1
+
+
+Transport parameter and cross section options:
+==============================================
+Photon cross sections                             xcom            
+Compton cross sections                            default         
+Global Pcut                                       0.01
+Pair cross sections                               BH
+Pair angular sampling                             Simple
+Triplet production                                Off
+Bound Compton scattering                          Off
+Radiative Compton corrections                     Off
+Rayleigh scattering                               Off
+Atomic relaxations                                Off
+Photoelectron angular sampling                    Off
+Photonuclear attenuation                          Off
+Photonuclear cross sections                       default         
+
+Global Ecut                                       0.521
+Brems cross sections                              BH
+Brems angular sampling                            Simple
+Spin effects                                      On
+Electron Impact Ionization                        Off             
+Global Smax                                       1e+10
+ESTEPE                                            0.25
+Ximax                                             0.5
+Boundary crossing algorithm                       PRESTA-I
+Skin depth for BCA                                24.1813
+Electron-step algorithm                           EGSnrc
+==============================================
+
+
+
+======================== geometry =====================
+ type = EGS_CDGeometry
+ name = the_phantom
+ number of regions = 80
+
+
+The simulation uses the following source:
+=========================================
+ Collimated source from a shape of type point onto a shape of type rectangle with monoenergetic 1.25 MeV, photons
+
+
+Random number generator:
+============================================
+  type                = ranmar
+  high resolution     = no
+  initial seeds       = 33 97
+  numbers used so far = 0
+
+
+The following ausgab objects are included in the simulation
+===========================================================
+
+
+*******************************************
+Dose Scoring Object (pdd)
+*******************************************
+
+ - Regions in dose calculator :40
+
+
+--------------------------------------
+medium       rho/[g/cm**3]
+--------------------------------------
+AIR521ICRU  0.00
+H2O521ICRU  1.00
+--------------------------------------
+
+*******************************************
+
+
+
+
+
+Starting simulation on Thu Oct 17 22:29:34 2019
+
+    Fresh simulation of 1000000 histories
+
+
+
+Running 1000000 histories
+
+  Batch             CPU time        Result   Uncertainty(%)
+==========================================================
+      1               11.07              0         100.00
+      2               22.07              0         100.00
+      3               33.09              0         100.00
+      4               44.09              0         100.00
+      5               55.13              0         100.00
+      6               66.16              0         100.00
+      7               77.22              0         100.00
+      8               88.27              0         100.00
+      9               99.30              0         100.00
+     10              110.36              0         100.00
+
+
+Finished simulation
+
+Total cpu time for this run:            110.36 (sec.) 0.0307(hours)
+Histories per hour:                     3.26205e+07   
+Number of random numbers used:          936892964     
+Number of electron CH steps:            5.05276e+07   
+Number of all electron steps:           5.16552e+07   
+
+======================================================
+Dose Scoring Object(pdd)
+======================================================
+=> last case = 1000000 fluence = 27777.8
+
+==> Summary of region dosimetry (per fluence)
+ir medium       rho/[g/cm3]  V/cm3    Edep/[MeV*cm2]            D/[Gy*cm2]         
+-----------------------------------------------------------------------------------
+ 0 H2O521ICRU   1.000     0.0078 8.7403e-07 +/- 2.083  % 1.7837e-14 +/- 2.083  %
+ 2 H2O521ICRU   1.000     0.0078 9.5890e-07 +/- 1.997  % 1.9569e-14 +/- 1.997  %
+ 4 H2O521ICRU   1.000     0.0078 8.9068e-07 +/- 2.072  % 1.8177e-14 +/- 2.072  %
+ 6 H2O521ICRU   1.000     0.0078 8.1255e-07 +/- 2.175  % 1.6582e-14 +/- 2.175  %
+ 8 H2O521ICRU   1.000     0.0078 7.4362e-07 +/- 2.251  % 1.5176e-14 +/- 2.251  %
+10 H2O521ICRU   1.000     0.0078 6.8983e-07 +/- 2.369  % 1.4078e-14 +/- 2.369  %
+12 H2O521ICRU   1.000     0.0078 6.4354e-07 +/- 2.421  % 1.3133e-14 +/- 2.421  %
+14 H2O521ICRU   1.000     0.0078 5.8867e-07 +/- 2.570  % 1.2013e-14 +/- 2.570  %
+16 H2O521ICRU   1.000     0.0078 5.3180e-07 +/- 2.686  % 1.0853e-14 +/- 2.686  %
+18 H2O521ICRU   1.000     0.0078 4.9311e-07 +/- 2.764  % 1.0063e-14 +/- 2.764  %
+20 H2O521ICRU   1.000     0.0078 4.5822e-07 +/- 2.854  % 9.3511e-15 +/- 2.854  %
+22 H2O521ICRU   1.000     0.0078 4.1949e-07 +/- 3.046  % 8.5608e-15 +/- 3.046  %
+24 H2O521ICRU   1.000     0.0078 4.0955e-07 +/- 3.145  % 8.3580e-15 +/- 3.145  %
+26 H2O521ICRU   1.000     0.0078 3.5914e-07 +/- 3.203  % 7.3292e-15 +/- 3.203  %
+28 H2O521ICRU   1.000     0.0078 3.4923e-07 +/- 3.368  % 7.1269e-15 +/- 3.368  %
+30 H2O521ICRU   1.000     0.0078 3.0282e-07 +/- 3.498  % 6.1798e-15 +/- 3.498  %
+32 H2O521ICRU   1.000     0.0078 2.7640e-07 +/- 3.720  % 5.6406e-15 +/- 3.720  %
+34 H2O521ICRU   1.000     0.0078 2.8735e-07 +/- 3.667  % 5.8641e-15 +/- 3.667  %
+36 H2O521ICRU   1.000     0.0078 2.2116e-07 +/- 4.129  % 4.5133e-15 +/- 4.129  %
+38 H2O521ICRU   1.000     0.0078 2.2783e-07 +/- 4.240  % 4.6495e-15 +/- 4.240  %
+40 H2O521ICRU   1.000     0.0078 2.1308e-07 +/- 4.303  % 4.3485e-15 +/- 4.303  %
+42 H2O521ICRU   1.000     0.0078 1.8793e-07 +/- 4.499  % 3.8352e-15 +/- 4.499  %
+44 H2O521ICRU   1.000     0.0078 1.7555e-07 +/- 4.754  % 3.5826e-15 +/- 4.754  %
+46 H2O521ICRU   1.000     0.0078 1.6221e-07 +/- 4.961  % 3.3103e-15 +/- 4.961  %
+48 H2O521ICRU   1.000     0.0078 1.5529e-07 +/- 5.018  % 3.1690e-15 +/- 5.018  %
+50 H2O521ICRU   1.000     0.0078 1.2598e-07 +/- 5.401  % 2.5710e-15 +/- 5.401  %
+52 H2O521ICRU   1.000     0.0078 1.3009e-07 +/- 5.426  % 2.6548e-15 +/- 5.426  %
+54 H2O521ICRU   1.000     0.0078 1.1670e-07 +/- 5.635  % 2.3815e-15 +/- 5.635  %
+56 H2O521ICRU   1.000     0.0078 1.1574e-07 +/- 5.920  % 2.3621e-15 +/- 5.920  %
+58 H2O521ICRU   1.000     0.0078 9.9470e-08 +/- 6.238  % 2.0299e-15 +/- 6.238  %
+60 H2O521ICRU   1.000     0.0078 8.9458e-08 +/- 6.450  % 1.8256e-15 +/- 6.450  %
+62 H2O521ICRU   1.000     0.0078 8.4368e-08 +/- 6.745  % 1.7218e-15 +/- 6.745  %
+64 H2O521ICRU   1.000     0.0078 8.0669e-08 +/- 6.984  % 1.6463e-15 +/- 6.984  %
+66 H2O521ICRU   1.000     0.0078 7.0212e-08 +/- 7.157  % 1.4329e-15 +/- 7.157  %
+68 H2O521ICRU   1.000     0.0078 6.6601e-08 +/- 7.657  % 1.3592e-15 +/- 7.657  %
+70 H2O521ICRU   1.000     0.0078 6.5928e-08 +/- 7.573  % 1.3454e-15 +/- 7.573  %
+72 H2O521ICRU   1.000     0.0078 6.1899e-08 +/- 7.811  % 1.2632e-15 +/- 7.811  %
+74 H2O521ICRU   1.000     0.0078 5.2204e-08 +/- 8.344  % 1.0654e-15 +/- 8.344  %
+76 H2O521ICRU   1.000     0.0078 5.4053e-08 +/- 8.317  % 1.1031e-15 +/- 8.317  %
+78 H2O521ICRU   1.000     0.0078 4.3251e-08 +/- 9.492  % 8.8266e-16 +/- 9.492  %
+-----------------------------------------------------------------------------------
+
+======================================================
+
+
+================================================================================
+Finished simulation
+
+  Elapsed time:                  110.6 s (  0.031 h)
+  CPU time:                      110.5 s (  0.031 h)
+  Ratio:                          1.001
+
+
+End of run                                             Thu Oct 17 22:31:24 2019
+================================================================================
+finishSimulation(emf_lab_pp) 0

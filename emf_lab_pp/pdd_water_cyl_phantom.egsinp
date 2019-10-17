@@ -14,7 +14,7 @@
 ###############################################################################
 
 
-# Geometry setup
+# Geometry definition
 :start geometry definition:
 
     :start geometry:
@@ -51,6 +51,88 @@
     simulation geometry = the_phantom
 
 :stop geometry definition:
+
+
+# Run control
+:start run control:
+
+    ncase = 1000000
+
+:stop run control:
+
+
+# Source definition
+:start source definition:
+    :start source:
+        name = the_source
+        library = egs_collimated_source
+        charge = 0
+        :start source shape:
+            type = point
+            position = 0 0 -100.0
+        :stop source shape:
+        :start target shape:
+            library   = egs_rectangle
+            rectangle = -0.3 -0.3 0.3 0.3
+        :stop target shape:
+        distance = 6.0
+        :start spectrum:
+            type = monoenergetic
+            energy = 1.25 # in MeV
+        :stop spectrum:
+    :stop source:
+
+    simulation source = the_source
+
+:stop source definition:
+
+
+# Transport parameters
+:start MC transport parameter:
+
+    Global ECUT = 0.521
+    Global PCUT = 0.01
+    Global SMAX = 0
+    ESTEPE = 0.25
+    XIMAX = 0.5
+    Boundary crossing algorithm = PRESTA-I
+    Skin depth for BCA = 0
+    Electron-step algorithm = PRESTA-II
+    Spin effects = On
+    Brems angular sampling = Simple
+    Brems cross sections = BH
+    Bound Compton scattering = Off
+    Compton cross sections = default
+    Pair angular sampling = Simple
+    Pair cross sections = BH
+    Photoelectron angular sampling = Off
+    Rayleigh scattering = Off
+    Atomic relaxations = Off
+    Electron impact ionization = Off
+    Photon cross sections = xcom
+    Photon cross-sections output = Off
+
+    # Turn on magnetic field here
+    #Magnetic Field = 0.0, 0.5, 0.0
+    #EM ESTEPE = 0.02
+
+:stop MC transport parameter:
+
+
+
+# Ausgab object definition
+:start ausgab object definition: # Only 1 ausgab definition block allowed
+
+    # Dose scoring
+    :start ausgab object:
+        library = egs_dose_scoring
+        name = pdd
+        region dose = yes
+        volume = 0.00785 # in cm**3
+        dose regions = 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78
+    :stop ausgab object:
+
+:stop ausgab object definition:
 
 
 # Viewer setup
