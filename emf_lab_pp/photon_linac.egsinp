@@ -225,7 +225,7 @@
         type    = EGS_PlaneCollection
         name    = x_jaws
         normals = 1,0,0    0.99875,0,0.049938,  0.99875,0,-0.049938, 1,0,0
-        positions = -50  -0  0   50
+        positions = -50  -2  2   50
         :start media input:
             media = W700ICRU AIR700ICRU
             set medium = 0 2 0
