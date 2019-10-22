@@ -29,12 +29,12 @@
         name        = cyl_bnds
         library     = egs_cylinders
         type        = EGS_ZCylinders
-        radii       = 0.05 30.0
+        radii       = 0.05 32.0
         midpoint    = 0
         :start media input:
             media = AIR521ICRU H2O521ICRU
-            set medium = 0 1 1
-            #set medium = 1 1
+            #set medium = 0 1 1
+            set medium = 1 1
         :stop media input:
     :stop geometry:
 
@@ -42,12 +42,8 @@
         name            = the_phantom
         library         = egs_cdgeometry
         base geometry   = pln_bnds
-        # set geometry = 1 geom means:
-        # "in region 1 of the basegeometry, use geometry "geom"
         # set geometry   = 0 40 cyl_bnds
         set geometry   = 0 400 cyl_bnds
-        # The final region numbers are attributed by the cd geometry object;
-        # Use the viewer to determine region numbers
     :stop geometry:
 
     simulation geometry = the_phantom
