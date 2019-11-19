@@ -1,0 +1,272 @@
+In EGS_Application::initSimulation()
+================================================================================
+EGSnrc version 4 for i686-pc-linux-gnu                 Sat Nov 16 01:05:27 2019
+================================================================================
+configuration................................................corsair
+user code....................................................cavity
+pegs file....................................................521icru on EGS_HOME
+using host...................................................slackwarebox
+input file...................................................ept_steel521icru
+output file(s)...............................................ept_steel521icru
+================================================================================
+
+               *************************************************
+               *                                               *
+               *                  cavity                       *
+               *                                               *
+               *************************************************
+
+This is Cavity_Application   based on
+      EGS_AdvancedApplication  
+
+In initCrossSections(): spin effects = 1
+Property Photon cross-sections output: 0
+Property Photonuclear attenuation: 0
+Property Bound Compton scattering: 0
+Property Radiative Compton corrections: 0
+Property Rayleigh scattering: 0
+Property Atomic relaxations: 0
+Property Photoelectron angular sampling: 0
+Property Spin effects: 1
+Property Triplet production: 0
+Property Brems cross sections: 0
+Property Brems angular sampling: 0
+Property Pair cross sections: 0
+Property Pair angular sampling: 1
+Property Electron-step algorithm: 2
+Property Boundary crossing algorithm: 1
+ ===> Photonuclear flag:   0
+ Found medium with gas pressure
+
+(Re)-initializing photon cross sections with files from the series: xcom
+
+ Compton cross sections: default
+ Using Compton cross sections from /home/ljubak/EGSnrc/HEN_HOUSE/data/compton_sigma.data
+ Working on medium   1 ... OK
+ Working on medium   2 ... OK
+  old PRESTA calculates default min. step-size for BCA: 
+      minimum ECUT found:   0.52100000000000002     
+      default BLCMIN is:    2.4729304930221216     
+      this corresponds to    11.857143263615646       elastic MFPs 
+
+Reading screened Rutherford MS data ...............  done 
+
+
+Reading spin data base from /home/ljubak/EGSnrc/HEN_HOUSE/data/spinms.data
+EGSnrc spin data, version 2.0   
+Data generated on a machine with 1234 endianess
+The endianess of this CPU is 1234
+Ranges:      1.00   100.00  0.30054  1.00000
+
+
+  medium    1 .....................  done
+  medium    2 .....................  done
+  
+  Medium            1  sige =    8.3487140143451999        8.0404174165591229       monotone =  F F
+  Medium            2  sige =    6.4595132015164021        6.2354615343201152       monotone =  F F
+  
+  Initializing tmxs for estepe =   0.25000000000000000       and ximax =   0.50000000000000000     
+  
+Output from subroutine EDGSET:
+==============================
+ Atomic relaxations not requested! 
+
+ Bound Compton scattering not requested! 
+
+EGSnrc SUCCESSFULLY 'HATCHED' FOR     2 MEDIA.
+
+
+The following media are defined:
+================================
+
+  0  STEEL521ICRU             AE= 0.5210 AP= 0.0100 0
+  1  AIR521ICRU               AE= 0.5210 AP= 0.0100 1
+
+
+Transport parameter and cross section options:
+==============================================
+Photon cross sections                             xcom            
+Compton cross sections                            default         
+Global Pcut                                       0.01
+Pair cross sections                               BH
+Pair angular sampling                             Simple
+Triplet production                                Off
+Bound Compton scattering                          Off
+Radiative Compton corrections                     Off
+Rayleigh scattering                               Off
+Atomic relaxations                                Off
+Photoelectron angular sampling                    Off
+Photonuclear attenuation                          Off
+Photonuclear cross sections                       default         
+
+Global Ecut                                       0.521
+Brems cross sections                              BH
+Brems angular sampling                            Simple
+Spin effects                                      On
+Electron Impact Ionization                        Off             
+Global Smax                                       1e+10
+ESTEPE                                            0.25
+Ximax                                             0.5
+Boundary crossing algorithm                       PRESTA-I
+Skin depth for BCA                                11.8571
+Electron-step algorithm                           EGSnrc
+==============================================
+
+
+
+======================== geometry =====================
+ type = EGS_NDGeometry
+ name = lab
+ number of regions = 3
+ number of dimensions = 2
+ dimension 1 = planes (type EGS_Zplanes)
+ dimension 2 = cylinder (type EGS_ZCylinders)
+=======================================================
+
+
+The simulation uses the following source:
+=========================================
+ Parallel beam from a shape of type point with monoenergetic 6 MeV, photons
+
+
+Random number generator:
+============================================
+  type                = ranmar
+  high resolution     = no
+  initial seeds       = 33 97
+  numbers used so far = 0
+
+
+The following ausgab objects are included in the simulation
+===========================================================
+
+
+Particle Track Scoring (electron_tracks)
+======================================================
+ - Scoring photon tracks       = NO
+ - Scoring electron tracks     = YES
+ - Scoring positron tracks     = NO
+ - First event to score        = 0
+ - Last event to score         = 4096
+ - Track buffer size           = 4096
+ - Output file name            = /home/ljubak/EGSnrc/egs_home/cavity/ept_steel521icru.ptracks
+
+
+
+Variance reduction
+====================================================
+Photon splitting = off
+Range rejection = off
+
+=============================================
+         Calculation details
+=============================================
+Type = Dose
+-> Charged particle fluence requested
+   between 0.521 MeV <= E <= 6 MeV with 12 bins of 0.456583 MeV width 
+   O(eps^3) approach: accounts for change in stpwr
+   along the step with eps=edep/Eb
+
+Calculation geometry: lab
+======================== geometry =====================
+ type = EGS_NDGeometry
+ name = lab
+ number of regions = 3
+ number of dimensions = 2
+ dimension 1 = planes (type EGS_Zplanes)
+ dimension 2 = cylinder (type EGS_ZCylinders)
+=======================================================
+  cavity region 2, medium = 1
+  density of cavity medium = 0.0012048 g/cm3
+=============================================
+
+
+Starting simulation on Sat Nov 16 01:05:27 2019
+
+    Fresh simulation of 1000000 histories
+
+
+
+Running 1000000 histories
+
+  Batch             CPU time        Result   Uncertainty(%)
+==========================================================
+      1                0.82    4.58203e-15           2.43
+      2                1.62    4.52864e-15           1.72
+      3                2.43    4.56988e-15           1.40
+      4                3.21    4.55448e-15           1.21
+      5                4.03    4.55065e-15           1.08
+      6                4.83    4.51017e-15           0.99
+      7                5.65    4.50637e-15           0.91
+      8                6.47    4.48992e-15           0.86
+      9                7.28    4.47256e-15           0.81
+     10                8.12    4.50581e-15           0.76
+
+
+Finished simulation
+
+Total cpu time for this run:            8.12 (sec.) 0.0023(hours)
+Histories per hour:                     4.4335e+08    
+Number of random numbers used:          62300269      
+Number of electron CH steps:            3.31432e+06   
+Number of all electron steps:           3.43402e+06   
+
+
+ last case = 1000000 fluence = 1e+06
+
+Geometry                        Cavity dose      
+-----------------------------------------------
+lab                       4.506318e-15 +/- 0.76378  % 
+
+
+
+
+Electron and positron fluence
+=============================
+
+Geometry: lab
+
+
+ Total e-/+ fluence scored (includes correlations)
+ -------------------------------------------------
+ F_e- = 1.3467e-05 +/- 0.747  % F_e+ = 3.4730e-06 +/- 1.450  %
+
+   0.749292    1.449222e-06    4.598681e-08    5.812435e-07    2.882523e-08
+   1.205875    1.749470e-06    5.039165e-08    7.210053e-07    3.223381e-08
+   1.662458    1.996008e-06    5.396388e-08    9.245309e-07    3.668648e-08
+   2.119042    2.149429e-06    5.586623e-08    1.129670e-06    4.097110e-08
+   2.575625    2.471766e-06    6.055976e-08    1.098343e-06    4.074170e-08
+   3.032208    2.503581e-06    6.138195e-08    1.108213e-06    4.150665e-08
+   3.488792    2.722318e-06    6.454676e-08    9.419345e-07    3.849246e-08
+   3.945375    3.044251e-06    6.885133e-08    7.071042e-07    3.368247e-08
+   4.401958    3.599520e-06    7.517266e-08    3.462965e-07    2.385420e-08
+   4.858542    4.028594e-06    8.044118e-08    4.820951e-08    8.504951e-09
+   5.315125    3.188067e-06    7.233436e-08    0.000000e+00    0.000000e+00
+   5.771708    5.922376e-07    2.937983e-08    0.000000e+00    0.000000e+00
+
+ Integrated fluence (correlations neglected)
+ -------------------------------------------
+
+ F_e- = 1.3467e-05 +/- 0.721  % F_e+ = 3.4730e-06 +/- 1.412  %
+
+
+Particle Track Scoring (electron_tracks)
+======================================================
+   Total events scored:     4096
+   Total tracks scored:     2057
+   Still being scored:      0
+   Output file name:        /home/ljubak/EGSnrc/egs_home/cavity/ept_steel521icru.ptracks
+
+
+
+================================================================================
+Finished simulation
+
+  Elapsed time:                    8.5 s (  0.002 h)
+  CPU time:                        8.4 s (  0.002 h)
+  Ratio:                          1.007
+
+
+End of run                                             Sat Nov 16 01:05:35 2019
+================================================================================
+finishSimulation(cavity) 0
