@@ -47,12 +47,6 @@
 
 #include <cstring>
 #include <cstdlib>
-#include <stdio.h>  // required by EOF
-#include <getopt.h> // required by getopt
-
-#ifndef PATH_SEPARATOR
-#   define PATH_SEPARATOR '/'
-#endif
 
 static EGS_SimpleSlabApplication  *egsApp = 0;
 
@@ -70,12 +64,6 @@ void _null_terminate(char *s, int len) {
         s[0] = 0;
     }
 }
-
-#ifdef WIN32
-    const char fs = 92;
-#else
-    const char fs = '/';
-#endif
 
 const char *EGS_SimpleSlabApplication::egsHome() const {
     return the_egsio->egs_home;
@@ -121,73 +109,33 @@ EGS_SimpleSlabApplication::EGS_SimpleSlabApplication(int argc, char **argv) {
     input = 0;
 
     //
-    // *** Construct the name of the executable, without the directory part.
-    //
-    exec_name = strrchr (argv[0], PATH_SEPARATOR);
-    if (!exec_name)
-        exec_name = argv[0];
-    else
-        ++exec_name;
-
-    //
     // *** make sure that there is only a single application.
     //
     if (egsApp) egsFatal(
-        "%s: There can only be a single EGS_SimpleApplication in a program\n",
-        exec_name
+        "There can only be a single EGS_SimpleSlabApplication in a program\n"
     );
 
     egsApp = this;
     ncase = 0;
 
     //
-    // *** Parse command line options.
-    //
-    int option = -1;
-    int option_index = 0;
-    static struct option const long_options[] =
-    {
-        {NULL, required_argument, NULL, 'i'},
-        {NULL, required_argument, NULL, 'p'},
-        {"ncase", required_argument, NULL, 'n'},
-        {NULL, 0, NULL, 0}
-    };
-
-    while (EOF != (option = getopt_long(argc, argv, "i:p:n:", long_options, &option_index))) {
-        switch(option) {
-            case 'i':
-                break;
-            case 'p':
-                break;
-            case 'n':
-                ncase = atoi(optarg);
-                break;
-            case '?':
-                exit(0);
-                break;
-        }
-    }
-
-    //
     // *** set the number of histories to run
     //
-    //for (int i=0; i<argc-1; i++) {
-    //    if (!strcmp("-n",argv[i]) || !strcmp("--ncase",argv[i])) {
-    //        ncase = atoi(argv[i+1]);
-    //        break;
-    //    }
-    //}
+    for (int i=0; i<argc-1; i++) {
+        if (!strcmp("-n",argv[i]) || !strcmp("--ncase",argv[i])) {
+            ncase = atoi(argv[i+1]);
+            break;
+        }
+    }
 
     if (ncase < 1) {
         ncase = 1000;
     }
 
-    exit(0);
-
     //
     // *** init the EGS system
     //
-    egsInit(argc,argv);
+    egsInit(argc, argv);
 
     //
     // *** null terminate directory and file names just in case
@@ -203,28 +151,58 @@ EGS_SimpleSlabApplication::EGS_SimpleSlabApplication(int argc, char **argv) {
     //
     // ********** Get the content of the input file.
     //
+    // NOTE: The file in c++ code does not have to be referenced by absolute
+    // NOTE: path. MOrtran and fortran code require files to be referenced with
+    // NOTE: an absolute paths. So removing absolute path reference here won't
+    // NOTE: enable using relative pathnames in the executable code.
+    //
     string ifile(the_egsio->egs_home);
     ifile += the_egsio->user_code;
-    ifile += fs;
+    ifile += path_separator;
     ifile += the_egsio->input_file;
     ifile += ".egsinp";
     input = new EGS_Input;
     input->setContentFromFile(ifile.c_str());
 
     //
-    // ********** Construct a simulation geometry from the input
+    // ********** We disregard the simulation geometry from the input and set
+    // ********** simulation geometry from a string.
     //
-    EGS_Input *geom_input = input->takeInputItem("geometry definition");
-    if (!geom_input) {
-        egsFatal("No geometry definition in the input file\n");
-    }
-    g = EGS_BaseGeometry::createGeometry(geom_input);
+    string geom_spec = string (
+        ":start geometry definition:\n"
+        "   :start geometry:\n"
+        "       library = egs_planes\n"
+        "       type = EGS_Zplanes\n"
+        "       name = planes\n"
+        "       positions = 0.0 0.1 40.0\n"
+        "   :stop geometry:\n"
+        "   :start geometry:\n"
+        "       library = egs_cylinders\n"
+        "       type = EGS_ZCylinders\n"
+        "       name = cylinder\n"
+        "       radii = 20.0\n"
+        "   :stop geometry:\n"
+        "   :start geometry:\n"
+        "       name = lab\n"
+        "       library = egs_ndgeometry\n"
+        "       dimensions = planes cylinder\n"
+        "       :start media input:\n"
+        "           media = TA521ICRU AIR521ICRU\n"
+        "           set medium = 0 0\n"
+        "           set medium = 1 1\n"
+        "       :stop media input:\n"
+        "   :stop geometry:\n"
+        "   simulation geometry = lab\n"
+        ":stop geometry definition:\n");
+
+    EGS_Input geom_input;
+    geom_input.setContentFromString (geom_spec);
+    g = EGS_BaseGeometry::createGeometry (&geom_input);
     if (!g) {
-        egsFatal("Failed to construct the simulation geometry\n");
+        egsFatal ("Failed to construct the simulation geometry\n");
     }
-    delete geom_input;
-    EGS_BaseGeometry::describeGeometries();
-    egsInformation("\nThe simulation geometry is of type %s and has the "
+    EGS_BaseGeometry::describeGeometries ();
+    egsInformation ("\nThe simulation geometry is of type %s and has the "
                    "name '%s'\n\n",g->getType().c_str(),g->getName().c_str());
 
     //
@@ -240,17 +218,34 @@ EGS_SimpleSlabApplication::EGS_SimpleSlabApplication(int argc, char **argv) {
     }
 
     //
-    // ********** Construct a particle source from the input
+    // ********** We disregard the particle source from the input and set
+    // ********** particle source from a string.
     //
-    EGS_Input *source_input = input->takeInputItem("source definition");
-    if (!source_input) {
-        egsFatal("No source definition in the input file\n");
-    }
-    source = EGS_BaseSource::createSource(source_input);
+    string source_spec = string(
+        ":start source definition:\n"
+        "   :start source:\n"
+        "       name = the_source\n"
+        "       library = egs_parallel_beam\n"
+        "       charge = 0\n"
+        "       direction = 0 0 1\n"
+        "       :start spectrum:\n"
+        "           type = monoenergetic\n"
+        "           energy = 6.0\n"
+        "       :stop spectrum:\n"
+        "       :start shape:\n"
+        "           type = point\n"
+        "           position = 0.0 0.0 0.0\n"
+        "       :stop shape:\n"
+        "   :stop source:\n"
+        "   simulation source = the_source\n"
+        ":stop source definition:\n");
+
+    EGS_Input source_input;
+    source_input.setContentFromString (source_spec);
+    source = EGS_BaseSource::createSource (&source_input);
     if (!source) {
-        egsFatal("Failed to construct the particle source\n");
+        egsFatal ("Failed to construct the particle source\n");
     }
-    delete source_input;
 
     //
     // ********* Construct a random number generator from the input
@@ -340,9 +335,12 @@ int EGS_SimpleSlabApplication::run() {
     sum_w = 0;
     sum_w2 = 0;
     for (EGS_I64 icase=1; icase<=ncase; icase++) {
-        if (icase%nperb == 0) egsInformation("+Finished %7.2f percent of"
-                                                 " cases, cpu time = %9.3f\n",
-                                                 100*aperb*(icase/nperb),timer.time());
+        if (icase%nperb == 0) {
+            egsInformation(
+                "+Finished %7.2f percent of cases, cpu time = %9.3f\n",
+                100 * aperb * (icase / nperb),
+                timer.time());
+        }
         EGS_I64 this_case = source->getNextParticle(rndm,q,latch,E,wt,x,u);
         //egsInformation("Got %d %g %g (%g,%g,%g) (%g,%g,%g) %lld\n",
         //      q,E,wt,x.x,x.y,x.z,u.x,u.y,u.z,this_case);
@@ -385,8 +383,9 @@ int EGS_SimpleSlabApplication::run() {
             endHistory();
         }
     }
-    egsInformation("\n\nFinished simulation, CPU time was %g\n\n",
-                   timer.time());
+    egsInformation(
+        "\n\nFinished simulation, CPU time was %g\n\n",
+        timer.time());
     sum_E = sum_E/sum_w;
     sum_E2 = sum_E2/sum_w;
     sum_E2 -= sum_E*sum_E;
@@ -406,18 +405,29 @@ void EGS_SimpleSlabApplication::fillRandomArray(int n, EGS_Float *rarray) {
 extern __extc__ void egsHowfar() {
     int np = the_stack->np-1;
     int ireg = the_stack->ir[np]-2;
+
+    // Particle is outside the geometry so discard it.
     if (ireg < 0) {
         the_epcont->idisc = 1;
         return;
     }
+
+    // Let's see in which region particle is going to be after step.
     int newmed;
-    int inew = egsApp->howfar(ireg,
-                              EGS_Vector(the_stack->x[np],the_stack->y[np],the_stack->z[np]),
-                              EGS_Vector(the_stack->u[np],the_stack->v[np],the_stack->w[np]),
-                              the_epcont->ustep,&newmed);
+    int inew = egsApp->howfar(
+        ireg,
+        EGS_Vector(the_stack->x[np], the_stack->y[np], the_stack->z[np]),
+        EGS_Vector(the_stack->u[np], the_stack->v[np], the_stack->w[np]),
+        the_epcont->ustep,
+        &newmed);
+
+    // Particle is going to end up in a new region, so set new region index.
     if (inew != ireg) {
         the_epcont->irnew = inew+2;
         the_useful->medium_new = newmed+1;
+
+        // Particle is going to end up outside the geometry so terminate
+        // particle at the end of a step.
         if (inew < 0) {
             the_epcont->idisc = -1; // i.e. discard after the step.
             the_useful->medium_new = 0;

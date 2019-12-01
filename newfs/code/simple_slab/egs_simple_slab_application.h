@@ -23,7 +23,7 @@
 #
 #  Author:          Iwan Kawrakow, 2005
 #
-#  Contributors: Ljubomir Kurij
+#  Contributors:    Ljubomir Kurij
 #
 ###############################################################################
 */
@@ -39,6 +39,12 @@
 
 #include "egs_libconfig.h"
 #include "egs_base_geometry.h"
+
+#ifdef WIN32
+    const char path_separator = 92;
+#else
+    const char path_separator = '/';
+#endif
 
 class EGS_BaseSource;
 class EGS_RandomGenerator;
@@ -225,7 +231,6 @@ protected:
                         Etot;   /*!< same as sum_E but only for particles
                                      entering the geometry */
     EGS_I64             last_case; //!< last statistically independent event
-    const char          *exec_name; //!< name of the executable
 
 };
 
@@ -247,189 +252,3 @@ protected:
         }\
     }
 
-
-/*!
-    \example tutor2pp.cpp
-    \dontinclude tutor2pp.cpp
-
-    The tutor2pp application calculates the deposited, transmitted and
-    reflected energy fractions for any \link Sources source \endlink
-    of electrons or photons that
-    can be defined with the egspp source package, incident on
-    any \link Geometry geometry \endlink
-    that can be constructed  using the egspp
-    geometry package. The corresponding original tutorial
-    mortran user code \c tutor2, which calculates the deposited,
-    transmitted and reflected energy loss fractions for 20 MeV
-    electrons perpendicularly incident on a semi-infinite 1 mm plate
-    of Tantalum, only provides a very small fraction of the functionality
-    offered by tutor2pp.
-
-    The complete source code of the application is found
-    at the end of this documentation page.
-
-    To obtain the required functionality we implement a
-    Tutor2_Application class derived from EGS_SimpleApplication
-    \skipline Tutor2_Application
-    \until public:
-    The meaning of the private data members \c edep and \c nreg will
-    become clear in the following.
-    The constructor of the Tutor2_Application class takes the command line
-    arguments given to the application as arguments and passes them
-    to the EGS_SimpleApplication constructor,
-    \skip Tutor2_Application(
-    \until EGS_SimpleApplication
-    which reads the input file and initializes the source, the geometry, the
-    cross section data and the random number generator, opens I/O
-    units  necessary for the mortran back-end, creates a temporary working
-    directory for the run  and checks that the cross section data
-    covers the energy range defined by the source. This corresponds to
-    steps 0, 1, 2, 3, 4 and 6 from the recipe
-    for writing EGSnrc mortran user codes (see PIRS--701).
-    We then obtain the number of regions from the geometry
-    \line nreg
-    and initialize a EGS_ScoringArray object that will be used to
-    collect the energy deposited in the various regions
-    \skip edep
-    \until }
-    This corresponds to step 5 from the recipe
-    for writing EGSnrc mortran user codes.
-    We initialize the scoring array to have 2 more regions than the
-    geometry so that we can collect the energy reflected (defined as
-    the energy of particles exiting the geometry and moving backwards
-    and scored in region 0 of \c edep)
-    and the energy transmitted (defined as
-    the energy of particles exiting the geometry and moving forward
-    and scored in region <code>nreg+1</code> of \c edep)
-    in addition to the energy deposited in the \c nreg regions of
-    the geometry (scored in regions 1 ... \c nreg of \c edep).
-    This is all that is needed in the Tutor2_Application constructor.
-
-    To demonstrate good coding habits we provide a destructor for the
-    Tutor2_Application that deallocates the memory needed by the
-    scoring array
-    \skipline ~Tutor2_Application
-
-    The next step is the implementation of the actual scoring which
-    is accomplished by re-implementing the \c ausgab function to
-    collect energy deposition. Energy deposition is indicated by
-    values of its argument less or equal to 4
-    \skip ausgab(int iarg)
-    \until if
-    We obtain the index of the top particle on the stack and its
-    region index from the \c the_stack, which is a pointer to the
-    Fortran common block \c STACK
-    \skipline np =
-    Note that the mortran back-end uses Fortran style indexing and
-    therefore we have to use \c the_stack->np-1 for the particle index.
-    The convention for region numbers used by the geometry package is
-    that the outside region has index -1 and inside regions are between 0
-    and \c nreg-1. However, this is translated to the convention typically
-    adopted by EGSnrc mortran user codes that the outside region is region
-    1 and inside regions are 2 to \c nreg+1 by EGS_SimpleApplication.
-    We have to therefore subtract 1 from the region index and change it
-    to \c nreg+1 if it is 0 (particle is outside) and the particle is
-    movinge forward to obtain the \c edep region for collecting the
-    energy:
-    \skipline if(
-    We then simply use the \link EGS_ScoringArray::score score() \endlink
-    function of the scoring array object to score the energy
-    \skip edep
-    \until }
-    \until }
-    This is all about \c ausgab. We automatically obtain history-by-history
-    statistical analysis, provided we inform our scoring object each time
-    the simulation of a new history begins. This is accomplished by
-    reimplementing the \c startHistory function, which is called from
-    within the \link EGS_SimpleApplication::run() shower loop \endlink
-    before transporting a new particle from the source:
-    \skipline startHistory
-
-    The final step in the implementation of the Tutor2_Application class
-    is to report the simulation results. For this purpose we define
-    a separate function \c reportResults, which will be called from our
-    main program.
-    In the implementation of this function we simply use the
-    \link EGS_ScoringArray::reportResults() reportResults() \endlink
-    method of the scoring array. This method divides the accumulated
-    results by the number of statistically independent events. Hence,
-    in order to get fractions of the energy imparted into the phantom,
-    we have to multiply by this number (available in the
-    \link EGS_SimpleApplication::last_case last_case \endlink
-    data member) and divide by the total energy that entered the phantom
-    (available in the \link EGS_SimpleApplication::Etot
-     Etot \endlink data member). Our
-    \c reportResults tfunction herefore looks like this
-    \skipline void reportResults()
-    \until };
-    and completes the implementation of the Tutor2_Application class.
-
-    The main program of the tutor2pp application is very simple, if fact we
-    use the defined macros APP_MAIN or APP_LIB, from
-    \ref EGS_SimpleApplication.
-    APP_MAIN creates the application object, runs a simulation, outputs
-    results and finishes. APP_LIB just creates and returns the application
-    object.
-    \skipline #ifdef BUILD_APP_LIB
-    \until #endif
-
-    That's all. With 35 lines of code (excluding comments and blank lines)
-    we have implemented a complete EGSnrc C++ application, which provides
-    much more functionality than the original \c tutor2 mortran application
-    (97 lines of code excluding comments and blank lines).
-
-    \dontinclude tutor2pp/Makefile
-    We now need a Makefile for the \c tutor2pp application. We include
-    the general EGSnrc config file, the general egspp config file and
-    the config file describing our C++ compiler:
-    \skipline EGS_CONFIG
-    \until egspp_
-    We then set the name of our user code
-    \skipline USER
-    We will be using the generic Makefile for C++ applications provided
-    with the distribution (see below). This generic Makefile offers the
-    possibility to add extra files with mortran macros and mortran code
-    when building the EGSnrc mortran functions and subroutines by
-    setting the \c EGSPP_USER_MACROS make variable. In our case we
-    don't use this capability and therefore leave \c EGSPP_USER_MACROS empty:
-    \skipline EGSPP_USER_MACROS
-    We also need to specify the base class from which our application
-    class was derived:
-    \skipline EGS_BASE
-    and add dependences for the tutor2pp.cpp file. In our case the only
-    additional dependence is the egs_scoring.h file, which we include
-    in order to get access to the definition of the EGS_ScoringArray class:
-    \skipline other_dep
-    The make variable \c ABS_EGSPP is defined in \c egspp1.spec
-    to be the absolute path to the egspp sources (\c \$HEN_HOUSE/egs++/)
-    Finally we simply include the generic Makefile for EGSnrc C++
-    applications, which provides rules for compiling the various sources
-    and building the application:
-    \skipline include
-
-    We now can build our application by simply going to the \c tutor2pp
-    directory and typing \c make. The resulting executable will be
-    called \c tutor2pp (\c tutor2pp.exe on Windows) and will be put
-    into the \c bin/\$my_machine subdirectory of \c \$EGS_HOME.
-
-    To run the application, we simply type
-    \verbatim
-    tutor2pp -i test1 -p tutor_data
-    \endverbatim
-    with \c test1 being the name of the input file without extension
-    (\c test1.egsinp is an example input file provided with the
-    distribution) and \c tutor_data the name of the PEGS data file
-    for the media of the geometry defined in \c test1. Alternatively,
-    we can use the \c egs_gui graphical user interface.
-    We can also set the number of histories to be run on the command line
-    with the \c -n option:
-    \verbatim
-    tutor2pp -i test1 -p tutor_data -n 1000000
-    \endverbatim
-    (all applications derived from EGS_SimpleApplication automatically
-     understand the \c -n option).
-
-    \anchor a_source
-    Here is the complete source code of the tutor2pp application:
-
-*/

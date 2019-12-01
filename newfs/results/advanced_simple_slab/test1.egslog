@@ -1,0 +1,236 @@
+In EGS_Application::initSimulation()
+================================================================================
+EGSnrc version 4 for i686-pc-linux-gnu                 Sun Dec  1 20:30:02 2019
+================================================================================
+configuration...............................................corsair
+user code...................................................advanced_simple_slab
+pegs file...................................................521icru on EGS_HOME
+using host..................................................slackwarebox
+input file..................................................test1
+output file(s)..............................................test1
+================================================================================
+
+               ***************************************************
+               *                                                 *
+               *           Advnaced Simple Slab Code             *
+               *                                                 *
+               ***************************************************
+
+This is Advanced Simple Slab Code v1.0 based on EGS_AdvancedApplication v1.0
+
+In initCrossSections(): spin effects = 1
+Property Photon cross-sections output: 0
+Property Photonuclear attenuation: 0
+Property Bound Compton scattering: 3
+Property Radiative Compton corrections: 0
+Property Rayleigh scattering: 1
+Property Atomic relaxations: 1
+Property Photoelectron angular sampling: 1
+Property Spin effects: 1
+Property Triplet production: 0
+Property Brems cross sections: 0
+Property Brems angular sampling: 1
+Property Pair cross sections: 0
+Property Pair angular sampling: 1
+Property Electron-step algorithm: 0
+Property Boundary crossing algorithm: 0
+ ===> Photonuclear flag:   0
+ RAYLEIGH OPTION REQUESTED FOR MEDIUM NUMBER  1
+
+
+***************** Warning: 
+ IN HATCH: REQUESTED RAYLEIGH OPTION FOR MEDIUM  1
+ BUT RAYLEIGH DATA NOT INCLUDED IN PEGS4 FILE.
+
+(Re)-initializing photon cross sections with files from the series: xcom
+
+ Compton cross sections: default
+ Using Compton cross sections from /home/ljubak/EGSnrc/HEN_HOUSE/data/compton_sigma.data
+ Working on medium   1 ... 
+  ->  100 atomic ff values computed!
+      preparing data for Rayleigh sampling ... done
+
+OK
+
+Reading screened Rutherford MS data ...............  done 
+
+
+Reading spin data base from /home/ljubak/EGSnrc/HEN_HOUSE/data/spinms.data
+EGSnrc spin data, version 2.0   
+Data generated on a machine with 1234 endianess
+The endianess of this CPU is 1234
+Ranges:      1.00   100.00  0.30054  1.00000
+
+
+  medium    1 .....................  done
+  
+  Medium            1  sige =    10.217120227823692        9.8723783658361359       monotone =  F F
+  
+  Initializing tmxs for estepe =   0.25000000000000000       and ximax =   0.50000000000000000     
+  
+
+Bound Compton scattering requested, reading data ......  Done
+
+ Initializing Bound Compton scattering ......
+ Medium   1 has  21 shells: 
+   1  861   1  0.02740 0.141E+01    67.416
+   2  862   2  0.02740 0.503E+01    11.681
+   3  863   3  0.02740 0.247E+01    11.136
+   4  864   4  0.05479 0.271E+01     9.881
+   5  865   5  0.02740 0.111E+02     2.708
+   6  866   6  0.02740 0.652E+01     2.469
+   7  867   7  0.05479 0.696E+01     2.194
+   8  868   8  0.05479 0.452E+01     1.793
+   9  869   9  0.08219 0.462E+01     1.735
+  10  870  10  0.02740 0.234E+02     0.563
+  11  871  11  0.02740 0.148E+02     0.462
+  12  872  12  0.05479 0.158E+02     0.402
+  13  873  13  0.05479 0.121E+02     0.239
+  14  874  14  0.08219 0.124E+02     0.227
+  15  875  15  0.02740 0.607E+02     0.068
+  16  876  16  0.02740 0.414E+02     0.042
+  17  877  17  0.05479 0.444E+02     0.034
+  18  878  18  0.08219 0.117E+02     0.025
+  19  879  19  0.10959 0.118E+02     0.023
+  20  880  20  0.05479 0.944E+02     0.008
+  21  881  21  0.01370 0.221E+03     0.008
+ ...... Done.
+
+Output from subroutine EDGSET:
+==============================
+ Atomic relaxations requested! 
+
+ Reading simplified photo-absorption data ..... Done
+
+ Reading simplified relaxation data ..... Done
+
+ Reading parametrized XCOM photo cross section data ..... Done
+
+ Reading EADL relaxation data ......
+  Z =  73 has 22 shells
+ ...... Done.
+
+ EGSnrc SUCCESSFULLY 'HATCHED' FOR ONE MEDIUM.
+
+
+The following media are defined:
+================================
+
+  0  TA521ICRU                AE= 0.5210 AP= 0.0100 0
+
+
+Transport parameter and cross section options:
+==============================================
+Photon cross sections                             xcom            
+Compton cross sections                            default         
+Global Pcut                                       0.1
+Pair cross sections                               BH
+Pair angular sampling                             Simple
+Triplet production                                Off
+Bound Compton scattering                          norej
+Radiative Compton corrections                     Off
+Rayleigh scattering                               On
+Atomic relaxations                                eadl
+Photoelectron angular sampling                    On
+Photonuclear attenuation                          Off
+Photonuclear cross sections                       default         
+
+Global Ecut                                       1.5
+Brems cross sections                              BH
+Brems angular sampling                            KM
+Spin effects                                      On
+Electron Impact Ionization                        Off             
+Global Smax                                       1e+10
+ESTEPE                                            0.25
+Ximax                                             0.5
+Boundary crossing algorithm                       Exact
+Skin depth for BCA                                3
+Electron-step algorithm                           EGSnrc
+==============================================
+
+EGS_ObjectFactory::createObjects(): the input is not of type ausgab object definition and also does not have items of this type
+
+
+======================== geometry =====================
+ type = EGS_Zplanes
+ name = slab
+ number of regions = 1
+ first plane at 0, 1 slices of 0.1 thickness
+=======================================================
+
+
+The simulation uses the following source:
+=========================================
+ Parallel beam from a shape of type point with monoenergetic 6 MeV, photons
+
+
+Random number generator:
+============================================
+  type                = ranmar
+  high resolution     = no
+  initial seeds       = 33 97
+  numbers used so far = 0
+
+
+
+
+Starting simulation on Sun Dec  1 20:30:02 2019
+
+    Fresh simulation of 1000 histories
+
+
+
+Running 1000 histories
+
+  Batch             CPU time        Result   Uncertainty(%)
+==========================================================
+      1                0.00     0.00727513          88.95
+      2                0.00     0.00363757          89.01
+      3                0.01     0.00350627          64.53
+      4                0.02     0.00343578          52.14
+      5                0.02     0.00274862          52.17
+      6                0.03     0.00325077          39.61
+      7                0.03     0.00384091          34.39
+      8                0.03     0.00364585          32.20
+      9                0.03      0.0038009          29.32
+     10                0.04     0.00359114          28.13
+
+
+Finished simulation
+
+Total cpu time for this run:            0.04 (sec.) 0.0000(hours)
+Histories per hour:                     9e+07         
+Number of random numbers used:          35472         
+Number of electron CH steps:            1347          
+Number of all electron steps:           1445          
+
+
+ last case = 1000 Etot = 6000
+NP history: 
+101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 1 -1 116 117 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 157 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 -1 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 173 174 175 176 177 178 179 180 181 182 183 184 185 186 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 187 188 189 190 191 192 193 194 195 196 197 198 199 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 2 2 2 2 2 2 2 2 2 2 2 2 -2 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 280 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 281 282 283 284 285 286 287 288 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 289 290 291 292 293 294 295 296 297 298 299 300 301 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 327 328 329 330 331 332 333 334 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 335 336 337 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 338 339 340 341 342 343 344 345 346 347 348 349 350 351 352 353 354 355 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 356 357 358 359 360 361 362 363 364 365 366 367 368 369 370 371 372 373 374 375 376 377 378 379 380 381 382 383 384 385 386 387 388 389 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 390 391 392 393 394 395 396 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 397 398 399 2 2 2 2 2 2 2 2 2 2 -2 400 401 402 403 404 405 406 407 408 409 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 410 411 412 413 414 415 416 417 418 419 420 421 422 423 1 1 1 1 1 1 1 1 1 1 1 -1 424 425 426 427 428 429 430 431 432 433 434 435 436 437 438 439 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 440 441 442 443 444 445 446 447 448 449 450 451 452 453 454 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 455 456 457 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 458 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 459 460 461 462 463 464 465 466 467 468 2 2 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 469 470 471 472 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 -1 473 474 475 476 477 478 479 480 481 482 483 484 485 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 486 487 488 489 490 491 492 493 494 495 496 497 498 499 500 1 1 1 1 1 1 1 -1 501 502 503 504 505 506 507 508 509 510 511 512 513 514 515 516 517 518 519 520 521 522 523 524 525 526 527 528 529 530 531 532 533 534 535 536 537 538 539 540 541 542 543 544 545 546 547 548 549 550 551 552 553 554 555 556 557 558 559 560 561 562 563 564 565 566 567 568 569 570 571 572 573 574 575 576 577 578 579 580 581 582 583 584 585 586 587 588 589 590 591 592 593 594 595 596 597 598 599 2 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 600 601 602 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 603 604 605 606 607 608 609 610 611 612 613 614 615 616 2 2 2 2 2 2 2 2 2 -2 617 618 619 620 621 622 623 624 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 625 626 627 628 629 630 631 632 633 634 635 636 637 638 639 640 641 642 643 644 645 646 647 648 649 650 651 652 653 654 655 656 657 658 659 660 661 662 663 664 665 666 667 668 669 670 671 672 673 674 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 675 676 677 678 679 680 681 682 683 684 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 685 686 2 2 2 2 2 2 2 2 -2 687 688 689 2 2 2 2 2 -2 690 691 692 693 694 695 696 697 698 699 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 700 701 702 703 -1 1 1 1 1 1 1 1 -1 704 705 706 707 708 709 710 711 712 713 714 715 716 717 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 718 719 720 721 722 723 724 725 726 727 728 729 730 731 732 733 734 735 736 737 738 739 740 741 742 743 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 744 745 746 747 748 749 750 751 752 753 754 755 756 757 758 759 760 761 762 763 764 765 766 767 768 769 770 771 2 2 2 2 2 2 2 2 2 2 2 -2 772 773 774 775 776 777 778 779 780 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 781 782 783 784 785 786 787 788 789 790 791 792 793 794 795 796 797 798 799 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 800 801 802 803 804 805 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 806 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 807 808 809 810 811 812 813 814 815 816 817 818 819 820 821 822 823 824 825 826 827 828 829 830 831 832 833 834 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 835 836 837 838 839 840 841 842 843 844 845 846 847 848 849 850 851 852 853 854 855 856 857 858 859 860 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 -3 2 2 2 2 2 2 2 2 2 -2 861 862 863 864 865 866 867 868 869 870 871 872 873 874 875 876 877 878 879 880 881 882 883 884 885 886 887 888 889 890 891 892 893 894 895 896 897 898 899 900 901 902 903 904 905 906 907 908 909 910 911 912 913 914 915 916 917 918 919 920 921 922 923 924 925 926 927 928 929 930 931 932 2 2 2 2 2 2 2 2 2 2 -2 933 934 935 936 937 938 939 940 941 942 943 944 945 946 2 2 2 2 2 2 2 2 2 2 2 -2 947 948 949 950 951 952 953 954 955 956 957 958 959 960 961 962 963 2 2 2 2 2 2 -2 964 965 966 967 968 969 970 2 2 2 2 2 2 2 2 -2 971 972 973 974 975 976 977 978 979 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 980 981 982 983 984 985 986 987 988 989 990 991 992 993 994 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 995 996 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 997 998 999 1000 1001 1002 1003 1004 1005 1006 1007 1008 1009 1010 1011 1012 1013 1014 1015 1016 1017 1018 1019 1020 1021 1022 1023 1024 1025 1026 1027 1028 1029 1030 1031 1032 1033 1034 1035 1036 1037 1038 1039 1040 1041 1042 1043 1044 1045 1046 1047 1048 1049 1050 1051 1052 1053 1054 1055 1056 1057 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 1058 1059 1060 1061 1062 1063 1064 1065 1066 1067 1068 1069 1070 1071 1072 1073 1074 1075 1076 1077 1078 1079 1080 1081 1082 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 -1 1083 1084 1085 1086 1087 1088 1089 1090 1091 2 2 2 2 2 2 2 2 2 -2 1 1 1 1 1 1 1 -1 1092 1093 1094 1095 1096 1097 1098 1099 1100 
+
+
+
+======================================================
+ Energy fractions
+======================================================
+The first and last items in the following list of energy fractions are the reflected and transmitted energy, respectively. These two values are only meaningful if the source is directed in the positive z-direction. The remaining values are the deposited energy fractions in the regions of the geometry, but notice that the identifying index is the region number offset by 1 (ir+1).
+
+ir+1 | Reflected, deposited, or transmitted energy fraction for 1000 particles:
+
+  0  3.640708e-03 +/- 1.011155e-03  
+  1  2.759257e-02 +/- 4.184005e-03  
+  2  9.687667e-01 +/- 4.703255e-03  
+
+
+================================================================================
+Finished simulation
+
+  Elapsed time:                    0.7 s (  0.000 h)
+  CPU time:                        0.4 s (  0.000 h)
+  Ratio:                          1.969
+
+
+End of run                                             Sun Dec  1 20:30:03 2019
+================================================================================
+finishSimulation(advanced_simple_slab) 0
