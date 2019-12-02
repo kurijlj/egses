@@ -98,8 +98,7 @@ void EGS_CrashDummyApp::setElasticScatteringScaling(
         if(!error) {
             int medium_index = (int) parameters[0]; ++medium_index;
             egsInformation(info_message.c_str(), medium_index, parameters[1]);
-        }
-        else {
+        } else {
             egsInformation("Error %d while reading items\n");
         }
         delete scale_input;

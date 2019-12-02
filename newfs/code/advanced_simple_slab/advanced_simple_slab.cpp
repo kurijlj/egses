@@ -119,7 +119,10 @@ void AdvancedSimpleSlabCode::setElasticScatteringScaling(
         option +
         string(" of medium %d with %g\n");
 
+    egsInformation("Reading scoring parameters ...\n\n");
+
     while((scale_input = input_options->takeInputItem(input_item))) {
+        egsInformation("Cycling through items ...\n");
         vector<EGS_Float> parameters;
         int error = scale_input->getInput(input_item, parameters);
         if(!error) {
@@ -134,6 +137,8 @@ void AdvancedSimpleSlabCode::setElasticScatteringScaling(
                     &medium_index,
                     &parameters[1]);
             }
+        } else {
+            egsInformation("Error %d while reading items\n");
         }
         delete scale_input;
     }
