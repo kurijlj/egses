@@ -50,13 +50,16 @@ int AdvancedSimpleSlabCode::initScoring() {
     // Initialize with no russian roulette.
     the_egsvr->i_do_rr = 1;
 
+    // We need to track particles after the step.
+    setAusgabCall(AfterTransport, true);
+
     // Retrieve scoring options from an input file.
     EGS_Input *options = input->takeInputItem("scoring options");
 
     // Process user options supplied in a *.egsinput file.
     if(options) {
 
-        // Scale elastic scattering.
+        // If set by user scale elastic scattering.
         setElasticScatteringScaling(options, 'x');
         setElasticScatteringScaling(options, 'b');
 
@@ -64,6 +67,7 @@ int AdvancedSimpleSlabCode::initScoring() {
         choices.push_back("no");
         choices.push_back("yes");
 
+        // Use electron deflection in brems events if set by user.
         deflect_brems = options->getInput(
             "deflect electron after brems",
             choices,
@@ -74,7 +78,8 @@ int AdvancedSimpleSlabCode::initScoring() {
             setAusgabCall(AfterBrems, true);
         }
 
-        int n_rr;
+        // If set use russian roulette.
+        int n_rr = 1; // Initialize to no russian roulette.
         if(!options->getInput("Russian Roulette", n_rr) && n_rr > 1) {
             the_egsvr->i_do_rr = n_rr;
             setAusgabCall(BeforeBrems, true);
@@ -88,6 +93,7 @@ int AdvancedSimpleSlabCode::initScoring() {
                 n_rr);
         }
 
+        // We do not need options anymore so clean up.
         delete options;
     }
 
@@ -145,12 +151,16 @@ void AdvancedSimpleSlabCode::setElasticScatteringScaling(
 }
 
 int AdvancedSimpleSlabCode::ausgab(int iarg) {
+
+    // Get stack pointer of the current particle.
+    int np = the_stack->np - 1;
+
     if(iarg <= 4) {
-        int np = the_stack->np - 1;
 
         // Note: ir is the region number+1
         int ir = the_stack->ir[np] - 1;
 
+        // We also need particle charge.
         int iq = the_stack->iq[np];
 
         // If the particle is outside the geometry and headed in the positive
@@ -162,20 +172,37 @@ int AdvancedSimpleSlabCode::ausgab(int iarg) {
             ir = nreg + 1;
         }
 
+        // We score only particles that deposit ebergy in the medium. If
+        // deposited energy or statistical weight of particle is equal to zero
+        // we don't score it.
         EGS_Float aux = the_epcont->edep * the_stack->wt[np];
         if(aux > 0) {
             score->score(ir, aux);
         }
 
+        // Particle is at the back of a slab, so we need to score its fluence as
+        // a function of the radial distance from z axis.
         if(ir == nreg + 1) {
+
+            // Choose proper scoring array based on particle charge.
             EGS_ScoringArray *flu = the_stack->iq[np] ? eflu : gflu;
+
+            // Calculate parrticle radial distance from z axis.
             EGS_Float r2 =
                 (the_stack->x[np] * the_stack->x[np]) +
                 (the_stack->y[np] * the_stack->y[np]);
 
+            // Put particle in a corresponding energy bin according to particle
+            // radial position.
             if(r2 < 400) {
+
+                // Calculate bin.
                 int bin = (int) (sqrt(r2) * 10.0);
 
+                // Note exactly sure what are we scoring here?
+                // It seems that we are dividing statistical weight of
+                // a particle with its speed along z axis, and then we
+                // score that!?
                 aux = the_stack->wt[np] / the_stack->w[np];
                 if(aux > 0) {
                     flu->score(bin, aux);
@@ -183,25 +210,30 @@ int AdvancedSimpleSlabCode::ausgab(int iarg) {
             }
         }
 
+        // If we have new history score history number incremented by 100.
         if(prev_case != current_case) {
             prev_case = current_case;
             np_hist.push_back(prev_case + 100);
         }
 
-        if(iq && np_map[np] == 1 && iarg) {
+        // If we have a charged particle, it is not BeforeTransport and we are
+        // already tracking it, now the particle history is terminated  and we
+        // need to stop tracking it and report that particle is terminated.
+        //
+        // Else it is new particle on the stack or one we are already tracking
+        // so score it.
+        if(iq && iarg != 0 && np_map[np] == 1) {
             np_map[np] = 0;
             np_hist.push_back(-1 * ( np + 1 ));
-        }
-        else if (iq && iarg == 0) {
-            np_map[np] = 1;
+        } else if (iq && iarg == 0) {
+            if(!np_map[np]) np_map[np] = 1;
             np_hist.push_back((np + 1));
         }
 
         return 0;
     }
 
-    int np = the_stack->np - 1;
-
+    // Not  sure what is going on here.
     if(iarg == BeforeBrems ||
             iarg == BeforeAnnihRest ||
             iarg == BeforeAnnihFlight &&
@@ -213,6 +245,7 @@ int AdvancedSimpleSlabCode::ausgab(int iarg) {
         return 0;
     }
 
+    // Handle electron deflection in brems events.
     if(iarg == AfterBrems && deflect_brems) {
         EGS_Vector u(
             the_stack->u[np-1],
@@ -234,6 +267,7 @@ int AdvancedSimpleSlabCode::ausgab(int iarg) {
         }
     }
 
+    // Not  sure what is going on here.
     if(iarg == AfterBrems ||
        iarg == AfterAnnihRest ||
        iarg == AfterAnnihFlight) {
@@ -263,6 +297,9 @@ int AdvancedSimpleSlabCode::outputData() {
     if(!eflu->storeState(*data_out)) return 301;
     if(!gflu->storeState(*data_out)) return 302;
 
+    // Not sure if this is good way to do it!?
+    if(!np_hist->storeState(*data_out)) return 303;
+
     return 0;
 }
 
@@ -280,6 +317,10 @@ int AdvancedSimpleSlabCode::readData() {
     if(!score->setState(*data_in)) return 101;
     if(!eflu->setState(*data_in)) return 301;
     if(!gflu->setState(*data_in)) return 302;
+
+    // Not sure if this is good way to do it!?
+    if(!np_hist->setState(*data_out)) return 303;
+
     return 0;
 }
 
@@ -291,6 +332,9 @@ void AdvancedSimpleSlabCode::resetCounter() {
     score->reset();
     eflu->reset();
     gflu->reset();
+
+    // I guess I should do the same for the np_hist scoring object.
+    np_hist->reset();
 }
 
 int AdvancedSimpleSlabCode::addState(istream &data) {
@@ -311,31 +355,56 @@ int AdvancedSimpleSlabCode::addState(istream &data) {
     (*eflu) += tmp1;
     if(!tmp1.setState(data)) return 302;
     (*gflu) += tmp1;
+
+    // The same here as for resetCounter().
+    if(!tmp1.setState(data)) return 303;
+    (*np_hist) += tmp1;
+
     return 0;
 }
 
 void AdvancedSimpleSlabCode::outputResults() {
-    egsInformation(
-        "\n\n last case = %d Etot = %g\n",
-        (int)current_case, Etot);
+
+    // Calculate value to normalize to.
     double norm = ((double)current_case) / Etot;
-    egsInformation("NP history: \n");
-    for(int item : np_hist) {
-        cout << item << " ";
-    }
-    egsInformation("\n\n");
-    egsInformation("\n\n======================================================\n");
+
+    // Print report for total values.
+    egsInformation(
+        "\n\n last case = %d\tEtot = %g\tnorm = %g\n\n\n\n",
+        (int)current_case,
+        Etot,
+        norm);
+
+    egsInformation("==========================================================="
+        "=====================\n");
     egsInformation(" Energy fractions\n");
-    egsInformation("======================================================\n");
-    egsInformation("The first and last items in the following list of energy fractions are the reflected and transmitted energy, respectively. These two values are only meaningful if the source is directed in the positive z-direction. The remaining values are the deposited energy fractions in the regions of the geometry, but notice that the identifying index is the region number offset by 1 (ir+1).");
+    egsInformation("==========================================================="
+        "=====================\n");
+    egsInformation(
+"The first and last items in the following list of energy fractions are the\n"
+"reflected and transmitted energy, respectively. These two values are only\n"
+"meaningful if the source is directed in the positive z-direction. The\n"
+"remaining values are the deposited energy fractions in the regions of\n"
+"the geometry, but notice that the identifying index is the region number\n"
+"offset by 1 (ir+1).");
     score->reportResults(
         norm,
         "ir+1 | Reflected, deposited, or transmitted energy fraction",
         false,
         "  %d  %12.6e +/- %12.6e %c\n");
+
+    egsInformation("==========================================================="
+        "=====================\n");
+    egsInformation(" NP history: \n");
+    egsInformation("==========================================================="
+        "=====================\n");
+    for(int item : np_hist) {
+        cout << item << " ";
+    }
+
+    /*
     EGS_Float Rmax = 20;
     EGS_Float dr = Rmax / 200;
-    /*
     egsInformation("\n\n Electron/Photon fluence at back of geometry as a function of radial distance\n"
                         "============================================================================\n");
     for(int j=0; j<200; ++j) {
@@ -367,6 +436,7 @@ int AdvancedSimpleSlabCode::startNewShower() {
         score->setHistory(current_case);
         eflu->setHistory(current_case);
         gflu->setHistory(current_case);
+        np_hist->setHistory(current_case);
         last_case = current_case;
     }
     current_weight = p.wt;

@@ -95,7 +95,7 @@
 #        distribution.
 #
 :start scoring options:
-    scale xcc 0 1.5
+    scale xcc = 0 1.5
 :stop scoring options:
 
 :start ausgab object definition:
