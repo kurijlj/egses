@@ -297,9 +297,6 @@ int AdvancedSimpleSlabCode::outputData() {
     if(!eflu->storeState(*data_out)) return 301;
     if(!gflu->storeState(*data_out)) return 302;
 
-    // Not sure if this is good way to do it!?
-    if(!np_hist->storeState(*data_out)) return 303;
-
     return 0;
 }
 
@@ -318,9 +315,6 @@ int AdvancedSimpleSlabCode::readData() {
     if(!eflu->setState(*data_in)) return 301;
     if(!gflu->setState(*data_in)) return 302;
 
-    // Not sure if this is good way to do it!?
-    if(!np_hist->setState(*data_out)) return 303;
-
     return 0;
 }
 
@@ -332,9 +326,6 @@ void AdvancedSimpleSlabCode::resetCounter() {
     score->reset();
     eflu->reset();
     gflu->reset();
-
-    // I guess I should do the same for the np_hist scoring object.
-    np_hist->reset();
 }
 
 int AdvancedSimpleSlabCode::addState(istream &data) {
@@ -355,10 +346,6 @@ int AdvancedSimpleSlabCode::addState(istream &data) {
     (*eflu) += tmp1;
     if(!tmp1.setState(data)) return 302;
     (*gflu) += tmp1;
-
-    // The same here as for resetCounter().
-    if(!tmp1.setState(data)) return 303;
-    (*np_hist) += tmp1;
 
     return 0;
 }
@@ -393,6 +380,7 @@ void AdvancedSimpleSlabCode::outputResults() {
         false,
         "  %d  %12.6e +/- %12.6e %c\n");
 
+    egsInformation("\n\n");
     egsInformation("==========================================================="
         "=====================\n");
     egsInformation(" NP history: \n");
@@ -401,6 +389,7 @@ void AdvancedSimpleSlabCode::outputResults() {
     for(int item : np_hist) {
         cout << item << " ";
     }
+    egsInformation("\n\n");
 
     /*
     EGS_Float Rmax = 20;
@@ -436,7 +425,6 @@ int AdvancedSimpleSlabCode::startNewShower() {
         score->setHistory(current_case);
         eflu->setHistory(current_case);
         gflu->setHistory(current_case);
-        np_hist->setHistory(current_case);
         last_case = current_case;
     }
     current_weight = p.wt;
