@@ -68,8 +68,8 @@ int AdvancedSimpleSlabCode::initGeometry() {
 
     EGS_Input geom_input;
     geom_input.setContentFromString (geom_spec);
-    g = EGS_BaseGeometry::createGeometry (&geom_input);
-    if (!g) {
+    geometry = EGS_BaseGeometry::createGeometry (&geom_input);
+    if (!geometry) {
         egsFatal ("Failed to construct the simulation geometry\n");
         return 1;
     }
