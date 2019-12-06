@@ -202,29 +202,6 @@ public:
     */
     int initScoring();
 
-    /*! Scale elastic scattering.
-     The following method is used to modify the elastic scattering power in one
-     or more given media. To do so, the user includes one or more lines in the
-     scoring section of the input file:
-
-        :start scoring options:
-            scale xcc = MEDIUM_INDEX SCALING_FACTOR
-        :stop scoring options:
-
-        or
-
-        :start scoring options:
-            scale bc = MEDIUM_INDEX SCALING_FACTOR
-        :stop scoring options:
-
-     The effect of this will be that both, xcc and blcc will get multiplied with
-     the provided factor, leaving the screening angle unchanged but increasing
-     the number of collisions per unit length.
-    */
-    void setElasticScatteringScaling(
-            EGS_Input *input_options,
-            const char scaling);
-
     /*! Accumulate quantities of interest at run time
      This function is called from within the electron and photon transport
      routines at 28 different occasions specified by iarg (see PIRS-701
@@ -294,6 +271,59 @@ protected:
      the history-by-history statistical analysis).
     */
     int startNewShower();
+
+    /*! Scale elastic scattering.
+     The following method is used to modify the elastic scattering power in one
+     or more given media. To do so, the user includes one or more lines in the
+     scoring section of the input file:
+
+        :start scoring options:
+            scale xcc = MEDIUM_INDEX SCALING_FACTOR
+        :stop scoring options:
+
+        or
+
+        :start scoring options:
+            scale bc = MEDIUM_INDEX SCALING_FACTOR
+        :stop scoring options:
+
+     The effect of this will be that both, xcc and blcc will get multiplied with
+     the provided factor, leaving the screening angle unchanged but increasing
+     the number of collisions per unit length.
+    */
+    void setElasticScatteringScaling(
+            EGS_Input *input_options,
+            const char scaling);
+
+    /*! Initialize the simulation geometry
+
+      The default implementation of this function initializes the
+      simulation geometry from the input provided in an input file
+      and available in the EGS_Application input object data member.
+      Returns zero if the geometry initialization is successful,
+      -1 if there is no input or 1 if the geometry construction failed.
+      The user may re-implement this function to provide their
+      own geometry initialization (e.g. a fixed geometry constructed
+      directly instead of using an input file).
+      This function is called from within the default implementation of
+      the initSimulation() function.
+    */
+    int initGeometry();
+
+    /*!Initialize the particle source
+
+      The default implementation of this function initializes the
+      particle source from the input provided in an input file
+      and available in the EGS_Application input object data member.
+      Returns zero if the source initialization is successful,
+      -1 if there is no input or 1 if the source construction failed.
+      The user may re-implement this function to provide their
+      own particle source initialization (e.g. a fixed source
+      constructed directly instead of using an input file).
+      This function is called from within the default implementation of
+      the initSimulation() function.
+    */
+    virtual int initSource();
 
 };
 

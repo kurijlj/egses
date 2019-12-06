@@ -35,6 +35,76 @@ void AdvancedSimpleSlabCode::describeUserCode() const {
     " EGS_AdvancedApplication v%s\n\n",
     egsSimplifyCVSKey(revision).c_str(),
     egsSimplifyCVSKey(base_rev_info).c_str());
+    egsInformation("\n\n");
+    describeSimulation();
+}
+
+int AdvancedSimpleSlabCode::initGeometry() {
+    string geom_spec = string (
+        ":start geometry definition:\n"
+        "   :start geometry:\n"
+        "       library = egs_planes\n"
+        "       type = EGS_Zplanes\n"
+        "       name = planes\n"
+        "       positions = 0.0 0.1 40.0\n"
+        "   :stop geometry:\n"
+        "   :start geometry:\n"
+        "       library = egs_cylinders\n"
+        "       type = EGS_ZCylinders\n"
+        "       name = cylinder\n"
+        "       radii = 20.0\n"
+        "   :stop geometry:\n"
+        "   :start geometry:\n"
+        "       name = lab\n"
+        "       library = egs_ndgeometry\n"
+        "       dimensions = planes cylinder\n"
+        "       :start media input:\n"
+        "           media = TA521ICRU AIR521ICRU\n"
+        "           set medium = 0 0\n"
+        "           set medium = 1 1\n"
+        "       :stop media input:\n"
+        "   :stop geometry:\n"
+        "   simulation geometry = lab\n"
+        ":stop geometry definition:\n");
+
+    EGS_Input geom_input;
+    geom_input.setContentFromString (geom_spec);
+    g = EGS_BaseGeometry::createGeometry (&geom_input);
+    if (!g) {
+        egsFatal ("Failed to construct the simulation geometry\n");
+        return 1;
+    }
+    return 0;
+}
+
+int AdvancedSimpleSlabCode::initSource() {
+    string source_spec = string(
+        ":start source definition:\n"
+        "   :start source:\n"
+        "       name = the_source\n"
+        "       library = egs_parallel_beam\n"
+        "       charge = 0\n"
+        "       direction = 0 0 1\n"
+        "       :start spectrum:\n"
+        "           type = monoenergetic\n"
+        "           energy = 6.0\n"
+        "       :stop spectrum:\n"
+        "       :start shape:\n"
+        "           type = point\n"
+        "           position = 0.0 0.0 0.0\n"
+        "       :stop shape:\n"
+        "   :stop source:\n"
+        "   simulation source = the_source\n"
+        ":stop source definition:\n");
+
+    EGS_Input source_input;
+    source_input.setContentFromString (source_spec);
+    source = EGS_BaseSource::createSource (&source_input);
+    if (!source) {
+        egsFatal ("Failed to construct the particle source\n");
+        return 1;
+    }
+    return 0;
 }
 
 int AdvancedSimpleSlabCode::initScoring() {
@@ -448,4 +518,13 @@ int AdvancedSimpleSlabCode::startNewShower() {
 APP_LIB(AdvancedSimpleSlabCode);
 #else
 APP_MAIN(AdvancedSimpleSlabCode);
+// Where APP_MAIN is defined in the egs_application.h as:
+//     #define APP_MAIN(app_name)
+//         int main(int argc, char **argv) {
+//             app_name app(argc,argv);
+//             int err = app.initSimulation();
+//             if( err ) return err;
+//             err = app.runSimulation();
+//             if( err < 0 ) return err;
+//             return app.finishSimulation();
 #endif
