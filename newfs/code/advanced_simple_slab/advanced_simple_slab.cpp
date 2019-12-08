@@ -296,7 +296,7 @@ int AdvancedSimpleSlabCode::ausgab(int iarg) {
             np_hist.push_back(-1 * ( np + 1 ));
         } else if (iq && iarg == 0) {
             if(!np_map[np]) np_map[np] = 1;
-            np_hist.push_back((np + 1));
+            np_hist.push_back(np + 1);
         }
 
         return 0;
