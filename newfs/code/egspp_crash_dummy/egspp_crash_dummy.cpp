@@ -178,6 +178,8 @@ int EGS_CrashDummyApp::initSource() {
 // initScoring
 int EGS_CrashDummyApp::initScoring() {
 
+    score = new EGS_ScoringArray(geometry->regions + 2);
+
     // call ausgab for all energy deposition events
     for (int call = BeforeTransport; call <= ExtraEnergy; ++call) {
         setAusgabCall((AusgabCall)call, true);
