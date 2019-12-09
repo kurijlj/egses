@@ -179,16 +179,17 @@ int EGS_CrashDummyApp::initSource() {
 int EGS_CrashDummyApp::initScoring() {
 
     // call ausgab for all energy deposition events
-    for (int call=BeforeTransport; call<=ExtraEnergy; ++call) {
+    for (int call = BeforeTransport; call <= ExtraEnergy; ++call) {
         setAusgabCall((AusgabCall)call, true);
     }
 
     // don't call ausgab for other events
-    for (int call=AfterTransport; call<UnknownCall; ++call) {
+    for (int call = AfterTransport; call < UnknownCall; ++call) {
         setAusgabCall((AusgabCall)call, false);
     }
 
     // activate individual ausgab triggers (full list in myapplication.h). e.g.,
+    setAusgabCall((AusgabCall) AfterTransport, true);
     setAusgabCall((AusgabCall) BeforeBrems, true);
     setAusgabCall((AusgabCall) AfterBrems,  true);
 
@@ -232,6 +233,12 @@ int EGS_CrashDummyApp::ausgab(int iarg) {
     int latch = the_stack->latch[np];
 
     // handle the ausgab call
+    if(4 >= iarg) {
+        EGS_Float edep = the_epcont->edep * weight;
+        if(0 < edep) {
+            score->score(region, edep);
+        }
+    }
 
     return 0;
 }

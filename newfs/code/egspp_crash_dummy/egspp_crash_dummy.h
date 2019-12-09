@@ -47,9 +47,15 @@
 #include "egs_input.h"
 
 class APP_EXPORT EGS_CrashDummyApp : public EGS_AdvancedApplication {
+    EGS_ScoringArray *score;
+
     public:
         EGS_CrashDummyApp(int argc, char **argv) :
-            EGS_AdvancedApplication(argc,argv) {}
+            EGS_AdvancedApplication(argc,argv), score(0) {}
+        ~EGS_CrashDummyApp() {
+            if(score) delete score;
+        };
+
         int initScoring();
         int ausgab(int iarg);
 
