@@ -58,5 +58,8 @@ class APP_EXPORT EGS_CrashDummyApp : public EGS_AdvancedApplication {
         void setElasticScatteringScaling(
                 EGS_Input *input_options,
                 const char scaling);
+
+    protected:
+        int initGeometry();
 };
 

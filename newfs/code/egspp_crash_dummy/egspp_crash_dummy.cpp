@@ -105,6 +105,45 @@ void EGS_CrashDummyApp::setElasticScatteringScaling(
     }
 }
 
+// initGeometry
+int EGS_CrashDummyApp::initGeometry() {
+    string geom_spec = string (
+        ":start geometry definition:\n"
+        "   :start geometry:\n"
+        "       library = egs_planes\n"
+        "       type = EGS_Zplanes\n"
+        "       name = planes\n"
+        "       positions = 0.0 0.1 40.0\n"
+        "   :stop geometry:\n"
+        "   :start geometry:\n"
+        "       library = egs_cylinders\n"
+        "       type = EGS_ZCylinders\n"
+        "       name = cylinder\n"
+        "       radii = 20.0\n"
+        "   :stop geometry:\n"
+        "   :start geometry:\n"
+        "       name = lab\n"
+        "       library = egs_ndgeometry\n"
+        "       dimensions = planes cylinder\n"
+        "       :start media input:\n"
+        "           media = TA521ICRU AIR521ICRU\n"
+        "           set medium = 0 0\n"
+        "           set medium = 1 1\n"
+        "       :stop media input:\n"
+        "   :stop geometry:\n"
+        "   simulation geometry = lab\n"
+        ":stop geometry definition:\n");
+
+    EGS_Input geom_input;
+    geom_input.setContentFromString (geom_spec);
+    geometry = EGS_BaseGeometry::createGeometry (&geom_input);
+    if (!geometry) {
+        egsFatal ("Failed to construct the simulation geometry\n");
+        return 1;
+    }
+    return 0;
+}
+
 // initScoring
 int EGS_CrashDummyApp::initScoring() {
 
@@ -170,8 +209,23 @@ int EGS_CrashDummyApp::ausgab(int iarg) {
 }
 
 int main(int argc, char **argv) {
-    EGS_CrashDummyApp test_code(argc, argv);
-    test_code.initScoring();
 
-    return EXIT_SUCCESS;
+    int r = EXIT_SUCCESS;
+    EGS_CrashDummyApp test_code(argc, argv);
+
+    //r = test_code.initScoring();
+    r = test_code.initSimulation();
+    if(r) {
+        return r;
+    }
+    r = test_code.runSimulation();
+    if(r) {
+        return r;
+    }
+    r = test_code.finishSimulation();
+    if(r) {
+        return r;
+    }
+
+    return r;
 }
