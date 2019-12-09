@@ -144,11 +144,39 @@ int EGS_CrashDummyApp::initGeometry() {
     return 0;
 }
 
+// initSource
+int EGS_CrashDummyApp::initSource() {
+    string source_spec = string(
+        ":start source definition:\n"
+        "   :start source:\n"
+        "       name = the_source\n"
+        "       library = egs_parallel_beam\n"
+        "       charge = 0\n"
+        "       direction = 0 0 1\n"
+        "       :start spectrum:\n"
+        "           type = monoenergetic\n"
+        "           energy = 6.0\n"
+        "       :stop spectrum:\n"
+        "       :start shape:\n"
+        "           type = point\n"
+        "           position = 0.0 0.0 0.0\n"
+        "       :stop shape:\n"
+        "   :stop source:\n"
+        "   simulation source = the_source\n"
+        ":stop source definition:\n");
+
+    EGS_Input source_input;
+    source_input.setContentFromString (source_spec);
+    source = EGS_BaseSource::createSource (&source_input);
+    if (!source) {
+        egsFatal ("Failed to construct the particle source\n");
+        return 1;
+    }
+    return 0;
+}
+
 // initScoring
 int EGS_CrashDummyApp::initScoring() {
-
-    describeUserCode();
-    egsInformation("Initializing ...\n\n");
 
     // call ausgab for all energy deposition events
     for (int call=BeforeTransport; call<=ExtraEnergy; ++call) {
