@@ -41,11 +41,16 @@
 
 #include "egspp_crash_dummy.h"
 #include <cstdlib>
+#include <fstream> // required by ofstream
+#include <string>
 #include <vector>
 #include "egs_advanced_application.h"
 #include "egs_interface2.h"
 #include "egs_scoring.h"
 #include "egs_input.h"
+#include "egs_rndm.h"
+#include "egs_run_control.h"
+#include "egs_ausgab_object.h"
 
 // describeUserCode
 void EGS_CrashDummyApp::describeUserCode() const {
@@ -239,7 +244,51 @@ int EGS_CrashDummyApp::ausgab(int iarg) {
     if(4 >= iarg) {
         EGS_Float edep = the_epcont->edep * weight;
         if(0.0 < edep) {
-            //score->score(region, edep);
+            score->score(region, edep);
+        }
+    }
+
+    return 0;
+}
+
+int EGS_CrashDummyApp::outputData() {
+
+    if (data_out) {
+        delete data_out;
+    }
+
+    std::string ofile = constructIOFileName(".egsdat", true);
+
+    data_out = new std::ofstream(ofile.c_str(), std::ofstream::out);
+
+    if (!(*data_out)) {
+        egsWarning(
+            "EGS_Application::outputData: failed to open %s for writing\n",
+            ofile.c_str());
+        return 1;
+    }
+
+    if (!run->storeState(*data_out)) {
+        return 2;
+    }
+
+    if (!egsStoreI64(*data_out, current_case)) {
+        return 3;
+    }
+
+    (*data_out) << endl;
+
+    if (!rndm->storeState(*data_out)) {
+        return 4;
+    }
+
+    if (!source->storeState(*data_out)) {
+        return 5;
+    }
+
+    for (int j=0; j<a_objects_list.size(); ++j) {
+        if (!a_objects_list[j]->storeState(*data_out)) {
+            return 6;
         }
     }
 

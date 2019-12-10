@@ -60,6 +60,7 @@ class APP_EXPORT EGS_CrashDummyApp : public EGS_AdvancedApplication {
 
         int initScoring();
         int ausgab(int iarg);
+        int outputData();
 
     private:
         void describeUserCode() const;
