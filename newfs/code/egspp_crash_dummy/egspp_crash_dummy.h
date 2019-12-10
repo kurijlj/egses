@@ -44,6 +44,7 @@
 
 #include "egs_advanced_application.h"
 #include "egs_interface2.h"
+#include "egs_scoring.h"
 #include "egs_input.h"
 
 class APP_EXPORT EGS_CrashDummyApp : public EGS_AdvancedApplication {

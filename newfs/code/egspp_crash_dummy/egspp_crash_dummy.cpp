@@ -44,6 +44,7 @@
 #include <vector>
 #include "egs_advanced_application.h"
 #include "egs_interface2.h"
+#include "egs_scoring.h"
 #include "egs_input.h"
 
 // describeUserCode
@@ -238,7 +239,7 @@ int EGS_CrashDummyApp::ausgab(int iarg) {
     if(4 >= iarg) {
         EGS_Float edep = the_epcont->edep * weight;
         if(0.0 < edep) {
-            score->score(region, edep);
+            //score->score(region, edep);
         }
     }
 
