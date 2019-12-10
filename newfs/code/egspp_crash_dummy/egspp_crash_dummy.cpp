@@ -178,7 +178,7 @@ int EGS_CrashDummyApp::initSource() {
 // initScoring
 int EGS_CrashDummyApp::initScoring() {
 
-    score = new EGS_ScoringArray(geometry->regions + 2);
+    score = new EGS_ScoringArray(geometry->regions() + 2);
 
     // call ausgab for all energy deposition events
     for (int call = BeforeTransport; call <= ExtraEnergy; ++call) {
@@ -237,7 +237,7 @@ int EGS_CrashDummyApp::ausgab(int iarg) {
     // handle the ausgab call
     if(4 >= iarg) {
         EGS_Float edep = the_epcont->edep * weight;
-        if(0 < edep) {
+        if(0.0 < edep) {
             score->score(region, edep);
         }
     }
