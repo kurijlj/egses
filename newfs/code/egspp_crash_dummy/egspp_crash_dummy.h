@@ -71,5 +71,5 @@ class APP_EXPORT EGS_CrashDummyApp : public EGS_AdvancedApplication {
     protected:
         int initGeometry();
         int initSource();
+        int startNewShower();
 };
-

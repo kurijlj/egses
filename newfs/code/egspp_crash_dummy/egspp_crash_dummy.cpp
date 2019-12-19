@@ -181,6 +181,15 @@ int EGS_CrashDummyApp::initSource() {
     return 0;
 }
 
+// startNewShower
+int EGS_CrashDummyApp::startNewShower() {
+    if(current_case != last_case) {
+        score->setHistory(current_case);
+        last_case = current_case;
+    }
+    return 0;
+}
+
 // initScoring
 int EGS_CrashDummyApp::initScoring() {
 
@@ -224,7 +233,8 @@ int EGS_CrashDummyApp::ausgab(int iarg) {
     // stack index variables
     int np     = the_stack->np - 1;
     int npold  = the_stack->npold - 1;
-    int region = the_stack->ir[np] - 2;
+    //int region = the_stack->ir[np] - 2;
+    unsigned short region = the_stack->ir[np] - 1;
 
     // stack phase space variables
     int iq        = the_stack->iq[np];
