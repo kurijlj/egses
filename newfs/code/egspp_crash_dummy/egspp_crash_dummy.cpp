@@ -261,49 +261,49 @@ int EGS_CrashDummyApp::ausgab(int iarg) {
     return 0;
 }
 
-int EGS_CrashDummyApp::outputData() {
-
-    if (data_out) {
-        delete data_out;
-    }
-
-    std::string ofile = constructIOFileName(".egsdat", true);
-
-    data_out = new std::ofstream(ofile.c_str(), std::ofstream::out);
-
-    if (!(*data_out)) {
-        egsWarning(
-            "EGS_Application::outputData: failed to open %s for writing\n",
-            ofile.c_str());
-        return 1;
-    }
-
-    if (!run->storeState(*data_out)) {
-        return 2;
-    }
-
-    if (!egsStoreI64(*data_out, current_case)) {
-        return 3;
-    }
-
-    (*data_out) << endl;
-
-    if (!rndm->storeState(*data_out)) {
-        return 4;
-    }
-
-    if (!source->storeState(*data_out)) {
-        return 5;
-    }
-
-    for (int j=0; j<a_objects_list.size(); ++j) {
-        if (!a_objects_list[j]->storeState(*data_out)) {
-            return 6;
-        }
-    }
-
-    return 0;
-}
+//int EGS_CrashDummyApp::outputData() {
+//
+//    if (data_out) {
+//        delete data_out;
+//    }
+//
+//    std::string ofile = constructIOFileName(".egsdat", true);
+//
+//    data_out = new std::ofstream(ofile.c_str(), std::ofstream::out);
+//
+//    if (!(*data_out)) {
+//        egsWarning(
+//            "EGS_Application::outputData: failed to open %s for writing\n",
+//            ofile.c_str());
+//        return 1;
+//    }
+//
+//    if (!run->storeState(*data_out)) {
+//        return 2;
+//    }
+//
+//    if (!egsStoreI64(*data_out, current_case)) {
+//        return 3;
+//    }
+//
+//    (*data_out) << endl;
+//
+//    if (!rndm->storeState(*data_out)) {
+//        return 4;
+//    }
+//
+//    if (!source->storeState(*data_out)) {
+//        return 5;
+//    }
+//
+//    for (unsigned int j=0; j<a_objects_list.size(); ++j) {
+//        if (!a_objects_list[j]->storeState(*data_out)) {
+//            return 6;
+//        }
+//    }
+//
+//    return 0;
+//}
 
 int main(int argc, char **argv) {
 
