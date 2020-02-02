@@ -1,0 +1,108 @@
+##############################################################################
+#
+# Simple egs++ plate simulation
+#
+##############################################################################
+
+
+##############################################################################
+### Run control
+##############################################################################
+:start run control:
+    ncase = 20000
+:stop run control:
+
+
+##############################################################################
+### Geometry
+##############################################################################
+:start geometry definition:
+   :start geometry:
+       library = egs_planes
+       type = EGS_Zplanes
+       name = planes
+       positions = -10.0 0.0 0.1 40.0
+   :stop geometry:
+   :start geometry:
+       library = egs_cylinders
+       type = EGS_ZCylinders
+       name = cylinder
+       radii = 20.0
+   :stop geometry:
+   :start geometry:
+       name = lab
+       library = egs_ndgeometry
+       dimensions = planes cylinder
+       :start media input:
+           media = AIR521ICRU TA521ICRU
+           set medium = 1 1
+       :stop media input:
+   :stop geometry:
+   simulation geometry = lab
+:stop geometry definition:
+
+
+##############################################################################
+### Media
+##############################################################################
+
+
+##############################################################################
+### Source
+##############################################################################
+:start source definition:
+   :start source:
+       name = the_source
+       library = egs_parallel_beam
+       charge = 0
+       direction = 0.0 0.0 1.0
+       :start spectrum:
+           type = monoenergetic
+           energy = 6.0
+       :stop spectrum:
+       :start shape:
+           type = point
+           position = 0.0 0.0 -10.0
+       :stop shape:
+   :stop source:
+   simulation source = the_source
+:stop source definition:
+
+
+##############################################################################
+### Scoring options
+##############################################################################
+#:start scoring options:
+#    scale xcc = 1 1.5
+#    scale bc  = 0 1.5
+#:stop scoring options:
+
+
+##############################################################################
+### Ausgab objects
+##############################################################################
+#:start ausgab object definition:
+#
+#    ### generate particle tracks
+#    :start ausgab object:
+#        name    = tracks
+#        library = egs_track_scoring
+#    :stop ausgab object:
+#
+#    ### report dose in all regions
+#    :start ausgab object:
+#        name    = dose
+#        library = egs_dose_scoring
+#        volume  = 1000, 100, 900
+#    :stop ausgab object:
+#
+#:stop ausgab object definition:
+
+
+##############################################################################
+### Viewer control
+##############################################################################
+:start view control:
+    set color = AIR521ICRU 0 200  50  50               # r g b alpha
+    set color = TA521ICRU  0 220 220 220
+:stop view control:
